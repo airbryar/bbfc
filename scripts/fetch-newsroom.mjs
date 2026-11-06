@@ -207,23 +207,44 @@ const recentWeeks = [];
 for (let w = lastWeek; w >= Math.max(1, lastWeek - 2); w--) recentWeeks.push(weekDetail(w));
 
 // ---------- Transactions ----------
-const accepts = {};
-const upheld = {};
 const moves = [];
 const lastPeriod = Math.min(Math.max(CUR, lastWeek), REG + 4);
 for (let sp = 1; sp <= lastPeriod; sp++) {
-  const trades = await get(`${leagueUrl(SEASON)}?view=mTransactions2&scoringPeriodId=${sp}`, { transactions: { filterType: { value: ["TRADE_ACCEPT", "TRADE_UPHOLD"] } } });
-  for (const x of trades.transactions || []) {
-    if (x.type === "TRADE_ACCEPT" && (x.items || []).length) accepts[x.relatedTransactionId || x.id] = { ...x, sp };
-    if (x.type === "TRADE_UPHOLD" && x.status === "EXECUTED") upheld[x.relatedTransactionId || x.id] = { ...x, sp };
-  }
   const adds = await get(`${leagueUrl(SEASON)}?view=mTransactions2&scoringPeriodId=${sp}`, { transactions: { filterType: { value: ["WAIVER", "FREEAGENT"] }, filterStatus: { value: ["EXECUTED"] } } });
   for (const x of adds.transactions || []) if (x.status === "EXECUTED") moves.push({ ...x, sp });
 }
 
+// Trades, from the league's activity feed (each trade is one topic; message 244 = a player traded)
+const tradeTopics = [];
+for (let offset = 0; offset < 500; offset += 50) {
+  const feed = await get(`${leagueUrl(SEASON)}/communication/?view=kona_league_communication`, {
+    topics: {
+      filterType: { value: ["ACTIVITY_TRANSACTIONS"] },
+      limit: 50,
+      limitPerMessageSet: { value: 25 },
+      offset,
+      sortMessageDate: { sortPriority: 1, sortAsc: false },
+      sortFor: { sortPriority: 2, sortAsc: false },
+      filterIncludeMessageTypeIds: { value: [244] },
+    },
+  });
+  const topics = feed.topics || [];
+  tradeTopics.push(...topics);
+  if (topics.length < 50) break;
+}
+
+// The scoring period a date falls in, judged from the pickups around it
+const windows = moves.map((x) => [x.proposedDate, x.sp]).sort((x, y) => x[0] - y[0]);
+function periodAt(ms) {
+  let sp = 1;
+  for (const [d, p] of windows) { if (d <= ms) sp = p; else break; }
+  return sp;
+}
+
 // Names for players who never appeared in a box score
 const needed = new Set();
-for (const x of [...Object.values(accepts), ...moves]) for (const i of x.items || []) if (!playerName[i.playerId]) needed.add(i.playerId);
+for (const x of moves) for (const i of x.items || []) if (!playerName[i.playerId]) needed.add(i.playerId);
+for (const t of tradeTopics) for (const m of t.messages || []) if (m.messageTypeId === 244 && !playerName[m.targetId]) needed.add(m.targetId);
 const ids = [...needed];
 for (let i = 0; i < ids.length; i += 50) {
   const chunk = ids.slice(i, i + 50);
@@ -246,29 +267,28 @@ function startedPts(pid, tid, fromWeek, toWeek) {
   return { pts: r1(pts), starts };
 }
 
-const tradeList = Object.entries(accepts)
-  .filter(([rel]) => upheld[rel])
-  .map(([rel, x]) => {
-    const done = upheld[rel];
-    const effective = done.sp; // first scoring period the new rosters could play
+const tradeList = tradeTopics
+  .map((t) => {
+    const msgs = (t.messages || []).filter((m) => m.messageTypeId === 244);
+    if (!msgs.length) return null;
+    const effective = periodAt(t.date);
     const sides = {};
-    const dropped = [];
-    for (const i of x.items) {
-      if (i.type === "TRADE") {
-        sides[i.toTeamId] = sides[i.toTeamId] || [];
-        const since = startedPts(i.playerId, i.toTeamId, effective, lastWeek);
-        sides[i.toTeamId].push({ player: plabel(i.playerId), from: tname(i.fromTeamId), ptsForNewTeamSince: since.pts, startsSince: since.starts });
-      } else if (i.type === "DROP") {
-        dropped.push({ player: plabel(i.playerId), by: tname(i.fromTeamId) });
-      }
+    for (const m of msgs) {
+      const since = startedPts(m.targetId, m.to, effective, lastWeek);
+      const before = startedPts(m.targetId, m.from, 1, effective - 1);
+      sides[m.to] = sides[m.to] || [];
+      sides[m.to].push({ player: plabel(m.targetId), from: tname(m.from), ptsForNewTeamSince: since.pts, startsSince: since.starts, ptsForOldTeamBefore: before.pts });
     }
+    const teamsIn = [...new Set(msgs.flatMap((m) => [m.from, m.to]))];
     return {
-      date: day(done.proposedDate || x.proposedDate),
+      date: day(t.date),
       week: effective,
+      teams: teamsIn.map((id) => tname(id)),
       received: Object.entries(sides).map(([tid, players]) => ({ team: tname(Number(tid)), manager: (teamById[tid] || {}).manager || null, players })),
-      droppedToMakeRoom: dropped,
+      note: teamsIn.length === 2 && Object.keys(sides).length === 1 ? "Only one side received players in this trade." : undefined,
     };
   })
+  .filter(Boolean)
   .sort((x, y) => y.date.localeCompare(x.date));
 
 const pickupsAll = moves.map((x) => ({
