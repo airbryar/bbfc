@@ -1,0 +1,1071 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Boys and Bibles Football Club</title>
+<meta name="description" content="Standings, Median Watch, power rankings and The Poddy for the Boys and Bibles Football Club.">
+<meta name="theme-color" content="#13294B">
+<meta name="apple-mobile-web-app-title" content="BBFC">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=Saira+Condensed:wght@700;800&display=swap">
+<style>
+html { -webkit-text-size-adjust: 100%; }
+:root { box-sizing: border-box; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+*, *::before, *::after { box-sizing: inherit; }
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+/* Layout: one 760px column. Navy masthead with a red ribbon marker and the BBFC seal, sticky section tabs, then standings, Median Watch, matchups, power rankings and episodes. */
+:root {
+  --bg: #F3F5F9;
+  --surface: #FFFFFF;
+  --ink: #101A2C;
+  --muted: #56617A;
+  --line: #DCE2EC;
+  --accent: #C21F32;
+  --gilt: #1D3A6B;
+  --band: #13294B;
+  --band-deep: #0C1C36;
+  --band-ink: #FFFFFF;
+  --band-gilt: #DCE4F2;
+  --ribbon: #C21F32;
+  --up: #23794A;
+  --down: #B3342B;
+  --chip: #E9EDF4;
+  --f-display: "Saira Condensed", "Arial Narrow", Arial, sans-serif;
+  --f-body: "Barlow", "Helvetica Neue", Arial, sans-serif;
+  --f-label: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
+  --f-num: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
+  color-scheme: light;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg);
+}
+.wrap {
+  max-width: 760px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* Masthead */
+.mast { background: var(--band); color: var(--band-ink); border-bottom: 4px solid var(--ribbon); }
+.mast-in { position: relative; display: flex; align-items: center; gap: 16px; padding-block: 30px 26px; }
+.crest { flex: none; width: 72px; height: 72px; }
+.mast-text { min-width: 0; padding-right: 30px; }
+.eyebrow {
+  font-family: var(--f-label); font-weight: 600; font-size: 13px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--band-gilt); margin: 0 0 4px;
+}
+h1 {
+  font-family: var(--f-display); font-weight: 800; font-size: clamp(28px, 6.8vw, 44px);
+  line-height: 0.95; letter-spacing: 0.01em; text-transform: uppercase; text-wrap: balance; margin: 0;
+}
+.mast-sub { margin: 8px 0 0; font-size: 15px; opacity: 0.88; }
+.mast-upd { margin: 2px 0 0; font-family: var(--f-label); font-weight: 600; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--band-gilt); }
+.mast-upd b { color: var(--band-ink); font-weight: 700; }
+.ribbon {
+  position: absolute; top: 0; right: max(16px, env(safe-area-inset-right, 0px));
+  width: 16px; height: 74px; background: var(--ribbon);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
+}
+
+/* Section tabs */
+.tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); }
+.tabs .wrap { display: flex; gap: 2px; overflow-x: auto; }
+.tabs a {
+  font-family: var(--f-label); font-weight: 600; font-size: 15px; letter-spacing: 0.08em;
+  text-transform: uppercase; white-space: nowrap; color: var(--muted); text-decoration: none;
+  padding: 12px 10px 10px; border-bottom: 3px solid transparent;
+}
+.tabs a:first-child { padding-left: 0; }
+@media (max-width: 440px) {
+  .tabs .wrap { justify-content: space-between; }
+  .tabs a { font-size: 13px; letter-spacing: 0.02em; padding-left: 3px; padding-right: 3px; }
+  .tabs a:last-child { padding-right: 0; }
+}
+.tabs a:hover { color: var(--ink); }
+.tabs a[aria-current="true"] { color: var(--accent); border-bottom-color: var(--accent); }
+a:focus-visible, .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+/* Preview note */
+.note { margin-top: 20px; border: 1px dashed var(--gilt); border-radius: 8px; padding: 12px 14px; font-size: 14px; color: var(--muted); }
+.note strong { color: var(--accent); font-weight: 700; }
+
+/* Sections */
+section { padding-block: 34px 6px; scroll-margin-top: 56px; }
+.sec-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 12px; }
+h2 {
+  font-family: var(--f-display); font-weight: 800; font-size: 32px; line-height: 1;
+  text-transform: uppercase; letter-spacing: 0.01em; margin: 0;
+}
+.tag {
+  font-family: var(--f-label); font-weight: 600; font-size: 14px; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--muted); font-variant-numeric: tabular-nums;
+}
+.tag b { color: var(--ink); font-weight: 700; }
+.lede { max-width: 62ch; color: var(--muted); font-size: 15px; margin: 8px 0 16px; }
+
+/* Standings */
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+th {
+  font-family: var(--f-label); font-weight: 600; font-size: 12px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted); text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line);
+}
+td { padding: 9px 10px; vertical-align: middle; }
+tbody tr + tr td { border-top: 1px solid var(--line); }
+tbody tr.cut td {
+  border-top: 2px dashed var(--gilt);
+  padding-block: 3px;
+  font-family: var(--f-label); font-weight: 700; font-size: 11px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--gilt); text-align: center;
+}
+tbody tr.cut + tr td { border-top: 0; }
+.num { text-align: right; white-space: nowrap; }
+.rk { width: 1.6em; font-family: var(--f-num); font-weight: 700; font-size: 20px; color: var(--muted); padding-right: 4px; }
+.team-name { font-weight: 600; font-size: 16px; line-height: 1.25; }
+.split { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.split span { white-space: nowrap; }
+.rec { font-family: var(--f-num); font-weight: 700; font-size: 23px; letter-spacing: 0.01em; }
+.pts { font-size: 15px; }
+.pa { color: var(--muted); }
+.sm { font-family: var(--f-num); font-weight: 600; font-size: 15px; color: var(--muted); }
+@media (max-width: 560px) {
+  .col-pa { display: none; }
+  td, th { padding-left: 10px; padding-right: 10px; }
+}
+
+/* This week */
+.games { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; }
+.game { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 2px 14px; min-width: 0; }
+.side { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 12px; padding-block: 10px; }
+.side + .side { border-top: 1px solid var(--line); }
+.side-info { min-width: 0; }
+.side-name { font-weight: 600; font-size: 16px; line-height: 1.25; }
+.side-proj { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.side-score {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--f-num); font-weight: 700; font-size: 26px; line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.side.trail .side-score { color: var(--muted); }
+.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--down); flex: none; }
+.dot.top { background: var(--up); }
+.key { display: inline-flex; align-items: center; gap: 6px; }
+.empty { color: var(--muted); font-size: 15px; }
+
+/* Median watch */
+.seg { display: inline-flex; gap: 2px; padding: 3px; margin-bottom: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+.seg button {
+  font-family: var(--f-label); font-weight: 700; font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--muted); background: transparent; border: 0; border-radius: 6px; padding: 7px 14px 6px; cursor: pointer;
+}
+.seg button[aria-pressed="true"] { background: var(--band); color: var(--band-ink); }
+.seg button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.mw-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 12px; }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px 12px; min-width: 0; }
+.tile-label { font-family: var(--f-label); font-weight: 600; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.tile-value { font-family: var(--f-num); font-weight: 700; font-size: 34px; line-height: 1; margin-top: 4px; font-variant-numeric: tabular-nums; }
+.tile-note { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.mw { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 2px 14px 6px; }
+.mw-row {
+  display: grid; grid-template-columns: 22px minmax(0, 1fr) auto;
+  grid-template-areas: "rk name score" "rk bar diff";
+  column-gap: 10px; row-gap: 6px; align-items: center; padding-block: 9px; border-top: 1px solid var(--line);
+}
+.mw-head {
+  border-top: 0; padding-block: 8px 2px; font-family: var(--f-label); font-weight: 600; font-size: 11px;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+}
+.mw-rk { grid-area: rk; align-self: start; font-family: var(--f-num); font-weight: 700; font-size: 18px; line-height: 1.2; color: var(--muted); font-variant-numeric: tabular-nums; }
+.mw-name { grid-area: name; min-width: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-weight: 600; line-height: 1.25; }
+.mw-score { grid-area: score; text-align: right; white-space: nowrap; font-family: var(--f-num); font-weight: 700; font-size: 21px; line-height: 1; font-variant-numeric: tabular-nums; }
+.mw-diff { grid-area: diff; text-align: right; white-space: nowrap; min-width: 4.4em; font-family: var(--f-label); font-weight: 700; font-size: 14px; font-variant-numeric: tabular-nums; }
+.mw-diff.up { color: var(--up); }
+.mw-diff.down { color: var(--down); }
+.mw-head .mw-score, .mw-head .mw-diff { font-family: inherit; font-size: inherit; font-weight: inherit; }
+.mw-bar { grid-area: bar; position: relative; height: 12px; }
+.mw-row:not(.mw-head) .mw-bar::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: var(--line); }
+.mw-row:not(.mw-head) .mw-bar::after { content: ""; position: absolute; left: 50%; top: -4px; bottom: -4px; width: 2px; margin-left: -1px; background: var(--muted); }
+.mw-head .mw-bar { display: flex; justify-content: space-between; height: auto; }
+.mw-fill { position: absolute; top: 1px; bottom: 1px; border-radius: 2px; }
+.mw-fill.up { left: 50%; background: var(--up); }
+.mw-fill.down { right: 50%; background: var(--down); }
+.mw-cut { height: 0; border-top: 2px dashed var(--gilt); margin-block: 9px; text-align: center; }
+.mw-cut span {
+  position: relative; top: -0.8em; padding: 0 8px; background: var(--surface);
+  font-family: var(--f-label); font-weight: 700; font-size: 11px; line-height: 1.4; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gilt);
+}
+.mw-cut + .mw-row { border-top: 0; }
+.st {
+  font-family: var(--f-label); font-weight: 700; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 1px 6px; border-radius: 4px; background: var(--chip); color: var(--muted); white-space: nowrap;
+}
+.st.live { color: var(--accent); }
+.st.final { color: var(--ink); }
+.mw-empty { padding-block: 14px; }
+.mw-foot { font-size: 13px; color: var(--muted); margin: 10px 0 0; }
+@media (min-width: 620px) {
+  .mw-row { grid-template-columns: 24px minmax(150px, 210px) minmax(0, 1fr) 66px 64px; grid-template-areas: "rk name bar diff score"; }
+  .mw-rk { align-self: center; }
+}
+
+/* Power rankings */
+.how { margin: -6px 0 14px; font-size: 14px; color: var(--muted); }
+.how summary { cursor: pointer; font-family: var(--f-label); font-weight: 700; font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+.how summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+.how ul { margin: 8px 0 6px; padding-left: 18px; max-width: 62ch; }
+.how li + li { margin-top: 3px; }
+.how p { margin: 6px 0 0; max-width: 62ch; }
+.pr { list-style: none; margin: 0; padding: 0; }
+.pr-item { border-top: 1px solid var(--line); }
+.pr-item:first-child { border-top: 0; }
+.pr-sum { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto auto 14px; align-items: center; gap: 10px; padding-block: 9px; cursor: pointer; list-style: none; }
+.pr-sum::-webkit-details-marker { display: none; }
+.pr-sum:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+.pr-chev::before { content: ""; display: block; width: 7px; height: 7px; border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted); transform: rotate(45deg); margin-top: -4px; }
+details[open] > .pr-sum .pr-chev::before { transform: rotate(-135deg); margin-top: 3px; }
+.pr-more { padding: 0 24px 12px 44px; }
+.pr-rank { font-family: var(--f-num); font-weight: 700; font-size: 28px; line-height: 1; color: var(--gilt); font-variant-numeric: tabular-nums; }
+.pr-body { min-width: 0; }
+.pr-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.pr-team { font-weight: 600; font-size: 17px; line-height: 1.25; min-width: 0; }
+.pr-right { display: flex; align-items: center; gap: 10px; flex: none; }
+.pr-score { font-family: var(--f-num); font-weight: 700; font-size: 24px; line-height: 1; font-variant-numeric: tabular-nums; }
+.move {
+  flex: none; font-family: var(--f-label); font-weight: 700; font-size: 13px; letter-spacing: 0.04em;
+  padding: 2px 9px; border-radius: 999px; background: var(--chip); color: var(--muted); font-variant-numeric: tabular-nums;
+}
+.move.up { color: var(--up); }
+.move.down { color: var(--down); }
+.meters { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 9px; }
+.meter { min-width: 0; }
+.meter-lbl { font-family: var(--f-label); font-weight: 600; font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.meter-row { display: flex; align-items: center; gap: 6px; margin-top: 2px; }
+.meter-track { flex: 1; height: 5px; border-radius: 3px; background: var(--chip); overflow: hidden; min-width: 0; }
+.meter-fill { height: 100%; background: var(--gilt); border-radius: 3px; }
+.meter-val { font-family: var(--f-label); font-weight: 700; font-size: 13px; min-width: 1.6em; text-align: right; font-variant-numeric: tabular-nums; }
+.pr-stats { margin: 7px 0 0; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.pr-take { margin: 4px 0 0; font-size: 15px; }
+
+/* Median Watch controls */
+.mw-ctrl { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; margin-bottom: 12px; }
+.mw-ctrl .seg { margin-bottom: 0; }
+.mw-ctrl .week-lede { margin: 0; flex: 1 1 14em; }
+.refresh {
+  display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px 6px; border-radius: 8px;
+  border: 1px solid var(--line); background: var(--surface); color: var(--accent); text-decoration: none;
+  font-family: var(--f-label); font-weight: 700; font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase;
+}
+.refresh span { font-size: 16px; line-height: 1; }
+button.refresh { cursor: pointer; }
+.refresh:hover { border-color: var(--accent); }
+.refresh:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Team badges */
+.tb { flex: none; width: 26px; height: 26px; border-radius: 50%; object-fit: cover; background: var(--chip); box-shadow: 0 0 0 1px var(--line); }
+.tb-gen { display: inline-flex; align-items: center; justify-content: center; color: #FFFFFF; font-family: var(--f-num); font-weight: 700; font-size: 11px; letter-spacing: 0.02em; line-height: 1; box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.35); }
+.tn { display: flex; align-items: center; gap: 8px; }
+.side-name { display: flex; align-items: center; gap: 8px; }
+.pr-team { display: flex; align-items: center; gap: 8px; }
+
+/* Median Watch status marks (phones) */
+.mk { display: none; width: 7px; height: 7px; border-radius: 50%; margin-right: 5px; vertical-align: 2px; background: var(--muted); }
+.mk.live { background: var(--accent); }
+.mk.final { background: var(--ink); }
+.mk.yet { background: transparent; box-shadow: inset 0 0 0 1.5px var(--muted); }
+.mw-legend { display: none; gap: 14px; margin: 8px 0 0; font-family: var(--f-label); font-weight: 600; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.mw-legend .mk { display: inline-block; }
+
+/* Phone layout: keep each section close to one screen */
+@media (max-width: 619px) {
+  section { padding-block: 22px 2px; }
+  h2 { font-size: 27px; }
+  .lede { margin: 6px 0 12px; font-size: 14px; }
+  .m-hide { display: none; }
+  td, th { padding: 8px 4px; }
+  td:first-child, th:first-child { padding-left: 8px; }
+  td:last-child, th:last-child { padding-right: 8px; }
+  th { font-size: 11px; letter-spacing: 0.06em; }
+  .rk { font-size: 16px; }
+  .team-name { font-size: 14px; }
+  .rec { font-size: 19px; }
+  .sm { font-size: 14px; }
+  .pts { font-size: 13px; }
+  .seg { margin-bottom: 10px; }
+  .seg button { padding: 6px 12px 5px; font-size: 13px; }
+  .mw-tiles { gap: 8px; margin-bottom: 10px; }
+  .tile { padding: 8px 12px 9px; }
+  .tile-value { font-size: 26px; }
+  .tile-note { font-size: 12px; margin-top: 2px; }
+  .mw { padding: 0 10px 4px; }
+  .mw-row { grid-template-columns: 18px minmax(0, 1fr) minmax(44px, 22%) 46px 60px; grid-template-areas: "rk name bar diff score"; column-gap: 6px; row-gap: 0; padding-block: 6px; }
+  .tile-note { display: none; }
+  .mw-head { padding-block: 7px 2px; }
+  .mw-head .mw-bar span { display: none; }
+  .mw-rk { align-self: center; font-size: 15px; }
+  .mw-name { font-size: 14px; line-height: 1.2; }
+  .mw-name .st { display: none; }
+  .mw-name { flex-wrap: nowrap; gap: 6px; }
+  .tb { width: 21px; height: 21px; }
+  .tb-gen { font-size: 9.5px; }
+  .tn { gap: 6px; }
+  .mk { display: inline-block; }
+  .mw-score { font-size: 17px; }
+  .mw-diff { font-size: 13px; min-width: 0; }
+  .mw-cut { margin-block: 7px; }
+  .mw-legend { display: flex; }
+  .mw-foot { font-size: 12px; margin-top: 6px; }
+  .games { gap: 8px; }
+  .game { padding: 0 12px; }
+  .side { padding-block: 7px; }
+  .side-name { font-size: 15px; }
+  .side-proj { font-size: 12px; }
+  .side-score { font-size: 21px; }
+  .pr-sum { grid-template-columns: 28px minmax(0, 1fr) auto auto 12px; gap: 8px; padding-block: 8px; }
+  .pr-rank { font-size: 24px; }
+  .pr-team { font-size: 15px; }
+  .pr-score { font-size: 20px; }
+  .pr-more { padding: 0 0 12px; }
+}
+
+/* Podcast: newest episode featured, older ones listed */
+.pod { display: grid; gap: 14px; }
+.pod-follow { font-family: var(--f-label); font-weight: 700; font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); text-decoration: none; white-space: nowrap; }
+.pod-follow:hover { text-decoration: underline; }
+.ep-feature {
+  position: relative; overflow: hidden; background: var(--band); color: var(--band-ink);
+  border-radius: 12px; border-bottom: 4px solid var(--ribbon); padding: 20px 20px 0;
+}
+.ep-kicker {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px;
+  font-family: var(--f-label); font-weight: 700; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--band-gilt);
+}
+.ep-badge { background: var(--ribbon); color: #FFFFFF; padding: 2px 8px 1px; border-radius: 4px; letter-spacing: 0.1em; }
+.ep-feature h3 {
+  font-family: var(--f-display); font-weight: 800; font-size: clamp(28px, 6.4vw, 42px); line-height: 0.98;
+  text-transform: uppercase; text-wrap: balance; margin: 12px 0 8px; max-width: 22ch;
+}
+.ep-age { font-size: 15px; opacity: 0.85; margin: 0; }
+.ep-feature .btn { margin-top: 16px; background: #FFFFFF; color: #13294B; }
+.ep-feature .btn:hover { background: var(--band-gilt); }
+.wave { display: flex; align-items: flex-end; gap: 3px; height: 44px; margin: 18px -20px 0; padding: 0 20px; opacity: 0.22; }
+.wave span { flex: 1; min-width: 2px; background: var(--band-ink); border-radius: 1px 1px 0 0; }
+.pod-sub { font-family: var(--f-label); font-weight: 700; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin: 8px 0 -4px; }
+.ep-list { list-style: none; margin: 0; padding: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+.ep-item { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 14px; padding: 12px 14px; }
+.ep-item + .ep-item { border-top: 1px solid var(--line); }
+.ep-item-title { font-weight: 600; line-height: 1.3; }
+.ep-item-date { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.ep-item a {
+  font-family: var(--f-label); font-weight: 700; font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--accent); text-decoration: none; white-space: nowrap;
+}
+.ep-item a:hover { text-decoration: underline; }
+.btn {
+  align-self: flex-start; display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--f-label); font-weight: 700; font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase;
+  text-decoration: none; color: var(--band-ink); background: var(--band); padding: 9px 16px 8px; border-radius: 6px;
+}
+.btn svg { width: 11px; height: 12px; fill: currentColor; }
+
+footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18px 36px; font-size: 13px; color: var(--muted); }
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+  .tabs a, .btn { transition: color .15s, background-color .15s, border-color .15s; }
+}
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap mast-in">
+    <svg class="crest" viewBox="0 0 80 80" role="img" aria-label="BBFC seal">
+      <circle cx="40" cy="40" r="38" fill="#13294B" stroke="#FFFFFF" stroke-width="2"/>
+      <circle cx="40" cy="40" r="29.5" fill="#FFFFFF"/>
+      <circle cx="40" cy="40" r="26.5" fill="none" stroke="#C21F32" stroke-width="1.5"/>
+      <circle cx="5.8" cy="40" r="1.6" fill="#FFFFFF"/><circle cx="74.2" cy="40" r="1.6" fill="#FFFFFF"/>
+      <ellipse cx="40" cy="27.5" rx="10.5" ry="5.8" fill="#13294B"/>
+      <line x1="34" y1="27.5" x2="46" y2="27.5" stroke="#FFFFFF" stroke-width="1.2"/>
+      <line x1="37" y1="25.4" x2="37" y2="29.6" stroke="#FFFFFF" stroke-width="1.2"/>
+      <line x1="40" y1="25.4" x2="40" y2="29.6" stroke="#FFFFFF" stroke-width="1.2"/>
+      <line x1="43" y1="25.4" x2="43" y2="29.6" stroke="#FFFFFF" stroke-width="1.2"/>
+      <text x="40" y="51.5" text-anchor="middle" font-family="Saira Condensed, Arial Narrow, Arial, sans-serif" font-weight="800" font-size="18" letter-spacing="0.5" fill="#C21F32">BBFC</text>
+    </svg>
+    <div class="mast-text">
+      <p class="eyebrow" id="season-line">BBFC</p>
+      <h1>Boys and Bibles Football Club</h1>
+      <p class="mast-sub" id="through-line"></p>
+      <p class="mast-upd" id="upd-line"></p>
+    </div>
+    <span class="ribbon" aria-hidden="true"></span>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Sections">
+  <div class="wrap">
+    <a href="#standings" aria-current="true">Standings</a>
+    <a href="#median">Median</a>
+    <a href="#this-week" id="tab-week">This Week</a>
+    <a href="#rankings">Rankings</a>
+    <a href="#podcast">Podcast</a>
+  </div>
+</nav>
+
+<main class="wrap">
+  <p class="note" id="sample-note"><strong>Preview.</strong> The podcast episodes below are samples until the real links go in.</p>
+
+  <section id="standings" aria-labelledby="h-standings">
+    <div class="sec-head">
+      <h2 id="h-standings">Standings</h2>
+      <span class="tag" id="median-tag"></span>
+    </div>
+    <p class="lede">Record counts two games a week: head-to-head plus the median game.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Team</th>
+            <th scope="col" class="num">Record</th>
+            <th scope="col" class="num">H2H</th>
+            <th scope="col" class="num">Med</th>
+            <th scope="col" class="num">PF</th>
+            <th scope="col" class="num col-pa">PA</th>
+          </tr>
+        </thead>
+        <tbody id="standings-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="median" aria-labelledby="h-median">
+    <div class="sec-head">
+      <h2 id="h-median">Median Watch</h2>
+      <span class="tag" id="mw-tag"></span>
+    </div>
+    <p class="lede m-hide">Where every team sits against this week's median line. The top six scores win the median game.</p>
+    <div class="mw-ctrl">
+      <div class="seg" role="group" aria-label="Score view">
+        <button type="button" id="mw-now" aria-pressed="false">Right now</button>
+        <button type="button" id="mw-proj" aria-pressed="false">Projected</button>
+      </div>
+      <button type="button" class="refresh" id="mw-refresh" data-refresh><span aria-hidden="true">&#8635;</span> Refresh</button>
+    </div>
+    <div class="mw-tiles">
+      <div class="tile"><div class="tile-label" id="mw-med-label">Median</div><div class="tile-value" id="mw-med">&ndash;</div><div class="tile-note" id="mw-med-note"></div></div>
+      <div class="tile"><div class="tile-label">Cut line</div><div class="tile-value" id="mw-cut">&ndash;</div><div class="tile-note" id="mw-cut-note"></div></div>
+    </div>
+    <div class="mw" id="mw-chart"></div>
+    <p class="mw-legend" aria-hidden="true"><span><span class="mk live"></span>Live</span><span><span class="mk final"></span>Final</span><span><span class="mk yet"></span>To play</span></p>
+    <p class="mw-foot" id="mw-foot"></p>
+  </section>
+
+  <section id="this-week" aria-labelledby="h-week">
+    <div class="sec-head">
+      <h2 id="h-week">This Week</h2>
+      <span class="tag" id="week-tag"></span>
+    </div>
+    <div class="mw-ctrl">
+      <p class="lede week-lede" id="week-lede"></p>
+      <button type="button" class="refresh" data-refresh><span aria-hidden="true">&#8635;</span> Refresh</button>
+    </div>
+    <div class="games" id="games"></div>
+  </section>
+
+  <section id="rankings" aria-labelledby="h-rankings">
+    <div class="sec-head">
+      <h2 id="h-rankings">Power Rankings</h2>
+      <span class="tag" id="rankings-tag"></span>
+    </div>
+    <p class="lede">Recalculated every Tuesday morning from ESPN results. Arrows show movement from the week before. Tap a team for its breakdown.</p>
+    <details class="how">
+      <summary>How the formula works</summary>
+      <ul id="how-list"></ul>
+      <p>Each part is scored 0 to 100 against the rest of the league, then the four are blended into the power score.</p>
+    </details>
+    <ol class="pr" id="rankings-list"></ol>
+  </section>
+
+  <section id="podcast" aria-labelledby="h-podcast">
+    <div class="sec-head">
+      <h2 id="h-podcast">The Poddy</h2>
+      <span class="tag" id="podcast-tag"></span>
+    </div>
+    <p class="lede">BBFC Presents: The Poddy, the league podcast. New episodes show up here within a few hours of going up on SoundCloud. <a class="pod-follow" id="pod-follow" href="https://soundcloud.com/thepoddy" target="_blank" rel="noopener">Follow on SoundCloud</a></p>
+    <div class="pod" id="episodes"></div>
+  </section>
+</main>
+
+<footer class="wrap" id="footer-line">Boys and Bibles Football Club</footer>
+
+<!-- Team images (64px, embedded). Teams without one get an initials badge. -->
+<script type="application/json" id="logo-data">
+__LOGOS__
+</script>
+
+<!-- Podcast episodes: updated by the podcast check from SoundCloud. -->
+<script type="application/json" id="pod-data">
+__POD__
+</script>
+
+<!-- League content kept by hand: ranking weights, optional takes. -->
+<script type="application/json" id="league-data">
+__LEAGUE__
+</script>
+
+<!-- Power rankings data: ESPN snapshot replaced only by the Tuesday update. -->
+<script type="application/json" id="pr-data">
+__PR__
+</script>
+
+<!-- ESPN data: replaced automatically on each scheduled update. -->
+<script type="application/json" id="espn-data">
+__ESPN__
+</script>
+
+<script>
+(function () {
+  var L = JSON.parse(document.getElementById("league-data").textContent);
+  var E = JSON.parse(document.getElementById("espn-data").textContent);
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+  function pts(n) { return Number(n || 0).toFixed(2); }
+  function wl(a) { return a[0] + "–" + a[1]; }
+
+  var teams = {};
+  E.teams.forEach(function (t) { teams[t.id] = t; });
+  function nameOf(id) { return teams[id] ? teams[id].name : "Team " + id; }
+  var LOGOS = {};
+  try { LOGOS = JSON.parse(document.getElementById("logo-data").textContent) || {}; } catch (e) {}
+  var BADGE_COLORS = ["#13294B", "#C21F32", "#2E5C9A", "#5B6B84", "#8C1C2B", "#1F6F64", "#9A6A1F", "#4A3B7A", "#0F4C5C", "#6B2D5C", "#3B5B2A", "#7A3E12"];
+  function initials(name) {
+    var skip = { the: 1, of: 1, my: 1, a: 1, an: 1, al: 1 };
+    var w = String(name).split(/[^A-Za-z0-9']+/).filter(function (x) { return x && !skip[x.toLowerCase()]; });
+    return w.map(function (x) { return x.charAt(0); }).join("").toUpperCase().slice(0, 3) || "?";
+  }
+  function badge(id, name) {
+    var src = LOGOS[String(id)];
+    if (src) {
+      var im = document.createElement("img");
+      im.className = "tb"; im.src = src; im.alt = ""; im.width = 26; im.height = 26;
+      return im;
+    }
+    var b = el("span", "tb tb-gen", initials(name));
+    b.style.background = BADGE_COLORS[(Number(id) - 1 + BADGE_COLORS.length) % BADGE_COLORS.length];
+    b.setAttribute("aria-hidden", "true");
+    return b;
+  }
+
+  // Completed regular-season games only
+  var regWeeks = E.regSeasonWeeks || 99;
+  var games = E.games.filter(function (g) { return g.p <= regWeeks; });
+  var h2h = {}, weekly = {};
+  E.teams.forEach(function (t) { h2h[t.id] = [0, 0]; });
+  games.forEach(function (g) {
+    var hid = g.h[0], aid = g.a[0];
+    (weekly[g.p] = weekly[g.p] || []).push(g.h[1], g.a[1]);
+    if (g.w === "H") { h2h[hid][0]++; h2h[aid][1]++; }
+    else if (g.w === "A") { h2h[aid][0]++; h2h[hid][1]++; }
+  });
+  var weeksDone = Object.keys(weekly).map(Number).sort(function (a, b) { return a - b; });
+  var lastWeek = weeksDone.length ? weeksDone[weeksDone.length - 1] : 0;
+
+  function medianLine(scores) {
+    var s = scores.slice().sort(function (a, b) { return b - a; });
+    if (s.length < 2) return null;
+    var half = Math.floor(s.length / 2);
+    return (s[half - 1] + s[half]) / 2;
+  }
+
+  // Header, footer
+  var stamp = "";
+  try {
+    stamp = new Date(E.fetchedAt).toLocaleString("en-US", { timeZone: "America/New_York", weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }) + " ET";
+  } catch (e) { stamp = E.fetchedAt; }
+  document.getElementById("season-line").textContent = "BBFC · " + E.season + " Season";
+  document.getElementById("through-line").textContent = lastWeek ? "Through Week " + lastWeek : "Season starting";
+  var updTime = "";
+  try { updTime = new Date(E.fetchedAt).toLocaleString("en-US", { timeZone: "America/New_York", weekday: "short", hour: "numeric", minute: "2-digit" }) + " ET"; } catch (e) { updTime = ""; }
+  function renderUpd() {
+    var line = document.getElementById("upd-line");
+    var mins = Math.floor((Date.now() - new Date(E.fetchedAt).getTime()) / 60000);
+    var ago = !isFinite(mins) ? "" : mins < 1 ? "just now" : mins < 60 ? mins + " min ago" : mins < 1440 ? Math.floor(mins / 60) + " hr ago" : Math.floor(mins / 1440) + " days ago";
+    line.textContent = "";
+    line.append("Scores updated ");
+    line.append(el("b", null, updTime));
+    if (ago) line.append(" \u00b7 " + ago);
+  }
+  renderUpd();
+  setInterval(renderUpd, 30000);
+  document.getElementById("footer-line").textContent = "Boys and Bibles Football Club · ESPN data updated " + stamp;
+  document.getElementById("sample-note").hidden = !L.sampleEpisodes;
+
+  // Median tag for the last finished week
+  var lastMed = lastWeek ? medianLine(weekly[lastWeek]) : null;
+  var mt = document.getElementById("median-tag");
+  if (lastMed != null) { mt.append("Week " + lastWeek + " median "); mt.append(el("b", null, pts(lastMed))); }
+
+  // Standings in ESPN seed order
+  var rows = E.teams.map(function (t) {
+    var hh = h2h[t.id];
+    return { id: t.id, team: t.name, seed: t.seed, w: t.w, l: t.l, pf: t.pf, pa: t.pa, h2h: hh, med: [t.w - hh[0], t.l - hh[1]] };
+  }).sort(function (a, b) { return (a.seed && b.seed) ? a.seed - b.seed : (b.w - a.w || b.pf - a.pf); });
+
+  var tb = document.getElementById("standings-body");
+  rows.forEach(function (t, i) {
+    var tr = el("tr");
+    tr.append(el("td", "rk", String(i + 1)));
+    var tn = el("td", "team-name");
+    var tw = el("span", "tn");
+    tw.append(badge(t.id, t.team), el("span", null, t.team));
+    tn.append(tw);
+    tr.append(tn);
+    tr.append(el("td", "num rec", t.w + "\u2013" + t.l));
+    tr.append(el("td", "num sm", wl(t.h2h)));
+    tr.append(el("td", "num sm", wl(t.med)));
+    tr.append(el("td", "num pts", pts(t.pf)));
+    tr.append(el("td", "num pts pa col-pa", pts(t.pa)));
+    tb.append(tr);
+    if (E.playoffTeams && i + 1 === E.playoffTeams && i + 1 < rows.length) {
+      var cut = el("tr", "cut");
+      var td = el("td", null, "Playoff line · top " + E.playoffTeams + " make it");
+      td.colSpan = 7;
+      cut.append(td);
+      tb.append(cut);
+    }
+  });
+
+  // Shared: this week's sides
+  var wk = E.currentWeek;
+  var isPlayoffs = wk > regWeeks;
+  var cur = E.current || [];
+  var sides = [];
+  cur.forEach(function (m) { sides.push(m.h, m.a); });
+  var started = sides.some(function (s) { return s[1] > 0; });
+  function statusOf(s) {
+    if (!started) return null;
+    if (s[1] === 0 && s[2] > 0) return "yet";
+    if (Math.abs(s[2] - s[1]) < 0.05) return "final";
+    return "live";
+  }
+  var ST_TEXT = { yet: "To play", live: "Live", final: "Final" };
+
+  // Median Watch
+  document.getElementById("mw-tag").textContent = isPlayoffs ? "Playoffs" : "Week " + wk + " · " + (started ? "Live" : "Not started");
+  document.getElementById("mw-foot").textContent = "ESPN data as of " + stamp + ".";
+  var btnNow = document.getElementById("mw-now");
+  var btnProj = document.getElementById("mw-proj");
+  var scoredCount = sides.filter(function (s) { return s[1] > 0; }).length;
+  var mwMode = scoredCount >= Math.ceil(sides.length / 2) ? "now" : "proj";
+  function fill(id, text) { document.getElementById(id).textContent = text; }
+  function renderMW() {
+    btnNow.setAttribute("aria-pressed", String(mwMode === "now"));
+    btnProj.setAttribute("aria-pressed", String(mwMode === "proj"));
+    var useLive = mwMode === "now";
+    fill("mw-med-label", useLive ? "Median right now" : "Projected median");
+    var chart = document.getElementById("mw-chart");
+    chart.textContent = "";
+    function blank(msg) {
+      fill("mw-med", "–"); fill("mw-cut", "–"); fill("mw-med-note", ""); fill("mw-cut-note", "");
+      chart.append(el("p", "empty mw-empty", msg));
+    }
+    if (isPlayoffs) return blank("Median games are a regular-season thing. See you next season.");
+    if (sides.length < 2) return blank("No matchups this week.");
+    if (useLive && !started) return blank("No points yet this week. Projected shows where things stand before kickoff.");
+
+    var rows = sides.map(function (s) { return { id: s[0], val: useLive ? s[1] : s[2], st: statusOf(s) }; })
+      .sort(function (a, b) { return b.val - a.val; });
+    var half = Math.floor(rows.length / 2);
+    var med = (rows[half - 1].val + rows[half].val) / 2;
+    var cutv = rows[half - 1].val;
+    fill("mw-med", pts(med));
+    fill("mw-med-note", "Midpoint of " + ord(half) + " and " + ord(half + 1));
+    fill("mw-cut", pts(cutv));
+    fill("mw-cut-note", ord(half) + " place, the score to beat");
+
+    var maxAbs = 1;
+    rows.forEach(function (r) { maxAbs = Math.max(maxAbs, Math.abs(r.val - med)); });
+
+    var head = el("div", "mw-row mw-head");
+    head.append(el("span", "mw-rk"));
+    head.append(el("span", "mw-name", "Team"));
+    var axis = el("span", "mw-bar");
+    axis.append(el("span", null, "◂ Below"), el("span", null, "Above ▸"));
+    head.append(axis);
+    head.append(el("span", "mw-diff", "vs med"));
+    head.append(el("span", "mw-score", useLive ? "Pts" : "Proj"));
+    chart.append(head);
+
+    rows.forEach(function (r, i) {
+      if (i === half) {
+        var cut = el("div", "mw-cut");
+        cut.append(el("span", null, "Cut line · top " + half + " win"));
+        chart.append(cut);
+      }
+      var m = r.val - med;
+      var dir = m >= 0 ? "up" : "down";
+      var row = el("div", "mw-row");
+      row.append(el("span", "mw-rk", String(i + 1)));
+      var nm = el("span", "mw-name");
+      nm.append(badge(r.id, nameOf(r.id)), el("span", null, nameOf(r.id)));
+      if (r.st) nm.append(el("span", "st " + r.st, ST_TEXT[r.st]));
+      row.append(nm);
+      var bar = el("span", "mw-bar");
+      var f = el("span", "mw-fill " + dir);
+      f.style.width = (Math.abs(m) / maxAbs * 50).toFixed(2) + "%";
+      bar.append(f);
+      bar.setAttribute("aria-hidden", "true");
+      row.append(bar);
+      row.append(el("span", "mw-diff " + dir, (m >= 0 ? "+" : "−") + Math.abs(m).toFixed(2)));
+      var scEl = el("span", "mw-score");
+      if (r.st) { var mk = el("span", "mk " + r.st); mk.setAttribute("aria-hidden", "true"); scEl.append(mk); }
+      scEl.append(document.createTextNode(pts(r.val)));
+      row.append(scEl);
+      chart.append(row);
+    });
+  }
+  function ord(n) { var s = ["th", "st", "nd", "rd"], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); }
+  btnNow.addEventListener("click", function () { mwMode = "now"; renderMW(); });
+  btnProj.addEventListener("click", function () { mwMode = "proj"; renderMW(); });
+  renderMW();
+
+  // This week: matchups
+  document.getElementById("tab-week").textContent = isPlayoffs ? "Playoffs" : "Week " + wk;
+  document.getElementById("h-week").textContent = isPlayoffs ? "Playoffs" : "Week " + wk + " Scoreboard";
+  document.getElementById("week-tag").textContent = started ? "Live" : "Not started";
+  document.getElementById("week-lede").textContent = started
+    ? "Scores update about every hour during games."
+    : "No points yet. ESPN's projected totals are under each team.";
+  var gbox = document.getElementById("games");
+  if (!cur.length) gbox.append(el("p", "empty", "No matchups this week."));
+  cur.forEach(function (m) {
+    var card = el("article", "game");
+    [m.h, m.a].forEach(function (s, idx) {
+      var other = idx === 0 ? m.a : m.h;
+      var cls = "side";
+      if (started && s[1] !== other[1]) cls += s[1] > other[1] ? " lead" : " trail";
+      var row = el("div", cls);
+      var info = el("div", "side-info");
+      var sn = el("div", "side-name");
+      sn.append(badge(s[0], nameOf(s[0])), el("span", null, nameOf(s[0])));
+      info.append(sn);
+      info.append(el("div", "side-proj", "Proj " + pts(s[2])));
+      row.append(info);
+      row.append(el("div", "side-score", pts(s[1])));
+      card.append(row);
+    });
+    gbox.append(card);
+  });
+
+  // Power rankings (formula, frozen to the Tuesday snapshot)
+  function computePower(P, throughWeek, W) {
+    var reg = P.regSeasonWeeks || 99;
+    var ids = P.teams.map(function (t) { return t.id; });
+    var st = {};
+    ids.forEach(function (id) { st[id] = { w: 0, l: 0, t: 0, pts: {} }; });
+    var pairs = {}, weekly = {};
+    P.games.forEach(function (g) { if (g.p <= reg) pairs[g.p + ":" + g.h[0]] = [g.p, g.h[0], g.a[0]]; });
+    (P.upcoming || []).forEach(function (u) { if (u[0] <= reg) pairs[u[0] + ":" + u[1]] = u; });
+    P.games.forEach(function (g) {
+      if (g.p > throughWeek || g.p > reg) return;
+      var h = st[g.h[0]], a = st[g.a[0]];
+      h.pts[g.p] = g.h[1]; a.pts[g.p] = g.a[1];
+      (weekly[g.p] = weekly[g.p] || []).push([g.h[0], g.h[1]], [g.a[0], g.a[1]]);
+      if (g.w === "H") { h.w++; a.l++; } else if (g.w === "A") { a.w++; h.l++; } else { h.t++; a.t++; }
+    });
+    var weeks = Object.keys(weekly).map(Number).sort(function (a, b) { return a - b; });
+    if (!weeks.length) return null;
+    weeks.forEach(function (p) {
+      var arr = weekly[p].slice().sort(function (x, y) { return y[1] - x[1]; });
+      var half = Math.floor(arr.length / 2);
+      arr.forEach(function (x, i) { if (i < half) st[x[0]].w++; else st[x[0]].l++; });
+    });
+    var formWeeks = weeks.slice(-(W.formWeeks || 3));
+    function avg(list) { return list.length ? list.reduce(function (s, v) { return s + v; }, 0) / list.length : 0; }
+    var raw = {};
+    ids.forEach(function (id) {
+      var s = st[id];
+      var g = s.w + s.l + s.t;
+      raw[id] = {
+        w: s.w, l: s.l, t: s.t,
+        pct: g ? (s.w + 0.5 * s.t) / g : 0,
+        ppg: avg(weeks.map(function (p) { return s.pts[p] || 0; })),
+        form: avg(formWeeks.map(function (p) { return s.pts[p] || 0; }))
+      };
+    });
+    var rem = Object.keys(pairs).map(function (k) { return pairs[k]; }).filter(function (u) { return u[0] > throughWeek; });
+    var hasRem = rem.length > 0;
+    ids.forEach(function (id) {
+      var opp = [];
+      rem.forEach(function (u) { if (u[1] === id) opp.push(raw[u[2]].ppg); else if (u[2] === id) opp.push(raw[u[1]].ppg); });
+      raw[id].opp = opp.length ? avg(opp) : null;
+      raw[id].left = opp.length;
+    });
+    function scale(key, invert) {
+      var vals = ids.map(function (id) { return raw[id][key]; }).filter(function (v) { return v != null; });
+      var lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals);
+      var out = {};
+      ids.forEach(function (id) {
+        var v = raw[id][key];
+        if (v == null) { out[id] = null; return; }
+        var x = hi === lo ? 50 : (v - lo) / (hi - lo) * 100;
+        out[id] = invert ? 100 - x : x;
+      });
+      return out;
+    }
+    var R = scale("pct"), S = scale("ppg"), F = scale("form"), O = hasRem ? scale("opp", true) : null;
+    var list = ids.map(function (id) {
+      var parts = [[W.record, R[id]], [W.scoring, S[id]], [W.form, F[id]]];
+      if (O && O[id] != null) parts.push([W.schedule, O[id]]);
+      var wsum = parts.reduce(function (s, p) { return s + p[0]; }, 0);
+      var score = parts.reduce(function (s, p) { return s + p[0] * p[1]; }, 0) / wsum;
+      return { id: id, score: score, rec: R[id], scr: S[id], frm: F[id], sch: O ? O[id] : null, raw: raw[id] };
+    });
+    list.sort(function (a, b) { return b.score - a.score || b.raw.ppg - a.raw.ppg; });
+    return { week: weeks[weeks.length - 1], formWeeks: formWeeks, list: list };
+  }
+  var W = L.weights || { record: 30, scoring: 35, form: 20, schedule: 15, formWeeks: 3 };
+  var howList = document.getElementById("how-list");
+  [["Record", W.record, "season record, median games included"],
+   ["Scoring", W.scoring, "points per game all season"],
+   ["Form", W.form, "points per game over the last " + (W.formWeeks || 3) + " weeks"],
+   ["Schedule", W.schedule, "how easy the remaining opponents are, by their scoring; drops out after the regular season"]
+  ].forEach(function (h) {
+    var li = el("li");
+    li.append(el("strong", null, h[0] + " " + h[1] + "%"), " – " + h[2]);
+    howList.append(li);
+  });
+  var prEl = document.getElementById("pr-data");
+  var P = prEl ? JSON.parse(prEl.textContent) : E;
+  var prRegWeeks = P.regSeasonWeeks || 99;
+  var prWeeks = P.games.filter(function (g) { return g.p <= prRegWeeks; }).map(function (g) { return g.p; });
+  var prWeek = prWeeks.length ? Math.max.apply(null, prWeeks) : 0;
+  var nowPR = prWeek ? computePower(P, prWeek, W) : null;
+  var prevPR = prWeek > 1 ? computePower(P, prWeek - 1, W) : null;
+  var prevRank = {};
+  if (prevPR) prevPR.list.forEach(function (r, i) { prevRank[r.id] = i + 1; });
+  var prName = {};
+  P.teams.forEach(function (t) { prName[t.id] = t.name; });
+  var takes = L.takes || {};
+  document.getElementById("rankings-tag").textContent = prWeek ? "After Week " + prWeek : "";
+  var ol = document.getElementById("rankings-list");
+  if (!nowPR) ol.append(el("li", "empty", "Rankings start after Week 1."));
+  (nowPR ? nowPR.list : []).forEach(function (r, i) {
+    var rank = i + 1;
+    var tname = prName[r.id] || nameOf(r.id);
+    var li = el("li", "pr-item");
+    var det = el("details");
+    var sum = el("summary", "pr-sum");
+    sum.append(el("span", "pr-rank", String(rank)));
+    var pt = el("span", "pr-team");
+    pt.append(badge(r.id, tname), el("span", null, tname));
+    sum.append(pt);
+    var mv = el("span", "move");
+    var d = prevRank[r.id] ? prevRank[r.id] - rank : 0;
+    if (!prevPR) { mv.textContent = "New"; }
+    else if (d > 0) { mv.classList.add("up"); mv.textContent = "▲ " + d; mv.setAttribute("aria-label", "Up " + d); }
+    else if (d < 0) { mv.classList.add("down"); mv.textContent = "▼ " + (-d); mv.setAttribute("aria-label", "Down " + (-d)); }
+    else { mv.textContent = "—"; mv.setAttribute("aria-label", "No change"); }
+    sum.append(mv);
+    var sc = el("span", "pr-score", r.score.toFixed(1));
+    sc.setAttribute("aria-label", "Power score " + r.score.toFixed(1));
+    sum.append(sc);
+    var chev = el("span", "pr-chev");
+    chev.setAttribute("aria-hidden", "true");
+    sum.append(chev);
+    det.append(sum);
+    var more = el("div", "pr-more");
+    var meters = el("div", "meters");
+    [["Record", r.rec], ["Scoring", r.scr], ["Form", r.frm], ["Schedule", r.sch]].forEach(function (m) {
+      if (m[1] == null) return;
+      var box = el("div", "meter");
+      box.append(el("div", "meter-lbl", m[0]));
+      var row = el("div", "meter-row");
+      var tr = el("div", "meter-track");
+      var f = el("div", "meter-fill");
+      f.style.width = Math.max(2, m[1]).toFixed(1) + "%";
+      tr.append(f);
+      row.append(tr, el("span", "meter-val", Math.round(m[1])));
+      box.append(row);
+      meters.append(box);
+    });
+    more.append(meters);
+    var x = r.raw;
+    var bits = [x.w + "–" + x.l + (x.t ? "–" + x.t : ""), x.ppg.toFixed(1) + " ppg", "Last " + nowPR.formWeeks.length + ": " + x.form.toFixed(1)];
+    if (x.opp != null) bits.push("Opponents left: " + x.opp.toFixed(1) + " ppg");
+    more.append(el("p", "pr-stats", bits.join(" · ")));
+    if (takes[tname]) more.append(el("p", "pr-take", takes[tname]));
+    det.append(more);
+    li.append(det);
+    ol.append(li);
+  });
+
+  // Podcast: newest featured, the rest listed
+  var podEl = document.getElementById("pod-data");
+  var POD = podEl ? JSON.parse(podEl.textContent) : { episodes: [] };
+  var eps = (POD.episodes || []).slice().sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
+  document.getElementById("podcast-tag").textContent = eps.length + (eps.length === 1 ? " episode" : " episodes");
+  if (POD.profile) document.getElementById("pod-follow").href = POD.profile;
+  function epDate(e) {
+    try { return new Date(e.date).toLocaleDateString("en-US", { timeZone: "America/New_York", month: "short", day: "numeric", year: "numeric" }); }
+    catch (x) { return e.date || ""; }
+  }
+  function epAge(e) {
+    var ms = Date.now() - new Date(e.date).getTime();
+    if (!isFinite(ms)) return "";
+    var d = Math.floor(ms / 86400000);
+    return d <= 0 ? "Posted today" : d === 1 ? "Posted yesterday" : "Posted " + d + " days ago";
+  }
+  function listenLink(e, cls, label) {
+    var a = el("a", cls);
+    a.href = e.url; a.target = "_blank"; a.rel = "noopener";
+    if (cls === "btn") a.innerHTML = '<svg viewBox="0 0 11 12" aria-hidden="true"><path d="M0 0 L11 6 L0 12 Z"/></svg>';
+    a.append(label);
+    return a;
+  }
+  var ebox = document.getElementById("episodes");
+  if (!eps.length) ebox.append(el("p", "empty", "No episodes yet."));
+  if (eps.length) {
+    var top = eps[0];
+    var f = el("article", "ep-feature");
+    var k = el("div", "ep-kicker");
+    k.append(el("span", "ep-badge", "Latest episode"), el("span", null, epDate(top)));
+    f.append(k);
+    f.append(el("h3", null, top.title));
+    f.append(el("p", "ep-age", epAge(top)));
+    if (top.url) f.append(listenLink(top, "btn", "Listen on SoundCloud"));
+    var wave = el("div", "wave");
+    wave.setAttribute("aria-hidden", "true");
+    var seed = 0;
+    for (var c = 0; c < top.title.length; c++) seed = (seed * 31 + top.title.charCodeAt(c)) >>> 0;
+    for (var b = 0; b < 72; b++) {
+      seed = (seed * 1103515245 + 12345) >>> 0;
+      var h = 18 + (seed % 70) * (0.55 + 0.45 * Math.abs(Math.sin(b / 7)));
+      var bar = el("span");
+      bar.style.height = Math.min(100, h).toFixed(0) + "%";
+      wave.append(bar);
+    }
+    f.append(wave);
+    ebox.append(f);
+  }
+  if (eps.length > 1) {
+    ebox.append(el("p", "pod-sub", "Past episodes"));
+    var ul = el("ul", "ep-list");
+    eps.slice(1).forEach(function (e) {
+      var li = el("li", "ep-item");
+      var info = el("div");
+      info.append(el("div", "ep-item-title", e.title), el("div", "ep-item-date", epDate(e)));
+      li.append(info);
+      if (e.url) li.append(listenLink(e, null, "Listen ▸"));
+      ul.append(li);
+    });
+    ebox.append(ul);
+  }
+
+  // Open at the section named in the link (e.g. #median from Get latest)
+  function goToHash() {
+    var id = (location.hash || "").replace(/^#/, "");
+    if (!/^[a-z-]+$/.test(id)) return;
+    var target = document.getElementById(id);
+    if (target && target.tagName === "SECTION") target.scrollIntoView({ block: "start" });
+  }
+  var KEEP = "bbfc-keep";
+  var kept = null;
+  try { kept = JSON.parse(sessionStorage.getItem(KEEP) || "null"); sessionStorage.removeItem(KEEP); } catch (e) { kept = null; }
+  if (kept && (kept.mw === "now" || kept.mw === "proj") && kept.mw !== mwMode) { mwMode = kept.mw; renderMW(); }
+  function restorePlace() {
+    if (kept && typeof kept.y === "number") window.scrollTo(0, kept.y);
+    else goToHash();
+  }
+  restorePlace();
+  window.addEventListener("load", restorePlace);
+  window.addEventListener("hashchange", goToHash);
+
+  // Reload in place, keeping the scroll position and the Median Watch view.
+  // A fresh query string skips any cached copy of the page.
+  function reloadKeepingPlace(stamp) {
+    try { sessionStorage.setItem(KEEP, JSON.stringify({ y: window.scrollY, mw: mwMode })); } catch (e) {}
+    var v = stamp ? new Date(stamp).getTime() : Date.now();
+    location.replace(location.pathname + "?v=" + v + location.hash);
+  }
+  Array.prototype.slice.call(document.querySelectorAll("[data-refresh]")).forEach(function (b) {
+    b.addEventListener("click", function () {
+      b.disabled = true;
+      fetch("data/stamp.json?ts=" + Date.now(), { cache: "no-store" })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .catch(function () { return null; })
+        .then(function (s) { reloadKeepingPlace(s && s.fetchedAt); });
+    });
+  });
+  var checking = false;
+  function checkForUpdate() {
+    if (checking || document.visibilityState === "hidden") return;
+    checking = true;
+    fetch("data/stamp.json?ts=" + Date.now(), { cache: "no-store" })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (s) { if (s && s.fetchedAt && s.fetchedAt !== E.fetchedAt) reloadKeepingPlace(s.fetchedAt); })
+      .catch(function () {})
+      .then(function () { checking = false; });
+  }
+  setInterval(checkForUpdate, 60000);
+  document.addEventListener("visibilitychange", checkForUpdate);
+
+  // Highlight the tab for the section in view
+  var links = Array.prototype.slice.call(document.querySelectorAll(".tabs a"));
+  function setCurrent(id) {
+    links.forEach(function (a) { a.setAttribute("aria-current", a.getAttribute("href") === "#" + id ? "true" : "false"); });
+  }
+  // The active tab is the last section whose heading has reached the top of the screen,
+  // just under the sticky tabs. At the very bottom of the page, the last section wins.
+  var sections = Array.prototype.slice.call(document.querySelectorAll("main section"));
+  var tabsBar = document.querySelector(".tabs");
+  var lockUntil = 0;
+  function updateCurrent() {
+    if (Date.now() < lockUntil) return;
+    var line = (tabsBar ? tabsBar.getBoundingClientRect().bottom : 0) + 72;
+    var current = sections[0];
+    sections.forEach(function (s) { if (s.getBoundingClientRect().top <= line) current = s; });
+    var doc = document.documentElement;
+    if (window.innerHeight + window.scrollY >= doc.scrollHeight - 4) current = sections[sections.length - 1];
+    if (current) setCurrent(current.id);
+  }
+  var ticking = false;
+  window.addEventListener("scroll", function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { ticking = false; updateCurrent(); });
+  }, { passive: true });
+  window.addEventListener("resize", updateCurrent);
+  links.forEach(function (a) {
+    a.addEventListener("click", function () {
+      setCurrent(a.getAttribute("href").slice(1));
+      lockUntil = Date.now() + 900;
+      setTimeout(function () { lockUntil = 0; updateCurrent(); }, 950);
+    });
+  });
+  updateCurrent();
+})();
+</script>
+</body>
+</html>

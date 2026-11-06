@@ -1,0 +1,15 @@
+{
+  "weights": {
+    "record": 30,
+    "scoring": 35,
+    "form": 20,
+    "schedule": 15,
+    "formWeeks": 3
+  },
+  "takes": {},
+  "league": {
+    "id": 965722644,
+    "season": 2026
+  },
+  "podcastFeed": "https://feeds.soundcloud.com/users/soundcloud:users:693648011/sounds.rss"
+}

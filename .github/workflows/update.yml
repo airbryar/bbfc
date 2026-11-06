@@ -1,0 +1,74 @@
+name: Update the BBFC site
+
+# Times are in UTC. Eastern time is 4-5 hours behind, so "0-5" on a Friday
+# covers Thursday night games, and so on.
+on:
+  schedule:
+    - cron: "3-58/5 0-5 * * 5"    # Thursday night games, every 5 minutes
+    - cron: "3-58/5 17-23 * * 0"  # Sunday afternoon games
+    - cron: "3-58/5 0-5 * * 1"    # Sunday night game
+    - cron: "3-58/5 0-5 * * 2"    # Monday night game
+    - cron: "3-58/5 17-23 * * 6"  # Saturday games late in the season
+    - cron: "3-58/5 0-5 * * 0"    # Saturday night games late in the season
+    - cron: "41 * * * *"          # Hourly the rest of the week (podcast check, roster moves)
+    - cron: "17 13 * * 2"         # Tuesday morning: save a weekly copy of the data
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: bbfc-site
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Get the latest scores from ESPN
+        run: node scripts/fetch-espn.mjs
+        env:
+          ESPN_S2: ${{ secrets.ESPN_S2 }}
+          ESPN_SWID: ${{ secrets.ESPN_SWID }}
+
+      - name: Check for new podcast episodes
+        run: node scripts/fetch-podcast.mjs
+
+      - name: Build the site
+        run: node scripts/build.mjs
+
+      - name: Save new episodes and the weekly data copy
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/pod.json
+          if [ "${{ github.event.schedule }}" = "17 13 * * 2" ]; then git add data/espn.json; fi
+          if git diff --cached --quiet; then
+            echo "Nothing new to save"
+          else
+            git commit -m "Update league data"
+            git push || (git pull --rebase origin main && git push) || echo "::warning::Couldn't save the data copy this time"
+          fi
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deploy
+        uses: actions/deploy-pages@v4
