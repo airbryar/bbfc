@@ -19,6 +19,7 @@
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png?v=__ICONV__">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/dseg@0.46.0/fonts/DSEG7-Classic/DSEG7Classic-Bold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=Saira+Condensed:wght@700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&display=swap">
 <style>
 html { -webkit-text-size-adjust: 100%; }
@@ -210,6 +211,22 @@ tbody tr.cut + tr td { border-top: 0; }
   font-variant-numeric: tabular-nums;
 }
 .side.trail .side-score { color: var(--muted); }
+
+/* Scoreboard scores as LED segments: lit digits over faint unlit 8s, on a black panel in both themes */
+@font-face {
+  font-family: "DSEG7"; font-display: block;
+  src: url("https://cdn.jsdelivr.net/npm/dseg@0.46.0/fonts/DSEG7-Classic/DSEG7Classic-Bold.woff2") format("woff2");
+}
+.side-score.led {
+  display: grid; justify-items: end; background: #070707; border-radius: 6px; padding: 7px 8px 6px;
+  font-family: "DSEG7", var(--f-num); font-weight: 400; font-size: 21px; line-height: 1; color: #FF4A3A;
+  font-variant-numeric: normal;
+}
+.side-score.led > span { grid-area: 1 / 1; white-space: pre; }
+.side-score.led .led-off { opacity: 0.11; }
+.side.trail .side-score.led { color: #FF4A3A; }
+.side.trail .side-score.led .led-on { opacity: 0.6; }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--down); flex: none; }
 .dot.top { background: var(--up); }
 .key { display: inline-flex; align-items: center; gap: 6px; }
@@ -443,6 +460,7 @@ button.refresh { cursor: pointer; }
   .side-name { font-size: 15px; }
   .side-proj { font-size: 12px; }
   .side-score { font-size: 21px; }
+  .side-score.led { font-size: 18px; padding: 6px 7px 5px; }
   .pr-sum { grid-template-columns: 28px minmax(0, 1fr) auto auto 12px; gap: 8px; padding-block: 8px; }
   .pr-rank { font-size: 24px; }
   .pr-team { font-size: 15px; }
@@ -885,6 +903,18 @@ __ESPN__
   btnProj.addEventListener("click", function () { mwMode = "proj"; renderMW(); });
   renderMW();
 
+  // Scoreboard score as LED digits: the lit number sits right-aligned over unlit 888.88
+  function ledScore(txt) {
+    if (!/^\d{1,3}\.\d\d$/.test(txt)) return el("div", "side-score", txt);
+    var box = el("div", "side-score led");
+    var off = el("span", "led-off", "888.88");
+    var on = el("span", "led-on", txt);
+    off.setAttribute("aria-hidden", "true");
+    on.setAttribute("aria-hidden", "true");
+    box.append(off, on, el("span", "vh", txt));
+    return box;
+  }
+
   // This week: matchups
   document.getElementById("h-week").textContent = isPlayoffs ? "Playoffs" : "Week " + wk + " Scoreboard";
   document.getElementById("week-tag").textContent = started ? "Live" : "Not started";
@@ -906,7 +936,7 @@ __ESPN__
       info.append(sn);
       info.append(el("div", "side-proj", "Proj " + pts(s[2])));
       row.append(info);
-      row.append(el("div", "side-score", pts(s[1])));
+      row.append(ledScore(pts(s[1])));
       card.append(row);
     });
     gbox.append(card);
