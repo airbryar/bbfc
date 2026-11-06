@@ -482,6 +482,34 @@ button.refresh { cursor: pointer; }
   .tr-pp { font-size: 14px; }
 }
 
+/* Trade ticker: a strip under the masthead that crawls like the bottom line on ESPN */
+.ticker { display: flex; align-items: stretch; height: 34px; overflow: hidden; background: var(--band-deep); color: var(--band-ink); text-decoration: none; }
+.ticker:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.tk-label {
+  flex: none; display: flex; align-items: center; position: relative; z-index: 1;
+  padding: 1px 16px 0 max(16px, env(safe-area-inset-left, 0px)); background: var(--ribbon); color: #FFFFFF;
+  font-family: var(--f-label); font-weight: 700; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 9px) 100%, 0 100%);
+}
+.tk-view { flex: 1; min-width: 0; overflow: hidden; display: flex; align-items: center; margin-left: -9px; padding-left: 9px; }
+.tk-track { display: inline-flex; flex: none; white-space: nowrap; will-change: transform; animation: tk-crawl 30s linear infinite; }
+.tk-copy { display: inline-flex; flex: none; }
+.tk-item {
+  padding: 1px 0 0 14px; font-family: var(--f-label); font-weight: 600; font-size: 15px; letter-spacing: 0.03em;
+  text-transform: uppercase; color: var(--band-ink);
+}
+.tk-item b { font-weight: 700; }
+.tk-item i { font-style: normal; color: var(--band-gilt); font-weight: 500; }
+.tk-sep { padding: 1px 0 0 14px; color: var(--ribbon); font-size: 8px; display: inline-flex; align-items: center; }
+@keyframes tk-crawl { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.ticker:hover .tk-track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .tk-track { animation: none; }
+  .tk-copy + .tk-copy { display: none; }
+}
+/* "New" dot on the Trades tab, for two days after a trade or until you've looked */
+.tab-dot { display: inline-block; width: 7px; height: 7px; margin-left: 3px; border-radius: 50%; background: var(--accent); position: relative; top: -0.55em; }
+
 /* Podcast: newest episode featured, older ones listed */
 .pod { display: grid; gap: 14px; }
 .pod-follow { font-family: var(--f-label); font-weight: 700; font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); text-decoration: none; white-space: nowrap; }
@@ -564,6 +592,12 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
   </div>
 </header>
 
+<!-- Trade ticker: shown for three days after a trade, like a TV crawl. Tapping it opens the Trade Center. -->
+<a class="ticker" id="ticker" href="#trades" hidden>
+  <span class="tk-label">Trade</span>
+  <span class="tk-view"><span class="tk-track" id="tk-track"></span></span>
+</a>
+
 <nav class="tabs" aria-label="Sections">
   <div class="wrap">
     <a href="#news" aria-current="true">News</a>
@@ -571,7 +605,7 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
     <a href="#this-week" id="tab-week">Scoreboard</a>
     <a href="#median">Median</a>
     <a href="#rankings">Rankings</a>
-    <a href="#trades">Trades</a>
+    <a href="#trades" id="tab-trades">Trades</a>
     <a href="#podcast">Podcast</a>
   </div>
 </nav>
@@ -1112,10 +1146,72 @@ __ESPN__
   });
 
   // Trades: newest first, the latest few shown and the rest behind "Earlier trades"
+  var onTradesSeen = function () {}; // clears the Trades tab's "new" dot once the section is viewed
   (function () {
     var T = { trades: [] };
     try { T = JSON.parse(document.getElementById("trades-data").textContent) || T; } catch (e) {}
-    var list = (T.trades || []).slice().sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
+    // When a trade went through: the exact time when ESPN gave it, otherwise midday Eastern
+    function when(t) { return typeof t.at === "number" ? t.at : Date.parse(t.date + "T17:00:00Z"); }
+    var list = (T.trades || []).slice().sort(function (a, b) { return when(b) - when(a); });
+
+    // Ticker: every trade from the last three days, crawling under the masthead
+    var DAY = 86400000, now = Date.now();
+    var recent = list.filter(function (t) { var age = now - when(t); return age >= 0 && age < 3 * DAY; });
+    function names(arr) { return arr.length < 2 ? arr.join("") : arr.slice(0, -1).join(", ") + " and " + arr[arr.length - 1]; }
+    function tickerItem(t) {
+      var item = el("span", "tk-item");
+      var got = (t.received || []).filter(function (r) { return r.players && r.players.length; });
+      got.forEach(function (r, i) {
+        if (i) item.append(el("i", null, " · "));
+        item.append(names(r.players.map(function (p) { return String(p.player).replace(/ \([A-Z\/]+\)$/, ""); })));
+        item.append(el("i", null, " to "), el("b", null, r.team));
+      });
+      if (got.length === 1 && (t.teams || []).length > 1) item.append(el("i", null, " for "), "FAAB");
+      return item;
+    }
+    function tickerSep() { var s = el("span", "tk-sep", "◆"); s.setAttribute("aria-hidden", "true"); return s; }
+    var ticker = document.getElementById("ticker");
+    if (recent.length) {
+      var track = document.getElementById("tk-track");
+      var view = ticker.querySelector(".tk-view");
+      var copy = el("span", "tk-copy");
+      var addRound = function () { recent.forEach(function (t) { copy.append(tickerItem(t), tickerSep()); }); };
+      addRound();
+      track.append(copy);
+      ticker.hidden = false;
+      ticker.setAttribute("aria-label", "New trades: " + recent.map(function (t) { return tickerItem(t).textContent; }).join("; ") + ". Open the Trade Center.");
+      // Repeat until one pass is wider than the strip, then a second pass makes the loop seamless
+      for (var guard = 0; copy.offsetWidth < view.clientWidth && guard < 6; guard++) addRound();
+      var copy2 = copy.cloneNode(true);
+      copy2.setAttribute("aria-hidden", "true");
+      track.append(copy2);
+      var pace = function () { track.style.animationDuration = Math.max(10, copy.offsetWidth / 55).toFixed(1) + "s"; };
+      pace();
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(pace);
+      ticker.addEventListener("click", function (e) {
+        e.preventDefault();
+        scrollToSection(document.getElementById("trades"), true);
+        try { history.replaceState(null, "", "#trades"); } catch (err) {}
+      });
+    }
+
+    // "New" dot on the Trades tab: two days after the latest trade, or until you've looked
+    var SEEN = "bbfc-trades-seen";
+    var newest = list.length ? when(list[0]) : 0;
+    var seen = 0;
+    try { seen = Number(localStorage.getItem(SEEN)) || 0; } catch (e) {}
+    if (newest && now - newest >= 0 && now - newest < 2 * DAY && seen < newest) {
+      var dot = el("span", "tab-dot");
+      dot.setAttribute("role", "img");
+      dot.setAttribute("aria-label", "new trade");
+      document.getElementById("tab-trades").append(dot);
+      onTradesSeen = function () {
+        onTradesSeen = function () {};
+        try { localStorage.setItem(SEEN, String(newest)); } catch (e) {}
+        if (dot.parentNode) dot.parentNode.removeChild(dot);
+      };
+    }
+
     var idByName = {};
     E.teams.forEach(function (t) { idByName[t.name] = t.id; });
     function shortDay(d, withWeekday) {
@@ -1427,6 +1523,7 @@ __ESPN__
   var tabRow = document.querySelector(".tabs .wrap");
   var lastTab = null;
   function setCurrent(id) {
+    if (id === "trades") onTradesSeen();
     links.forEach(function (a) { a.setAttribute("aria-current", a.getAttribute("href") === "#" + id ? "true" : "false"); });
     if (id === lastTab || !tabRow || tabRow.scrollWidth <= tabRow.clientWidth) { lastTab = id; return; }
     lastTab = id;
