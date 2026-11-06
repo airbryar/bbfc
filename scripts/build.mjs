@@ -9,6 +9,8 @@ const pod = JSON.parse(read("data/pod.json"));
 const news = fs.existsSync("data/news.json") ? JSON.parse(read("data/news.json")) : { editions: [] };
 const logos = JSON.parse(read("data/logos.json"));
 const brand = fs.existsSync("data/brand.json") ? JSON.parse(read("data/brand.json")) : { custom: false, iconVersion: "1" };
+// Past seasons for the Record Book, from scripts/fetch-history.mjs. Without it, no Record Book.
+const history = fs.existsSync("data/history.json") ? JSON.parse(read("data/history.json")) : null;
 // Trades come from scripts/fetch-trades.mjs; an empty list just shows "No trades yet".
 const trades = fs.existsSync("data/trades.json") ? JSON.parse(read("data/trades.json")) : { through: null, deadline: null, trades: [] };
 
@@ -41,6 +43,13 @@ if (brand.custom && brand.logo) {
   html = html.slice(0, start) + img + html.slice(end + "<!--/crest-->".length);
 }
 
+// The book button in the header opens the Record Book; it's left out if there's no history.
+if (!history) {
+  const start = html.indexOf("<!--book-->");
+  const end = html.indexOf("<!--/book-->");
+  if (start >= 0 && end > start) html = html.slice(0, start) + html.slice(end + "<!--/book-->".length);
+}
+
 fs.rmSync("_site", { recursive: true, force: true });
 fs.mkdirSync("_site/data", { recursive: true });
 fs.cpSync("site/icons", "_site/icons", { recursive: true });
@@ -51,4 +60,15 @@ fs.writeFileSync("_site/data/espn.json", JSON.stringify(espn));
 if (trades.fetchedAt) fs.writeFileSync("_site/data/trades.json", JSON.stringify(trades));
 fs.writeFileSync("_site/data/stamp.json", JSON.stringify({ fetchedAt: espn.fetchedAt }));
 fs.writeFileSync("_site/.nojekyll", "");
+
+// The Record Book: past seasons plus this season so far, on its own page.
+if (history && fs.existsSync("site/record-book.html")) {
+  let book = read("site/record-book.html");
+  const bookBlocks = { __HISTORY__: safe(history), __ESPN__: safe(espn), __LOGOS__: safe(logos, true), __ICONV__: brand.iconVersion || "1" };
+  for (const [key, value] of Object.entries(bookBlocks)) {
+    if (!book.includes(key)) throw new Error(`record-book.html is missing ${key}`);
+    book = book.split(key).join(value);
+  }
+  fs.writeFileSync("_site/record-book.html", book);
+}
 console.log(`Built site with data from ${espn.fetchedAt}`);
