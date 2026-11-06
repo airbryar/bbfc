@@ -19,7 +19,7 @@
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png?v=__ICONV__">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=Saira+Condensed:wght@700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=Saira+Condensed:wght@700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&display=swap">
 <style>
 html { -webkit-text-size-adjust: 100%; }
 :root { box-sizing: border-box; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
@@ -54,6 +54,7 @@ img { max-width: 100%; }
   --f-body: "Barlow", "Helvetica Neue", Arial, sans-serif;
   --f-label: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
   --f-num: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
+  --f-news: "Newsreader", "Times New Roman", Times, Georgia, serif;
   color-scheme: light;
 }
 /* Dark mode: follows the phone's setting unless someone picks light or dark with the button */
@@ -320,14 +321,21 @@ details[open] > .pr-sum .pr-chev::before { transform: rotate(-135deg); margin-to
 .story { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 16px 14px; min-width: 0; }
 .story-lead { border-top: 3px solid var(--accent); padding-top: 15px; }
 .story-kicker { font-family: var(--f-label); font-weight: 700; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+/* Stories are set in a newspaper serif */
 .story-head {
-  font-family: var(--f-display); font-weight: 800; text-transform: uppercase; text-wrap: balance;
-  font-size: 20px; line-height: 1.05; margin: 5px 0 6px; color: var(--ink);
+  font-family: var(--f-news); font-weight: 700; font-optical-sizing: auto; text-wrap: balance; letter-spacing: -0.005em;
+  font-size: 23px; line-height: 1.12; margin: 6px 0 7px; color: var(--ink);
 }
-.story-lead .story-head { font-size: clamp(24px, 5.6vw, 32px); line-height: 1.02; }
-.story-dek { margin: 0; font-size: 15px; line-height: 1.45; color: var(--muted); }
-.story-text { margin-top: 10px; }
-.story-text p { margin: 0 0 10px; font-size: 16px; line-height: 1.6; max-width: 66ch; }
+.story-lead .story-head { font-size: clamp(28px, 6.6vw, 38px); line-height: 1.06; letter-spacing: -0.012em; }
+.story-dek { margin: 0; font-family: var(--f-news); font-style: italic; font-size: 17px; line-height: 1.4; color: var(--muted); }
+.story-lead .story-dek { font-size: 18.5px; }
+.story-text { margin-top: 12px; }
+.story-lead > .story-text { border-top: 1px solid var(--line); padding-top: 12px; }
+.story-text p { margin: 0 0 12px; font-family: var(--f-news); font-optical-sizing: auto; font-size: 18px; line-height: 1.55; max-width: 66ch; text-wrap: pretty; }
+.story-lead > .story-text > p:first-child::first-letter {
+  float: left; font-family: var(--f-news); font-weight: 700; font-size: 3.35em; line-height: 0.8;
+  margin: 0.06em 0.08em 0 0; color: var(--ink);
+}
 .story-more { margin-top: 2px; }
 .story-more > summary {
   display: inline-flex; align-items: center; gap: 6px; cursor: pointer; list-style: none;
@@ -349,15 +357,16 @@ details[open] > .pr-sum .pr-chev::before { transform: rotate(-135deg); margin-to
 .past-ed h4 { margin: 0 0 6px; font-family: var(--f-label); font-weight: 700; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
 .past-ed .story { padding: 12px 14px; }
 .past-ed .story + .story { margin-top: 8px; }
-.past-ed .story-head { font-size: 17px; }
+.past-ed .story-head { font-size: 19px; }
 .news-credit { margin: 12px 0 0; font-size: 13px; color: var(--muted); }
 .news-empty { color: var(--muted); font-size: 15px; margin: 0; }
 @media (max-width: 619px) {
   .story { padding: 14px 14px 12px; }
   .story-lead { padding-top: 13px; }
-  .story-head { font-size: 19px; }
-  .story-dek { font-size: 14px; }
-  .story-text p { font-size: 15.5px; }
+  .story-head { font-size: 22px; }
+  .story-dek { font-size: 16.5px; }
+  .story-lead .story-dek { font-size: 17.5px; }
+  .story-text p { font-size: 17.5px; }
 }
 
 /* Median Watch controls */
