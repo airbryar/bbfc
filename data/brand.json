@@ -1,4 +1,8 @@
 {
-  "custom": false,
-  "iconVersion": "d2ed295a"
+  "custom": true,
+  "source": "BBFC_logo_transparent.png",
+  "logo": "brand/logo.png?v=45e4e6ad",
+  "logoWidth": 183,
+  "logoHeight": 240,
+  "iconVersion": "70c0d6f5"
 }
