@@ -16,11 +16,11 @@ badge, delete the team's picture from this folder.
 | Breece's Pieces | `breeces-pieces.jpg` | Yes |
 | Every Inch Matters | `every-inch-matters.jpg` | Yes |
 | GAYleb williams | `gayleb-williams.jpg` | Yes |
-| I want my Nickleback | `i-want-my-nickleback.jpg` | No, shows initials |
+| I want my Nickleback | `i-want-my-nickleback.jpg` | Yes |
 | Illegal use of hands | `illegal-use-of-hands.jpg` | Yes |
 | Lisan al Gibbs | `lisan-al-gibbs.jpg` | Yes |
 | Pteem Shteevenshun | `pteem-shteevenshun.jpg` | Yes |
-| Real Man of Genius | `real-man-of-genius.jpg` | No, shows initials |
+| Real Man of Genius | `real-man-of-genius.jpg` | Yes |
 | The House Cats | `the-house-cats.jpg` | Yes |
-| The Mouse Rats | `the-mouse-rats.jpg` | No, shows initials |
+| The Mouse Rats | `the-mouse-rats.jpg` | Yes |
 | The Silly Geese | `the-silly-geese.jpg` | Yes |
