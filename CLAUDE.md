@@ -169,6 +169,17 @@ News, Standings, Scoreboard, Median, Rankings, Trades, Podcast.
     "fleeced" labels.
   - A side that got no players got FAAB in this league (Bryar confirmed), so the card says
     "FAAB" there. The trade data has no dollar amounts.
+  - **Trade ticker:** for three days after a trade, a strip between the masthead and the
+    tabs shows a red "TRADE" tag and crawls every recent trade, ESPN-style
+    ("Rico Dowdle to The House Cats for FAAB"; two-sided deals join with " · ", trades
+    are separated by a small red diamond). Verb-free on purpose, since team names don't
+    take "acquire(s)" cleanly. Tapping it scrolls to the Trade Center. It doesn't move
+    for people with reduced motion turned on.
+  - **"New" dot:** a small red dot on the Trades tab for two days after the latest trade,
+    or until that viewer reaches the Trade Center (remembered in `localStorage` under
+    `bbfc-trades-seen`).
+  - Both use each trade's exact time (`at` in `data/trades.json`), falling back to
+    midday Eastern on the trade date.
 - **Podcast:** "BBFC Presents: The Poddy" from SoundCloud. The newest episode is clearly
   featured; in dark mode it sits on a navy card so it stands out.
 - **Footer:** the club name, the ESPN updated time, a "Match my phone's light/dark
