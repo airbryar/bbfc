@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-11-06T15:12:09.681Z",
+ "fetchedAt": "2026-11-06T15:13:43.060Z",
  "notes": [
   "Each week a team plays two games: its head-to-head matchup, plus a game against the league median (the top 6 scores of the week win it). 'record' combines both; 'h2h' and 'vsMedian' split them.",
   "The top 6 seeds make the playoffs. The regular season is 14 weeks.",
@@ -1970,28 +1970,192 @@
   {
    "date": "2026-10-31",
    "week": 8,
-   "received": [],
-   "droppedToMakeRoom": [
+   "teams": [
+    "I want my Nickleback",
+    "The House Cats"
+   ],
+   "received": [
     {
-     "player": "Ty Johnson (RB)",
-     "by": "The House Cats"
+     "team": "The House Cats",
+     "manager": "Luke",
+     "players": [
+      {
+       "player": "Rico Dowdle (RB)",
+       "from": "I want my Nickleback",
+       "ptsForNewTeamSince": 11.6,
+       "startsSince": 1,
+       "ptsForOldTeamBefore": 0
+      }
+     ]
+    }
+   ],
+   "note": "Only one side received players in this trade."
+  },
+  {
+   "date": "2026-10-29",
+   "week": 8,
+   "teams": [
+    "Lisan al Gibbs",
+    "I want my Nickleback"
+   ],
+   "received": [
+    {
+     "team": "Lisan al Gibbs",
+     "manager": "Josh",
+     "players": [
+      {
+       "player": "Tee Higgins (WR)",
+       "from": "I want my Nickleback",
+       "ptsForNewTeamSince": 32.5,
+       "startsSince": 1,
+       "ptsForOldTeamBefore": 48.2
+      }
+     ]
+    },
+    {
+     "team": "I want my Nickleback",
+     "manager": "Jared",
+     "players": [
+      {
+       "player": "Ollie Gordon II (RB)",
+       "from": "Lisan al Gibbs",
+       "ptsForNewTeamSince": 6.9,
+       "startsSince": 1,
+       "ptsForOldTeamBefore": 0
+      },
+      {
+       "player": "DK Metcalf (WR)",
+       "from": "Lisan al Gibbs",
+       "ptsForNewTeamSince": 0.9,
+       "startsSince": 1,
+       "ptsForOldTeamBefore": 60.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "date": "2026-10-28",
+   "week": 8,
+   "teams": [
+    "I want my Nickleback",
+    "Every Inch Matters"
+   ],
+   "received": [
+    {
+     "team": "Every Inch Matters",
+     "manager": "Garrett",
+     "players": [
+      {
+       "player": "Kyler Murray (QB)",
+       "from": "I want my Nickleback",
+       "ptsForNewTeamSince": 0,
+       "startsSince": 0,
+       "ptsForOldTeamBefore": 35.8
+      }
+     ]
+    },
+    {
+     "team": "I want my Nickleback",
+     "manager": "Jared",
+     "players": [
+      {
+       "player": "Kendre Miller (RB)",
+       "from": "Every Inch Matters",
+       "ptsForNewTeamSince": 0,
+       "startsSince": 0,
+       "ptsForOldTeamBefore": 4.3
+      }
+     ]
     }
    ]
   },
   {
    "date": "2026-10-20",
-   "week": 7,
-   "received": [],
-   "droppedToMakeRoom": [
+   "week": 6,
+   "teams": [
+    "Every Inch Matters",
+    "I want my Nickleback"
+   ],
+   "received": [
     {
-     "player": "Jameis Winston (QB)",
-     "by": "The House Cats"
+     "team": "Every Inch Matters",
+     "manager": "Garrett",
+     "players": [
+      {
+       "player": "Kendre Miller (RB)",
+       "from": "I want my Nickleback",
+       "ptsForNewTeamSince": 4.3,
+       "startsSince": 1,
+       "ptsForOldTeamBefore": 0
+      }
+     ]
+    },
+    {
+     "team": "I want my Nickleback",
+     "manager": "Jared",
+     "players": [
+      {
+       "player": "Kyler Murray (QB)",
+       "from": "Every Inch Matters",
+       "ptsForNewTeamSince": 13.9,
+       "startsSince": 1,
+       "ptsForOldTeamBefore": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "date": "2026-10-20",
+   "week": 6,
+   "teams": [
+    "The Silly Geese",
+    "The House Cats"
+   ],
+   "received": [
+    {
+     "team": "The Silly Geese",
+     "manager": "Michael",
+     "players": [
+      {
+       "player": "RJ Harvey (RB)",
+       "from": "The House Cats",
+       "ptsForNewTeamSince": 13,
+       "startsSince": 1,
+       "ptsForOldTeamBefore": 0
+      }
+     ]
+    },
+    {
+     "team": "The House Cats",
+     "manager": "Luke",
+     "players": [
+      {
+       "player": "Kaelon Black (RB)",
+       "from": "The Silly Geese",
+       "ptsForNewTeamSince": 0,
+       "startsSince": 0,
+       "ptsForOldTeamBefore": 0
+      },
+      {
+       "player": "Tre Tucker (WR)",
+       "from": "The Silly Geese",
+       "ptsForNewTeamSince": 0,
+       "startsSince": 1,
+       "ptsForOldTeamBefore": 0
+      }
+     ]
     }
    ]
   },
   {
    "date": "2026-10-16",
    "week": 6,
+   "teams": [
+    "The Silly Geese",
+    "The Mouse Rats"
+   ],
    "received": [
     {
      "team": "The Silly Geese",
@@ -2001,7 +2165,8 @@
        "player": "Cam Skattebo (RB)",
        "from": "The Mouse Rats",
        "ptsForNewTeamSince": 0,
-       "startsSince": 1
+       "startsSince": 1,
+       "ptsForOldTeamBefore": 46.3
       }
      ]
     },
@@ -2013,32 +2178,326 @@
        "player": "Patrick Mahomes (QB)",
        "from": "The Silly Geese",
        "ptsForNewTeamSince": 16.5,
-       "startsSince": 2
+       "startsSince": 2,
+       "ptsForOldTeamBefore": 0
       },
       {
        "player": "Omarion Hampton (RB)",
        "from": "The Silly Geese",
        "ptsForNewTeamSince": 0,
-       "startsSince": 0
+       "startsSince": 0,
+       "ptsForOldTeamBefore": 4.4
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "date": "2026-10-15",
+   "week": 6,
+   "teams": [
+    "The Silly Geese",
+    "Real Man of Genius"
+   ],
+   "received": [
+    {
+     "team": "Real Man of Genius",
+     "manager": "Micah",
+     "players": [
+      {
+       "player": "Tyler Allgeier (RB)",
+       "from": "The Silly Geese",
+       "ptsForNewTeamSince": 11.7,
+       "startsSince": 2,
+       "ptsForOldTeamBefore": 0
       }
      ]
     }
    ],
-   "droppedToMakeRoom": [
+   "note": "Only one side received players in this trade."
+  },
+  {
+   "date": "2026-10-11",
+   "week": 5,
+   "teams": [
+    "The Silly Geese",
+    "I want my Nickleback"
+   ],
+   "received": [
     {
-     "player": "C.J. Stroud (QB)",
-     "by": "The Mouse Rats"
+     "team": "The Silly Geese",
+     "manager": "Michael",
+     "players": [
+      {
+       "player": "KC Concepcion (WR)",
+       "from": "I want my Nickleback",
+       "ptsForNewTeamSince": 5.2,
+       "startsSince": 1,
+       "ptsForOldTeamBefore": 0
+      },
+      {
+       "player": "Omarion Hampton (RB)",
+       "from": "I want my Nickleback",
+       "ptsForNewTeamSince": 4.4,
+       "startsSince": 1,
+       "ptsForOldTeamBefore": 12.3
+      }
+     ]
+    },
+    {
+     "team": "I want my Nickleback",
+     "manager": "Jared",
+     "players": [
+      {
+       "player": "David Montgomery (RB)",
+       "from": "The Silly Geese",
+       "ptsForNewTeamSince": 1.1,
+       "startsSince": 1,
+       "ptsForOldTeamBefore": 40.9
+      },
+      {
+       "player": "J.K. Dobbins (RB)",
+       "from": "The Silly Geese",
+       "ptsForNewTeamSince": 34.8,
+       "startsSince": 3,
+       "ptsForOldTeamBefore": 13.4
+      }
+     ]
     }
    ]
   },
   {
    "date": "2026-10-02",
    "week": 4,
-   "received": [],
-   "droppedToMakeRoom": [
+   "teams": [
+    "Every Inch Matters",
+    "The Silly Geese"
+   ],
+   "received": [
     {
-     "player": "Tyler Loop (K)",
-     "by": "Every Inch Matters"
+     "team": "The Silly Geese",
+     "manager": "Michael",
+     "players": [
+      {
+       "player": "Kaelon Black (RB)",
+       "from": "Every Inch Matters",
+       "ptsForNewTeamSince": 0,
+       "startsSince": 0,
+       "ptsForOldTeamBefore": 0
+      },
+      {
+       "player": "Adonai Mitchell (WR)",
+       "from": "Every Inch Matters",
+       "ptsForNewTeamSince": 0,
+       "startsSince": 0,
+       "ptsForOldTeamBefore": 0
+      },
+      {
+       "player": "A.J. Brown (WR)",
+       "from": "Every Inch Matters",
+       "ptsForNewTeamSince": 10.5,
+       "startsSince": 2,
+       "ptsForOldTeamBefore": 4.1
+      }
+     ]
+    },
+    {
+     "team": "Every Inch Matters",
+     "manager": "Garrett",
+     "players": [
+      {
+       "player": "Jordyn Tyson (WR)",
+       "from": "The Silly Geese",
+       "ptsForNewTeamSince": 0,
+       "startsSince": 0,
+       "ptsForOldTeamBefore": 0
+      },
+      {
+       "player": "Michael Wilson (WR)",
+       "from": "The Silly Geese",
+       "ptsForNewTeamSince": 54.9,
+       "startsSince": 5,
+       "ptsForOldTeamBefore": 20.4
+      },
+      {
+       "player": "Emmett Johnson (RB)",
+       "from": "The Silly Geese",
+       "ptsForNewTeamSince": 0,
+       "startsSince": 0,
+       "ptsForOldTeamBefore": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "date": "2026-09-30",
+   "week": 3,
+   "teams": [
+    "Breece's Pieces",
+    "Real Man of Genius"
+   ],
+   "received": [
+    {
+     "team": "Breece's Pieces",
+     "manager": "Tyler",
+     "players": [
+      {
+       "player": "Joe Burrow (QB)",
+       "from": "Real Man of Genius",
+       "ptsForNewTeamSince": 48.3,
+       "startsSince": 2,
+       "ptsForOldTeamBefore": 30.3
+      },
+      {
+       "player": "Ladd McConkey (WR)",
+       "from": "Real Man of Genius",
+       "ptsForNewTeamSince": 12.8,
+       "startsSince": 3,
+       "ptsForOldTeamBefore": 21.7
+      }
+     ]
+    },
+    {
+     "team": "Real Man of Genius",
+     "manager": "Micah",
+     "players": [
+      {
+       "player": "Travis Kelce (TE)",
+       "from": "Breece's Pieces",
+       "ptsForNewTeamSince": 25.4,
+       "startsSince": 4,
+       "ptsForOldTeamBefore": 0
+      },
+      {
+       "player": "Aaron Jones Sr. (RB)",
+       "from": "Breece's Pieces",
+       "ptsForNewTeamSince": 40.1,
+       "startsSince": 4,
+       "ptsForOldTeamBefore": 10.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "date": "2026-09-29",
+   "week": 3,
+   "teams": [
+    "After Bowers",
+    "I want my Nickleback"
+   ],
+   "received": [
+    {
+     "team": "After Bowers",
+     "manager": "Ezra",
+     "players": [
+      {
+       "player": "Kyle Pitts Sr. (TE)",
+       "from": "I want my Nickleback",
+       "ptsForNewTeamSince": 0,
+       "startsSince": 0,
+       "ptsForOldTeamBefore": 0
+      },
+      {
+       "player": "Alvin Kamara (RB)",
+       "from": "I want my Nickleback",
+       "ptsForNewTeamSince": 35.8,
+       "startsSince": 3,
+       "ptsForOldTeamBefore": 0
+      },
+      {
+       "player": "DJ Moore (WR)",
+       "from": "I want my Nickleback",
+       "ptsForNewTeamSince": 16.8,
+       "startsSince": 2,
+       "ptsForOldTeamBefore": 18.4
+      }
+     ]
+    },
+    {
+     "team": "I want my Nickleback",
+     "manager": "Jared",
+     "players": [
+      {
+       "player": "Juwan Johnson (TE)",
+       "from": "After Bowers",
+       "ptsForNewTeamSince": 12.5,
+       "startsSince": 3,
+       "ptsForOldTeamBefore": 21.5
+      },
+      {
+       "player": "Romeo Doubs (WR)",
+       "from": "After Bowers",
+       "ptsForNewTeamSince": 0,
+       "startsSince": 0,
+       "ptsForOldTeamBefore": 0
+      },
+      {
+       "player": "Rico Dowdle (RB)",
+       "from": "After Bowers",
+       "ptsForNewTeamSince": 0,
+       "startsSince": 0,
+       "ptsForOldTeamBefore": 8.5
+      },
+      {
+       "player": "Jalen Coker (WR)",
+       "from": "After Bowers",
+       "ptsForNewTeamSince": 22.7,
+       "startsSince": 3,
+       "ptsForOldTeamBefore": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "date": "2026-09-29",
+   "week": 3,
+   "teams": [
+    "Every Inch Matters",
+    "I want my Nickleback"
+   ],
+   "received": [
+    {
+     "team": "Every Inch Matters",
+     "manager": "Garrett",
+     "players": [
+      {
+       "player": "Kenneth Walker III (RB)",
+       "from": "I want my Nickleback",
+       "ptsForNewTeamSince": 75.4,
+       "startsSince": 4,
+       "ptsForOldTeamBefore": 53.4
+      }
+     ]
+    },
+    {
+     "team": "I want my Nickleback",
+     "manager": "Jared",
+     "players": [
+      {
+       "player": "Jayden Daniels (QB)",
+       "from": "Every Inch Matters",
+       "ptsForNewTeamSince": 68.2,
+       "startsSince": 3,
+       "ptsForOldTeamBefore": 32.4
+      },
+      {
+       "player": "Tee Higgins (WR)",
+       "from": "Every Inch Matters",
+       "ptsForNewTeamSince": 48.2,
+       "startsSince": 3,
+       "ptsForOldTeamBefore": 19.4
+      },
+      {
+       "player": "Omarion Hampton (RB)",
+       "from": "Every Inch Matters",
+       "ptsForNewTeamSince": 12.3,
+       "startsSince": 1,
+       "ptsForOldTeamBefore": 24.8
+      }
+     ]
     }
    ]
   }
