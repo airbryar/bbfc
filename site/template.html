@@ -130,7 +130,8 @@ h1 {
 
 /* Section tabs */
 .tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--tabs-bg); border-bottom: 1px solid var(--line); }
-.tabs .wrap { display: flex; gap: 2px; overflow-x: auto; }
+.tabs .wrap { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.tabs .wrap::-webkit-scrollbar { display: none; }
 .tabs a {
   font-family: var(--f-label); font-weight: 600; font-size: 15px; letter-spacing: 0.08em;
   text-transform: uppercase; white-space: nowrap; color: var(--muted); text-decoration: none;
@@ -138,8 +139,8 @@ h1 {
 }
 .tabs a:first-child { padding-left: 0; }
 @media (max-width: 440px) {
-  .tabs .wrap { justify-content: space-between; }
-  .tabs a { font-size: 12.5px; letter-spacing: 0.01em; padding-left: 2px; padding-right: 2px; }
+  .tabs .wrap { justify-content: flex-start; }
+  .tabs a { font-size: 13px; letter-spacing: 0.02em; padding-left: 7px; padding-right: 7px; }
   .tabs a:last-child { padding-right: 0; }
 }
 .tabs a:hover { color: var(--ink); }
@@ -307,6 +308,58 @@ details[open] > .pr-sum .pr-chev::before { transform: rotate(-135deg); margin-to
 .pr-stats { margin: 7px 0 0; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .pr-take { margin: 4px 0 0; font-size: 15px; }
 
+/* Newspaper */
+.edition {
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 12px; margin: 10px 0 14px; padding: 7px 0 6px;
+  border-top: 2px solid var(--ink); border-bottom: 1px solid var(--line);
+  font-family: var(--f-label); font-weight: 700; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink);
+}
+.edition span + span { color: var(--muted); font-weight: 600; }
+.news { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+@media (min-width: 620px) { .news { grid-template-columns: repeat(2, minmax(0, 1fr)); } .story-lead { grid-column: 1 / -1; } }
+.story { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 16px 14px; min-width: 0; }
+.story-lead { border-top: 3px solid var(--accent); padding-top: 15px; }
+.story-kicker { font-family: var(--f-label); font-weight: 700; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+.story-head {
+  font-family: var(--f-display); font-weight: 800; text-transform: uppercase; text-wrap: balance;
+  font-size: 20px; line-height: 1.05; margin: 5px 0 6px; color: var(--ink);
+}
+.story-lead .story-head { font-size: clamp(24px, 5.6vw, 32px); line-height: 1.02; }
+.story-dek { margin: 0; font-size: 15px; line-height: 1.45; color: var(--muted); }
+.story-text { margin-top: 10px; }
+.story-text p { margin: 0 0 10px; font-size: 16px; line-height: 1.6; max-width: 66ch; }
+.story-more { margin-top: 2px; }
+.story-more > summary {
+  display: inline-flex; align-items: center; gap: 6px; cursor: pointer; list-style: none;
+  font-family: var(--f-label); font-weight: 700; font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent);
+}
+.story-more > summary::-webkit-details-marker { display: none; }
+.story-more > summary::after { content: ""; width: 6px; height: 6px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg); margin-top: -3px; }
+.story-more[open] > summary::after { transform: rotate(-135deg); margin-top: 3px; }
+.story-more > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+.story-more .less { display: none; }
+.story-more[open] .less { display: inline; }
+.story-more[open] .more { display: none; }
+.news-past { margin-top: 14px; }
+.news-past > summary {
+  cursor: pointer; font-family: var(--f-label); font-weight: 700; font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+}
+.news-past > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+.news-past-list { display: grid; gap: 14px; margin-top: 10px; }
+.past-ed h4 { margin: 0 0 6px; font-family: var(--f-label); font-weight: 700; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.past-ed .story { padding: 12px 14px; }
+.past-ed .story + .story { margin-top: 8px; }
+.past-ed .story-head { font-size: 17px; }
+.news-credit { margin: 12px 0 0; font-size: 13px; color: var(--muted); }
+.news-empty { color: var(--muted); font-size: 15px; margin: 0; }
+@media (max-width: 619px) {
+  .story { padding: 14px 14px 12px; }
+  .story-lead { padding-top: 13px; }
+  .story-head { font-size: 19px; }
+  .story-dek { font-size: 14px; }
+  .story-text p { font-size: 15.5px; }
+}
+
 /* Median Watch controls */
 .mw-ctrl { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; margin-bottom: 12px; }
 .mw-ctrl .seg { margin-bottom: 0; }
@@ -472,6 +525,7 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
 <nav class="tabs" aria-label="Sections">
   <div class="wrap">
     <a href="#standings" aria-current="true">Standings</a>
+    <a href="#news">News</a>
     <a href="#median">Median</a>
     <a href="#this-week" id="tab-week">Scoreboard</a>
     <a href="#rankings">Rankings</a>
@@ -504,6 +558,20 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
         <tbody id="standings-body"></tbody>
       </table>
     </div>
+  </section>
+
+  <section id="news" aria-labelledby="h-news">
+    <div class="sec-head">
+      <h2 id="h-news">Newspaper</h2>
+      <span class="tag" id="news-tag"></span>
+    </div>
+    <div class="edition" id="news-edition"></div>
+    <div class="news" id="news-body"></div>
+    <details class="news-past" id="news-past" hidden>
+      <summary>Earlier editions</summary>
+      <div class="news-past-list" id="news-past-list"></div>
+    </details>
+    <p class="news-credit">Written by Claude from ESPN league data. New editions Tuesday, Thursday and Saturday mornings.</p>
   </section>
 
   <section id="median" aria-labelledby="h-median">
@@ -568,6 +636,11 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
 <!-- Team images (64px, embedded). Teams without one get an initials badge. -->
 <script type="application/json" id="logo-data">
 __LOGOS__
+</script>
+
+<!-- Newspaper editions, newest first. -->
+<script type="application/json" id="news-data">
+__NEWS__
 </script>
 
 <!-- Podcast episodes: updated by the podcast check from SoundCloud. -->
@@ -1034,6 +1107,65 @@ __ESPN__
     ebox.append(ul);
   }
 
+  // Newspaper
+  (function () {
+    var nEl = document.getElementById("news-data");
+    var N = { editions: [] };
+    try { N = JSON.parse(nEl.textContent) || N; } catch (e) {}
+    var eds = (N.editions || []).slice();
+    var box = document.getElementById("news-body");
+    var edBar = document.getElementById("news-edition");
+    function fmtDate(d) {
+      try { return new Date(d + "T12:00:00Z").toLocaleDateString("en-US", { timeZone: "UTC", month: "short", day: "numeric", year: "numeric" }); }
+      catch (e) { return d; }
+    }
+    function paras(list) {
+      var wrap = el("div", "story-text");
+      list.forEach(function (t) { wrap.append(el("p", null, t)); });
+      return wrap;
+    }
+    function moreBlock(list, moreLabel) {
+      var d = el("details", "story-more");
+      var sum = el("summary");
+      sum.append(el("span", "more", moreLabel), el("span", "less", "Show less"));
+      d.append(sum, paras(list));
+      return d;
+    }
+    function story(st, lead) {
+      var a = el("article", "story" + (lead ? " story-lead" : ""));
+      a.append(el("div", "story-kicker", st.kicker));
+      a.append(el(lead ? "h3" : "h3", "story-head", st.headline));
+      if (st.dek) a.append(el("p", "story-dek", st.dek));
+      var body = st.body || [];
+      if (lead && body.length) {
+        a.append(paras(body.slice(0, 1)));
+        if (body.length > 1) a.append(moreBlock(body.slice(1), "Keep reading"));
+      } else if (body.length) {
+        a.append(moreBlock(body, "Read story"));
+      }
+      return a;
+    }
+    if (!eds.length) {
+      edBar.hidden = true;
+      box.append(el("p", "news-empty", "The first edition is on its way."));
+      return;
+    }
+    var cur = eds[0];
+    edBar.append(el("span", null, cur.label), el("span", null, fmtDate(cur.date) + " · Week " + cur.week));
+    (cur.stories || []).forEach(function (st, i) { box.append(story(st, i === 0)); });
+    if (eds.length > 1) {
+      var past = document.getElementById("news-past");
+      var list = document.getElementById("news-past-list");
+      eds.slice(1).forEach(function (ed) {
+        var g = el("div", "past-ed");
+        g.append(el("h4", null, ed.label + " · " + fmtDate(ed.date)));
+        (ed.stories || []).forEach(function (st) { g.append(story(st, false)); });
+        list.append(g);
+      });
+      past.hidden = false;
+    }
+  })();
+
   // Light / dark mode
   var THEME_KEY = "bbfc-theme";
   var root = document.documentElement;
@@ -1117,8 +1249,17 @@ __ESPN__
 
   // Highlight the tab for the section in view
   var links = Array.prototype.slice.call(document.querySelectorAll(".tabs a"));
+  var tabRow = document.querySelector(".tabs .wrap");
+  var lastTab = null;
   function setCurrent(id) {
     links.forEach(function (a) { a.setAttribute("aria-current", a.getAttribute("href") === "#" + id ? "true" : "false"); });
+    if (id === lastTab || !tabRow || tabRow.scrollWidth <= tabRow.clientWidth) { lastTab = id; return; }
+    lastTab = id;
+    var a = tabRow.querySelector('a[href="#' + id + '"]');
+    if (!a) return;
+    var left = a.offsetLeft - tabRow.offsetLeft;
+    if (left < tabRow.scrollLeft + 8) tabRow.scrollLeft = Math.max(0, left - 16);
+    else if (left + a.offsetWidth > tabRow.scrollLeft + tabRow.clientWidth - 8) tabRow.scrollLeft = left + a.offsetWidth - tabRow.clientWidth + 16;
   }
   // The active tab is the last section whose heading has reached the top of the screen,
   // just under the sticky tabs. At the very bottom of the page, the last section wins.

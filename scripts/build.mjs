@@ -6,6 +6,7 @@ const read = (p) => fs.readFileSync(p, "utf8");
 const espn = JSON.parse(read("data/espn.json"));
 const league = JSON.parse(read("data/league.json"));
 const pod = JSON.parse(read("data/pod.json"));
+const news = fs.existsSync("data/news.json") ? JSON.parse(read("data/news.json")) : { editions: [] };
 const logos = JSON.parse(read("data/logos.json"));
 const brand = fs.existsSync("data/brand.json") ? JSON.parse(read("data/brand.json")) : { custom: false, iconVersion: "1" };
 
@@ -17,6 +18,7 @@ const blocks = {
   __PR__: safe(espn), // Power rankings use finished weeks only, so they change when a week goes final.
   __LEAGUE__: safe({ weights: league.weights, takes: league.takes || {} }, true),
   __POD__: safe(pod, true),
+  __NEWS__: safe({ editions: (news.editions || []).slice(0, 6) }),
   __LOGOS__: safe(logos, true),
   __ICONV__: brand.iconVersion || "1",
 };

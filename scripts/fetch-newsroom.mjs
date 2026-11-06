@@ -455,6 +455,7 @@ const out = {
     "Points are fantasy points. 'ptsWhileStarted' and similar fields only count weeks the player was in that team's starting lineup.",
     "Managers are listed by first name. Past seasons list managers, not team names.",
     "allTimeHeadToHead covers every past season plus this one, playoffs included.",
+    "Past-season records come from ESPN season records and include median games in seasons that had them; allTimeHeadToHead counts only head-to-head matchups.",
   ],
   season: SEASON,
   currentWeek: CUR,
