@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Record Book · BBFC</title>
+<meta name="description" content="Champions, all-time standings, records and head-to-head history for the Boys and Bibles Football Club.">
+<meta name="theme-color" content="#13294B">
+<script>
+  try {
+    var t = localStorage.getItem("bbfc-theme");
+    if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+    var dark = t === "dark" || (t !== "light" && window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches);
+    if (dark) document.querySelector('meta[name="theme-color"]').setAttribute("content", "#000000");
+  } catch (e) {}
+</script>
+<meta name="apple-mobile-web-app-title" content="BBFC">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png?v=__ICONV__">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png?v=__ICONV__">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=Saira+Condensed:wght@700;800&display=swap">
+<style>
+/* Record Book: the same look as the main page (tokens, fonts, masthead, cards, bottom bar) */
+html { -webkit-text-size-adjust: 100%; }
+:root { box-sizing: border-box; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+*, *::before, *::after { box-sizing: inherit; }
+body { margin: 0; }
+[hidden] { display: none !important; }
+:root {
+  --bg: #F3F5F9; --surface: #FFFFFF; --ink: #101A2C; --muted: #56617A; --line: #DCE2EC;
+  --accent: #C21F32; --gilt: #1D3A6B; --band: #13294B; --band-deep: #0C1C36; --band-ink: #FFFFFF;
+  --band-gilt: #DCE4F2; --ribbon: #C21F32; --chip: #E9EDF4; --tabs-bg: #F3F5F9;
+  --feature: #13294B; --feature-line: #13294B; --feature-soft: #DCE4F2;
+  --f-display: "Saira Condensed", "Arial Narrow", Arial, sans-serif;
+  --f-body: "Barlow", "Helvetica Neue", Arial, sans-serif;
+  --f-label: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
+  --f-num: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #101112; --surface: #1D1E1E; --ink: #FFFFFF; --muted: #A1A2A3; --line: #2C2D2E;
+    --accent: #FF5A68; --gilt: #658EEF; --band: #000000; --band-deep: #1D1E1E; --band-ink: #FFFFFF;
+    --band-gilt: #A1A2A3; --ribbon: #D3283C; --chip: #303132; --tabs-bg: #000000;
+    --feature: #1B3766; --feature-line: #3A5A93; --feature-soft: #C8D5F0; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #101112; --surface: #1D1E1E; --ink: #FFFFFF; --muted: #A1A2A3; --line: #2C2D2E;
+  --accent: #FF5A68; --gilt: #658EEF; --band: #000000; --band-deep: #1D1E1E; --band-ink: #FFFFFF;
+  --band-gilt: #A1A2A3; --ribbon: #D3283C; --chip: #303132; --tabs-bg: #000000;
+  --feature: #1B3766; --feature-line: #3A5A93; --feature-soft: #C8D5F0; color-scheme: dark;
+}
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.5;
+  -webkit-font-smoothing: antialiased; padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--tabs-bg); }
+.wrap { max-width: 760px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.num { font-family: var(--f-num); font-variant-numeric: tabular-nums; }
+
+/* Masthead */
+.mast { background: var(--band); color: var(--band-ink); border-bottom: 4px solid var(--ribbon); }
+.mast-in { position: relative; display: flex; align-items: center; gap: 14px; padding-block: 22px 20px; }
+.mast-icon { flex: none; width: 52px; height: 52px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.28); }
+.mast-icon svg { width: 26px; height: 26px; }
+.eyebrow { font-family: var(--f-label); font-weight: 600; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--band-gilt); margin: 0 0 2px; }
+h1 { font-family: var(--f-display); font-weight: 800; font-size: clamp(32px, 8vw, 44px); line-height: 0.95; letter-spacing: 0.01em; text-transform: uppercase; margin: 0; }
+.mast-sub { margin: 6px 0 0; font-size: 15px; opacity: 0.88; }
+.ribbon { position: absolute; top: 0; right: max(16px, env(safe-area-inset-right, 0px)); width: 16px; height: 60px; background: var(--ribbon); clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%); }
+.home-link {
+  position: absolute; top: 10px; right: calc(max(16px, env(safe-area-inset-right, 0px)) + 24px);
+  display: inline-flex; align-items: center; gap: 4px; padding: 5px 10px 4px 8px; border-radius: 999px;
+  color: var(--band-ink); text-decoration: none; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.28);
+  font-family: var(--f-label); font-weight: 700; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;
+}
+.home-link svg { width: 14px; height: 14px; }
+.mast-text { min-width: 0; padding-right: 92px; }
+
+/* Sections */
+section { padding-block: 36px 8px; scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 14px); }
+.sec-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 12px; }
+h2 { font-family: var(--f-display); font-weight: 800; font-size: 27px; line-height: 1; text-transform: uppercase; letter-spacing: 0.01em; margin: 0; }
+.tag { font-family: var(--f-label); font-weight: 600; font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.lede { max-width: 62ch; color: var(--muted); font-size: 14px; margin: 6px 0 12px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+.sub { font-family: var(--f-label); font-weight: 700; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin: 18px 0 8px; }
+.foot { font-size: 12px; color: var(--muted); margin: 8px 0 0; }
+
+/* Team badges (the manager's current team picture) */
+.tb { flex: none; width: 24px; height: 24px; border-radius: 50%; object-fit: cover; background: var(--chip); box-shadow: 0 0 0 1px var(--line); }
+.tb-gen { display: inline-flex; align-items: center; justify-content: center; color: #FFFFFF; font-family: var(--f-num); font-weight: 700; font-size: 10px; line-height: 1; }
+.tb-former { background: var(--chip); color: var(--muted); box-shadow: inset 0 0 0 1px var(--line); }
+.who { display: inline-flex; align-items: center; gap: 7px; min-width: 0; }
+
+/* Champions */
+.champ {
+  position: relative; overflow: hidden; background: var(--feature); color: var(--band-ink);
+  border-radius: 12px; border: 1px solid var(--feature-line); border-bottom: 4px solid var(--ribbon); padding: 16px 18px 18px;
+}
+.champ-kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-family: var(--f-label); font-weight: 700; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--feature-soft); }
+.champ-badge { background: var(--ribbon); color: #FFFFFF; padding: 2px 8px 1px; border-radius: 4px; letter-spacing: 0.1em; }
+.champ-name { display: flex; align-items: center; gap: 12px; margin: 12px 0 8px; }
+.champ-name .tb { width: 46px; height: 46px; box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5); }
+.champ-name .tb-gen { font-size: 16px; }
+.champ-name b { font-family: var(--f-display); font-weight: 800; font-size: 40px; line-height: 0.95; text-transform: uppercase; letter-spacing: 0.01em; }
+.champ-line { margin: 0; font-size: 15px; opacity: 0.9; }
+.champ-line .num { font-weight: 700; font-size: 16px; }
+.champ-trophy { position: absolute; right: -6px; bottom: -14px; width: 120px; height: 120px; opacity: 0.12; }
+.past { margin-top: 10px; padding: 2px 14px; }
+.past-row { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 10px; align-items: center; padding-block: 10px; }
+.past-row + .past-row { border-top: 1px solid var(--line); }
+.past-year { font-family: var(--f-display); font-weight: 800; font-size: 24px; line-height: 1; color: var(--gilt); }
+.past-who { font-weight: 600; font-size: 16px; }
+.past-detail { font-size: 13px; color: var(--muted); margin-top: 1px; }
+.titles { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 10px 0 0; font-size: 14px; color: var(--muted); }
+.titles b { color: var(--ink); }
+
+/* All-time standings */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+th { font-family: var(--f-label); font-weight: 600; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-align: left; padding: 9px 6px 7px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+td { padding: 8px 6px; vertical-align: middle; }
+th:first-child, td:first-child { padding-left: 10px; }
+th:last-child, td:last-child { padding-right: 10px; }
+tbody tr + tr td { border-top: 1px solid var(--line); }
+.r { text-align: right; white-space: nowrap; }
+.rk { width: 1.4em; font-family: var(--f-num); font-weight: 700; font-size: 16px; color: var(--muted); }
+.mgr { font-weight: 600; font-size: 15px; line-height: 1.2; }
+.mgr small { display: block; font-weight: 400; font-size: 12px; color: var(--muted); margin-top: 1px; }
+.rec { font-family: var(--f-num); font-weight: 700; font-size: 18px; }
+.pct, .cnt { font-family: var(--f-num); font-weight: 600; font-size: 15px; }
+.cnt.zero, .pct.dim { color: var(--muted); }
+
+/* Records */
+.recs { padding: 0 14px; }
+.rrow { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; align-items: center; padding-block: 11px; }
+.rrow + .rrow { border-top: 1px solid var(--line); }
+.r-label { font-family: var(--f-label); font-weight: 700; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+.r-value { grid-row: span 2; font-family: var(--f-num); font-weight: 700; font-size: 26px; line-height: 1; font-variant-numeric: tabular-nums; text-align: right; }
+.r-who { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 8px; font-size: 14px; color: var(--muted); }
+.r-who .who { color: var(--ink); font-weight: 600; font-size: 15px; }
+.po { font-family: var(--f-label); font-weight: 700; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; padding: 1px 6px; border-radius: 4px; background: var(--chip); color: var(--muted); }
+
+/* Head-to-head */
+.pick { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 8px; align-items: center; }
+.pick select {
+  width: 100%; appearance: none; -webkit-appearance: none; font: inherit; font-weight: 600; font-size: 16px; color: var(--ink);
+  background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%2356617A' stroke-width='1.6'/%3E%3C/svg%3E") no-repeat right 10px center;
+  border: 1px solid var(--line); border-radius: 8px; padding: 9px 26px 8px 10px;
+}
+.pick select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.vs { font-family: var(--f-label); font-weight: 700; font-size: 13px; letter-spacing: 0.1em; color: var(--muted); }
+.series { margin-top: 10px; padding: 14px; }
+.score-line { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 10px; }
+.score-line .side { display: flex; align-items: center; gap: 8px; min-width: 0; font-weight: 600; font-size: 16px; }
+.score-line .side:last-child { justify-content: flex-end; text-align: right; }
+.score-line .tb { width: 32px; height: 32px; }
+.big { font-family: var(--f-num); font-weight: 700; font-size: 40px; line-height: 1; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.big .lose { color: var(--muted); }
+.series-note { text-align: center; font-size: 14px; color: var(--muted); margin: 8px 0 0; }
+.meet { list-style: none; margin: 12px 0 0; padding: 0; border-top: 1px solid var(--line); }
+.meet li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; align-items: baseline; padding-block: 8px; font-size: 14px; }
+.meet li + li { border-top: 1px solid var(--line); }
+.meet .when { font-family: var(--f-label); font-weight: 600; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+.meet .res { text-align: right; font-family: var(--f-num); font-size: 16px; font-variant-numeric: tabular-nums; color: var(--muted); }
+.meet .res b { color: var(--ink); font-weight: 700; }
+.empty { color: var(--muted); font-size: 15px; margin: 6px 0 0; text-align: center; }
+
+/* Bottom bar: Home goes back to the main page; the rest jump within this page */
+.bnav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 6; background: var(--tabs-bg); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom, 0px); }
+.bnav .wrap { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.bnav a { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 8px 0 7px; color: var(--muted); text-decoration: none; font-family: var(--f-label); font-weight: 600; font-size: 11.5px; letter-spacing: 0.06em; text-transform: uppercase; }
+.bnav svg { width: 25px; height: 25px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.bnav a[aria-current="true"] { color: var(--accent); }
+.bnav a:focus-visible, .home-link:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 6px; }
+footer { margin-top: 32px; border-top: 1px solid var(--line); padding-block: 16px 28px; font-size: 13px; color: var(--muted); }
+@media (min-width: 620px) {
+  section { padding-block: 48px 12px; }
+  h2 { font-size: 32px; }
+  .champ-name b { font-size: 48px; }
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap mast-in">
+    <span class="mast-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 6.5C10.4 5 8 4.4 3.5 4.4v13.2c4.5 0 6.9.6 8.5 2 1.6-1.4 4-2 8.5-2V4.4C16 4.4 13.6 5 12 6.5Z"/><path d="M12 6.5v13"/></svg></span>
+    <div class="mast-text">
+      <p class="eyebrow" id="since-line">BBFC</p>
+      <h1>Record Book</h1>
+      <p class="mast-sub" id="through-line"></p>
+    </div>
+    <span class="ribbon" aria-hidden="true"></span>
+    <a class="home-link" href="./"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Home</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="champions" aria-labelledby="h-champions">
+    <div class="sec-head"><h2 id="h-champions">Champions</h2><span class="tag" id="champ-tag"></span></div>
+    <div id="champ-box"></div>
+  </section>
+
+  <section id="alltime" aria-labelledby="h-alltime">
+    <div class="sec-head"><h2 id="h-alltime">All-Time Standings</h2><span class="tag" id="alltime-tag"></span></div>
+    <p class="lede">Every season, including this one so far, ranked by winning percentage.</p>
+    <div class="card table-wrap">
+      <table>
+        <thead><tr><th scope="col">#</th><th scope="col">Manager</th><th scope="col" class="r">Record</th><th scope="col" class="r">Pct</th><th scope="col" class="r">Titles</th><th scope="col" class="r">Playoffs</th></tr></thead>
+        <tbody id="alltime-body"></tbody>
+      </table>
+    </div>
+    <p class="foot" id="alltime-foot"></p>
+  </section>
+
+  <section id="records" aria-labelledby="h-records">
+    <div class="sec-head"><h2 id="h-records">Records</h2><span class="tag" id="records-tag"></span></div>
+    <p class="sub">Single game</p>
+    <div class="card recs" id="game-records"></div>
+    <p class="sub">Season</p>
+    <div class="card recs" id="season-records"></div>
+    <p class="foot">Single-game records count the regular season and playoffs, not consolation games. Season records are regular-season and finished seasons only.</p>
+  </section>
+
+  <section id="h2h" aria-labelledby="h-h2h">
+    <div class="sec-head"><h2 id="h-h2h">Head-to-Head</h2><span class="tag">All-time series</span></div>
+    <p class="lede">Pick any two managers to see every time they've met, playoffs included.</p>
+    <div class="pick">
+      <select id="h2h-a" aria-label="First manager"></select>
+      <span class="vs">VS</span>
+      <select id="h2h-b" aria-label="Second manager"></select>
+    </div>
+    <div class="card series" id="h2h-box"></div>
+  </section>
+</main>
+
+<footer class="wrap">Boys and Bibles Football Club · Record Book · <span id="foot-updated"></span></footer>
+
+<nav class="bnav" aria-label="Record Book">
+  <div class="wrap">
+    <a href="./"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11 12 4l8.5 7"/><path d="M5.5 9.5V20h5v-5.5h3V20h5V9.5"/></svg>Home</a>
+    <a href="#champions" data-for="champions"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v5a5 5 0 0 1-10 0Z"/><path d="M7 6H4v1.5A3.5 3.5 0 0 0 7.5 11M17 6h3v1.5a3.5 3.5 0 0 1-3.5 3.5"/><path d="M12 14v3.5M8.5 20.5h7M9.5 17.5h5v3h-5z"/></svg>Champions</a>
+    <a href="#alltime" data-for="alltime"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h1.5M4 12h1.5M4 18h1.5M9 6h11M9 12h8M9 18h5"/></svg>All-Time</a>
+    <a href="#records" data-for="records"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="14.5" r="5.5"/><path d="M9 3.5l3 5.5 3-5.5M12 12v5"/></svg>Records</a>
+    <a href="#h2h" data-for="h2h"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5l6.5 6.5M4 9.5l5.5 5.5M19 4.5 5 18.5M4.5 16.5l3 3M20 9.5 14.5 15M14.5 13l5 5M16.5 19.5l3-3"/></svg>Rivals</a>
+  </div>
+</nav>
+
+<script type="application/json" id="history-data">
+__HISTORY__
+</script>
+<script type="application/json" id="espn-data">
+__ESPN__
+</script>
+<script type="application/json" id="logo-data">
+__LOGOS__
+</script>
+
+<script>
+(function () {
+  var H = JSON.parse(document.getElementById("history-data").textContent);
+  var E = JSON.parse(document.getElementById("espn-data").textContent);
+  var LOGOS = {};
+  try { LOGOS = JSON.parse(document.getElementById("logo-data").textContent) || {}; } catch (e) {}
+
+  function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+  function pts(n) { return Number(n || 0).toFixed(2); }
+  function pct(w, l, t) { var g = w + l + t; if (!g) return "–"; var p = (w + t / 2) / g; return p >= 1 ? "1.000" : p.toFixed(3).replace(/^0/, ""); }
+
+  // Managers: name by key, and each current manager's team (for the team picture and name)
+  var NAME = H.managers || {};
+  var teamOf = {}; // manager key -> current team id
+  Object.keys(H.current.teams).forEach(function (tid) { teamOf[H.current.teams[tid]] = Number(tid); });
+  var teamName = {};
+  E.teams.forEach(function (t) { teamName[t.id] = t.name; });
+  function nameOf(k) { return NAME[k] || "A former manager"; }
+  var BADGE_COLORS = ["#13294B", "#C21F32", "#2E5C9A", "#5B6B84", "#8C1C2B", "#1F6F64", "#9A6A1F", "#4A3B7A", "#0F4C5C", "#6B2D5C", "#3B5B2A", "#7A3E12"];
+  function badge(k) {
+    var tid = teamOf[k];
+    if (tid && LOGOS[String(tid)]) { var im = document.createElement("img"); im.className = "tb"; im.src = LOGOS[String(tid)]; im.alt = ""; return im; }
+    if (!tid) { var f = el("span", "tb tb-gen tb-former", "–"); f.setAttribute("aria-hidden", "true"); return f; }
+    var b = el("span", "tb tb-gen", nameOf(k).charAt(0));
+    b.style.background = BADGE_COLORS[(tid - 1) % BADGE_COLORS.length];
+    b.setAttribute("aria-hidden", "true");
+    return b;
+  }
+  function who(k) { var w = el("span", "who"); w.append(badge(k), el("span", null, nameOf(k))); return w; }
+
+  // Every season: past seasons from history, plus this one so far from the live ESPN data
+  var reg = E.regSeasonWeeks || 14;
+  var curSeason = {
+    season: E.season, current: true, regWeeks: reg,
+    teams: E.teams.map(function (t) { return { m: H.current.teams[t.id], w: t.w, l: t.l, t: t.t || 0, pf: t.pf }; }),
+    games: E.games.map(function (g) { return [g.p, H.current.teams[g.h[0]], g.h[1], H.current.teams[g.a[0]], g.a[1], g.w, g.p <= reg ? 0 : 1]; }),
+  };
+  var past = H.seasons.slice().sort(function (a, b) { return a.season - b.season; });
+  var all = past.concat([curSeason]);
+  var first = past.length ? past[0].season : E.season;
+  var lastDone = curSeason.games.reduce(function (mx, g) { return g[6] === 0 ? Math.max(mx, g[0]) : mx; }, 0);
+
+  document.getElementById("since-line").textContent = "BBFC · Since " + first;
+  document.getElementById("through-line").textContent = past.length + " seasons of league history" + (lastDone ? ", plus " + E.season + " through Week " + lastDone : "");
+  document.getElementById("foot-updated").textContent = "Updated with " + E.season + " results through Week " + lastDone;
+
+  // Champions: the reigning champion featured, earlier ones listed
+  (function () {
+    var box = document.getElementById("champ-box");
+    var champs = past.slice().reverse().map(function (s) {
+      var champ = s.teams.filter(function (t) { return t.finish === 1; })[0];
+      var runner = s.teams.filter(function (t) { return t.finish === 2; })[0];
+      var final = s.games.filter(function (g) { return g[6] === 1 && champ && runner && ((g[1] === champ.m && g[3] === runner.m) || (g[3] === champ.m && g[1] === runner.m)); }).pop();
+      var score = null;
+      if (final) score = final[1] === champ.m ? [final[2], final[4]] : [final[4], final[2]];
+      return { season: s.season, champ: champ, runner: runner, score: score };
+    }).filter(function (c) { return c.champ; });
+    document.getElementById("champ-tag").textContent = champs.length + (champs.length === 1 ? " title" : " titles") + " awarded";
+    function finalLine(c) {
+      var p = el("p", "champ-line");
+      if (c.runner) {
+        p.append("Beat " + nameOf(c.runner.m) + " ");
+        if (c.score) { p.append(el("span", "num", pts(c.score[0]) + "–" + pts(c.score[1]))); p.append(" in the final"); }
+        else p.append("in the final");
+      }
+      return p;
+    }
+    if (!champs.length) { box.append(el("p", "empty", "The first champion will be crowned this season.")); return; }
+    var top = champs[0];
+    var card = el("article", "champ");
+    card.innerHTML = '<svg class="champ-trophy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M7 4h10v5a5 5 0 0 1-10 0Z"/><path d="M7 6H4v1.5A3.5 3.5 0 0 0 7.5 11M17 6h3v1.5a3.5 3.5 0 0 1-3.5 3.5"/><path d="M12 14v3.5M8.5 20.5h7M9.5 17.5h5v3h-5z"/></svg>';
+    var k = el("div", "champ-kicker");
+    k.append(el("span", "champ-badge", "Reigning champion"), el("span", null, String(top.season)));
+    card.append(k);
+    var nm = el("div", "champ-name");
+    nm.append(badge(top.champ.m), el("b", null, nameOf(top.champ.m)));
+    card.append(nm, finalLine(top));
+    var seedLine = el("p", "champ-line");
+    seedLine.textContent = "No. " + top.champ.seed + " seed · " + top.champ.w + "-" + top.champ.l + (top.champ.t ? "-" + top.champ.t : "") + " in the regular season";
+    card.append(seedLine);
+    box.append(card);
+    if (champs.length > 1) {
+      var list = el("div", "card past");
+      champs.slice(1).forEach(function (c) {
+        var row = el("div", "past-row");
+        row.append(el("div", "past-year", String(c.season)));
+        var info = el("div");
+        var w = el("div", "past-who"); w.append(who(c.champ.m)); info.append(w);
+        var d = el("div", "past-detail");
+        d.textContent = (c.runner ? "Beat " + nameOf(c.runner.m) + (c.score ? " " + pts(c.score[0]) + "–" + pts(c.score[1]) : "") + " · " : "") + "No. " + c.champ.seed + " seed, " + c.champ.w + "-" + c.champ.l;
+        info.append(d);
+        row.append(info);
+        list.append(row);
+      });
+      box.append(list);
+    }
+    var count = {};
+    champs.forEach(function (c) { count[c.champ.m] = (count[c.champ.m] || 0) + 1; });
+    var tl = el("p", "titles");
+    Object.keys(count).sort(function (a, b) { return count[b] - count[a] || nameOf(a).localeCompare(nameOf(b)); }).forEach(function (m) {
+      var s = el("span"); s.append(el("b", null, nameOf(m)), " " + count[m] + (count[m] === 1 ? " title" : " titles")); tl.append(s);
+    });
+    box.append(tl);
+  })();
+
+  // All-time standings (current managers)
+  (function () {
+    var rows = {};
+    Object.keys(teamOf).forEach(function (m) { rows[m] = { m: m, w: 0, l: 0, t: 0, seasons: 0, titles: 0, playoffs: 0 }; });
+    all.forEach(function (s) {
+      s.teams.forEach(function (t) {
+        var r = rows[t.m];
+        if (!r) return;
+        r.w += t.w; r.l += t.l; r.t += t.t || 0; r.seasons++;
+        if (!s.current) {
+          if (t.finish === 1) r.titles++;
+          if (t.seed && t.seed <= (s.playoffTeams || 6)) r.playoffs++;
+        }
+      });
+    });
+    var list = Object.keys(rows).map(function (k) { return rows[k]; });
+    list.forEach(function (r) { var g = r.w + r.l + r.t; r.p = g ? (r.w + r.t / 2) / g : 0; });
+    list.sort(function (a, b) { return b.p - a.p || b.titles - a.titles || b.w - a.w; });
+    document.getElementById("alltime-tag").textContent = all.length + " seasons";
+    var body = document.getElementById("alltime-body");
+    list.forEach(function (r, i) {
+      var tr = el("tr");
+      tr.append(el("td", "rk", String(i + 1)));
+      var td = el("td", "mgr");
+      td.append(who(r.m));
+      var tn = teamName[teamOf[r.m]];
+      if (tn) td.append(el("small", null, tn));
+      tr.append(td);
+      tr.append(el("td", "r rec", r.w + "-" + r.l + (r.t ? "-" + r.t : "")));
+      tr.append(el("td", "r pct", pct(r.w, r.l, r.t)));
+      tr.append(el("td", "r cnt" + (r.titles ? "" : " zero"), r.titles ? String(r.titles) : "–"));
+      tr.append(el("td", "r cnt" + (r.playoffs ? "" : " zero"), r.playoffs ? String(r.playoffs) : "–"));
+      body.append(tr);
+    });
+    var medFrom = past.filter(function (s) { return s.teams.some(function (t) { return t.w + t.l + (t.t || 0) > s.regWeeks; }); }).map(function (s) { return s.season; })[0];
+    document.getElementById("alltime-foot").textContent = "Records include median games from " + (medFrom || E.season) + " on, the same way ESPN counts them. Titles and playoff trips are from finished seasons.";
+  })();
+
+  // Records
+  (function () {
+    var sides = []; // one entry per team per game: [season, week, kind, manager, points, opponent, opp points, won]
+    all.forEach(function (s) {
+      s.games.forEach(function (g) {
+        if (g[6] === 2) return; // consolation games don't count
+        var hw = g[5] === "H", aw = g[5] === "A";
+        sides.push({ s: s.season, wk: g[0], po: g[6] === 1, m: g[1], p: g[2], o: g[3], op: g[4], won: hw, tie: g[5] === "T" });
+        sides.push({ s: s.season, wk: g[0], po: g[6] === 1, m: g[3], p: g[4], o: g[1], op: g[2], won: aw, tie: g[5] === "T" });
+      });
+    });
+    function best(list, score) { return list.reduce(function (b, x) { return !b || score(x) > score(b) ? x : b; }, null); }
+    function whenText(x) { return x.s + ", " + (x.po ? (x.wk === Math.max.apply(null, sides.filter(function (y) { return y.s === x.s; }).map(function (y) { return y.wk; })) ? "Championship" : "Playoffs") : "Week " + x.wk); }
+    function row(label, value, x, vsText) {
+      var r = el("div", "rrow");
+      r.append(el("div", "r-label", label));
+      r.append(el("div", "r-value", value));
+      var w = el("div", "r-who");
+      w.append(who(x.m));
+      w.append(el("span", null, (vsText || "vs " + nameOf(x.o)) + " · " + whenText(x)));
+      if (x.po) w.append(el("span", "po", "Playoffs"));
+      r.append(w);
+      return r;
+    }
+    var g = document.getElementById("game-records");
+    var hi = best(sides, function (x) { return x.p; });
+    var lo = best(sides, function (x) { return -x.p; });
+    var wins = sides.filter(function (x) { return x.won; });
+    var blow = best(wins, function (x) { return x.p - x.op; });
+    var close = best(wins, function (x) { return -(x.p - x.op); });
+    var lossHi = best(sides.filter(function (x) { return !x.won && !x.tie; }), function (x) { return x.p; });
+    var winLo = best(wins, function (x) { return -x.p; });
+    if (!hi) { g.append(el("p", "empty", "No games yet.")); }
+    else {
+      g.append(row("Highest score", pts(hi.p), hi));
+      g.append(row("Lowest score", pts(lo.p), lo));
+      g.append(row("Biggest blowout", "+" + pts(blow.p - blow.op), blow, "beat " + nameOf(blow.o) + " " + pts(blow.p) + "–" + pts(blow.op)));
+      g.append(row("Closest game", "+" + pts(close.p - close.op), close, "beat " + nameOf(close.o) + " " + pts(close.p) + "–" + pts(close.op)));
+      g.append(row("Most points in a loss", pts(lossHi.p), lossHi, "lost to " + nameOf(lossHi.o) + " " + pts(lossHi.p) + "–" + pts(lossHi.op)));
+      g.append(row("Fewest points in a win", pts(winLo.p), winLo, "beat " + nameOf(winLo.o) + " " + pts(winLo.p) + "–" + pts(winLo.op)));
+    }
+    // Season records: finished seasons, regular season
+    var seasonRows = [];
+    past.forEach(function (s) { s.teams.forEach(function (t) { seasonRows.push({ s: s.season, m: t.m, pf: t.pf, w: t.w, l: t.l, t: t.t || 0, g: Math.max(1, t.w + t.l + (t.t || 0)), weeks: s.regWeeks }); }); });
+    var sr = document.getElementById("season-records");
+    function srow(label, value, x, detail) {
+      var r = el("div", "rrow");
+      r.append(el("div", "r-label", label), el("div", "r-value", value));
+      var w = el("div", "r-who");
+      w.append(who(x.m), el("span", null, x.s + (detail ? " · " + detail : "")));
+      r.append(w);
+      return r;
+    }
+    var mostPf = best(seasonRows, function (x) { return x.pf; });
+    var leastPf = best(seasonRows, function (x) { return -x.pf; });
+    var bestRec = best(seasonRows, function (x) { return (x.w + x.t / 2) / x.g + x.pf / 1e7; });
+    var worstRec = best(seasonRows, function (x) { return -((x.w + x.t / 2) / x.g) - x.pf / 1e7; });
+    if (mostPf) {
+      sr.append(srow("Most points in a season", pts(mostPf.pf), mostPf, (mostPf.pf / mostPf.weeks).toFixed(1) + " a week"));
+      sr.append(srow("Fewest points in a season", pts(leastPf.pf), leastPf, (leastPf.pf / leastPf.weeks).toFixed(1) + " a week"));
+      sr.append(srow("Best record", bestRec.w + "-" + bestRec.l, bestRec, pct(bestRec.w, bestRec.l, bestRec.t)));
+      sr.append(srow("Worst record", worstRec.w + "-" + worstRec.l, worstRec, pct(worstRec.w, worstRec.l, worstRec.t)));
+    }
+    document.getElementById("records-tag").textContent = sides.length / 2 + " games";
+  })();
+
+  // Head-to-head
+  (function () {
+    var selA = document.getElementById("h2h-a"), selB = document.getElementById("h2h-b");
+    var current = Object.keys(teamOf).sort(function (a, b) { return nameOf(a).localeCompare(nameOf(b)); });
+    [selA, selB].forEach(function (sel) {
+      current.forEach(function (m) { var o = el("option", null, nameOf(m)); o.value = m; sel.append(o); });
+    });
+    // Start on the two most recent champions, or the first two managers
+    var champs = past.slice().reverse().map(function (s) { var c = s.teams.filter(function (t) { return t.finish === 1; })[0]; return c && c.m; }).filter(Boolean);
+    var uniq = champs.filter(function (m, i) { return champs.indexOf(m) === i && teamOf[m]; });
+    selA.value = uniq[0] || current[0];
+    selB.value = uniq[1] || current.filter(function (m) { return m !== selA.value; })[0];
+    var box = document.getElementById("h2h-box");
+    function render() {
+      var a = selA.value, b = selB.value;
+      box.textContent = "";
+      if (a === b) { box.append(el("p", "empty", "Pick two different managers.")); return; }
+      var games = [];
+      all.forEach(function (s) {
+        s.games.forEach(function (g) {
+          var ah = g[1] === a && g[3] === b, ba = g[1] === b && g[3] === a;
+          if (!ah && !ba) return;
+          var pa = ah ? g[2] : g[4], pb = ah ? g[4] : g[2];
+          var win = g[5] === "T" ? "T" : ((g[5] === "H") === ah ? "A" : "B");
+          games.push({ s: s.season, wk: g[0], kind: g[6], pa: pa, pb: pb, win: win });
+        });
+      });
+      var wa = games.filter(function (x) { return x.win === "A"; }).length;
+      var wb = games.filter(function (x) { return x.win === "B"; }).length;
+      var ties = games.length - wa - wb;
+      var line = el("div", "score-line");
+      var sa = el("div", "side"); sa.append(badge(a), el("span", null, nameOf(a)));
+      var sb = el("div", "side"); sb.append(el("span", null, nameOf(b)), badge(b));
+      var big = el("div", "big");
+      var na = el("span", wa < wb ? "lose" : null, String(wa));
+      var nb = el("span", wb < wa ? "lose" : null, String(wb));
+      big.append(na, " – ", nb);
+      line.append(sa, big, sb);
+      box.append(line);
+      var note = !games.length ? "They haven't met yet."
+        : wa === wb ? "The series is tied" + (ties ? " with " + ties + (ties === 1 ? " tie" : " ties") : "") + " after " + games.length + (games.length === 1 ? " meeting." : " meetings.")
+        : (wa > wb ? nameOf(a) : nameOf(b)) + " leads the series · " + games.length + (games.length === 1 ? " meeting" : " meetings");
+      box.append(el("p", "series-note", note));
+      if (!games.length) return;
+      var ul = el("ul", "meet");
+      games.slice().reverse().forEach(function (x) {
+        var li = el("li");
+        li.append(el("span", "when", x.s + " · " + (x.kind === 0 ? "Wk " + x.wk : x.kind === 1 ? "Playoffs" : "Consolation")));
+        var res = el("span", "res");
+        var ta = el(x.win === "A" ? "b" : "span", null, nameOf(a) + " " + pts(x.pa));
+        var tb = el(x.win === "B" ? "b" : "span", null, pts(x.pb) + " " + nameOf(b));
+        res.append(ta, " – ", tb);
+        li.append(res);
+        ul.append(li);
+      });
+      box.append(ul);
+    }
+    selA.addEventListener("change", render);
+    selB.addEventListener("change", render);
+    render();
+  })();
+
+  // Bottom bar: light the section in view; tapping scrolls its heading just under the top
+  var links = Array.prototype.slice.call(document.querySelectorAll(".bnav a[data-for]"));
+  var sections = Array.prototype.slice.call(document.querySelectorAll("main section"));
+  function safeTop() { return parseFloat(getComputedStyle(document.documentElement).paddingTop) || 0; }
+  function setCurrent(id) { links.forEach(function (a) { a.setAttribute("aria-current", a.getAttribute("data-for") === id ? "true" : "false"); }); }
+  var lockUntil = 0;
+  function updateCurrent() {
+    if (Date.now() < lockUntil) return;
+    var line = safeTop() + 72, cur = null;
+    sections.forEach(function (s) { if (s.getBoundingClientRect().top <= line) cur = s; });
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) cur = sections[sections.length - 1];
+    setCurrent(cur ? cur.id : "");
+  }
+  links.forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      var id = a.getAttribute("data-for"), sec = document.getElementById(id);
+      if (!sec) return;
+      e.preventDefault();
+      var y = sec.querySelector("h2").getBoundingClientRect().top + window.scrollY - safeTop() - 14;
+      var calm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.scrollTo({ top: Math.max(0, Math.round(y)), behavior: calm ? "auto" : "smooth" });
+      try { history.replaceState(null, "", "#" + id); } catch (err) {}
+      setCurrent(id);
+      lockUntil = Date.now() + 900;
+      setTimeout(function () { lockUntil = 0; updateCurrent(); }, 950);
+    });
+  });
+  var ticking = false;
+  window.addEventListener("scroll", function () { if (ticking) return; ticking = true; requestAnimationFrame(function () { ticking = false; updateCurrent(); }); }, { passive: true });
+  updateCurrent();
+})();
+</script>
+</body>
+</html>

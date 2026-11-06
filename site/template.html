@@ -493,7 +493,7 @@ button.refresh { cursor: pointer; }
 /* "New" dot on the Trades tab, for two days after a trade or until you've looked */
 .tab-dot { display: inline-block; width: 7px; height: 7px; margin-left: 3px; border-radius: 50%; background: var(--accent); position: relative; top: -0.55em; }
 
-/* Record Book button, beside the light/dark button (markup goes in once the Record Book exists) */
+/* Record Book button, beside the light/dark button */
 .book-btn { right: calc(max(16px, env(safe-area-inset-right, 0px)) + 66px); text-decoration: none; }
 .book-btn svg { width: 19px; height: 19px; }
 /* Bottom bar: app-style buttons fixed to the bottom of the screen; each can cover two sections */
@@ -592,6 +592,9 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
       <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 1 1 9.5 3.5a7 7 0 0 0 11 11Z"/></svg>
       <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M2 12h2.5M19.5 12H22M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
     </button>
+    <!--book--><a class="theme-btn book-btn" href="record-book.html" aria-label="Record Book" title="Record Book">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.5C10.4 5 8 4.4 3.5 4.4v13.2c4.5 0 6.9.6 8.5 2 1.6-1.4 4-2 8.5-2V4.4C16 4.4 13.6 5 12 6.5Z"/><path d="M12 6.5v13"/></svg>
+    </a><!--/book-->
   </div>
 </header>
 
