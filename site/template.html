@@ -755,7 +755,7 @@ __ESPN__
   document.getElementById("h-week").textContent = isPlayoffs ? "Playoffs" : "Week " + wk + " Scoreboard";
   document.getElementById("week-tag").textContent = started ? "Live" : "Not started";
   document.getElementById("week-lede").textContent = started
-    ? "Scores update about every hour during games."
+    ? "Scores update about once a minute during games."
     : "No points yet. ESPN's projected totals are under each team.";
   var gbox = document.getElementById("games");
   if (!cur.length) gbox.append(el("p", "empty", "No matchups this week."));
