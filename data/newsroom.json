@@ -1,11 +1,12 @@
 {
- "fetchedAt": "2026-11-06T15:13:43.060Z",
+ "fetchedAt": "2026-11-06T15:17:42.908Z",
  "notes": [
   "Each week a team plays two games: its head-to-head matchup, plus a game against the league median (the top 6 scores of the week win it). 'record' combines both; 'h2h' and 'vsMedian' split them.",
   "The top 6 seeds make the playoffs. The regular season is 14 weeks.",
   "Points are fantasy points. 'ptsWhileStarted' and similar fields only count weeks the player was in that team's starting lineup.",
   "Managers are listed by first name. Past seasons list managers, not team names.",
-  "allTimeHeadToHead covers every past season plus this one, playoffs included."
+  "allTimeHeadToHead covers every past season plus this one, playoffs included.",
+  "Past-season records come from ESPN season records and include median games in seasons that had them; allTimeHeadToHead counts only head-to-head matchups."
  ],
  "season": 2026,
  "currentWeek": 9,
