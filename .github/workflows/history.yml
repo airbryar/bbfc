@@ -7,9 +7,6 @@ on:
   workflow_dispatch: {}
   schedule:
     - cron: "23 9 3 * *" # the 3rd of each month
-  push:
-    branches: [record-book]
-    paths: ["scripts/fetch-history.mjs", ".github/workflows/history.yml"]
 
 permissions:
   contents: write

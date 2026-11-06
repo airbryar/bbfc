@@ -54,6 +54,9 @@ this site through conversations with Claude, so:
 4. `scripts/build.mjs` fills the placeholders in `site/template.html` (`__ESPN__`,
    `__PR__`, `__LEAGUE__`, `__POD__`, `__NEWS__`, `__LOGOS__`, `__TRADES__`,
    `__ICONV__`) and writes `_site/`, including `data/stamp.json` and `data/trades.json`.
+   It also builds `_site/record-book.html` from `site/record-book.html` (`__HISTORY__`,
+   `__ESPN__`, `__LOGOS__`, `__ICONV__`); without `data/history.json` it skips the Record
+   Book and removes the header's book button (between `<!--book-->` markers).
 5. The workflow then deploys `_site/` to GitHub Pages.
 
 When it runs:
@@ -107,6 +110,8 @@ Tooling notes from past sessions:
 | `scripts/next-run.mjs` | Game-window pacing |
 | `scripts/fetch-trades.mjs` | Trades reader (about hourly); same trade logic as the newsroom script |
 | `scripts/fetch-podcast.mjs` | SoundCloud feed reader |
+| `scripts/fetch-history.mjs` | Reads past seasons into `data/history.json` for the Record Book |
+| `site/record-book.html` | The Record Book page |
 | `scripts/power.mjs` | Power-rankings formula, the same one the page uses |
 | `scripts/fetch-newsroom.mjs` | Gathers everything the Newspaper writer needs into `data/newsroom.json` |
 | `scripts/add-edition.mjs` | Validates a Newspaper draft and adds it to `data/news.json` |
@@ -114,6 +119,7 @@ Tooling notes from past sessions:
 | `data/league.json` | Power-ranking weights, optional team "takes", league ID and season, podcast feed, `liveEveryMinute` |
 | `data/espn.json`, `data/pod.json` | Latest league data and podcast episodes |
 | `data/trades.json` | Trades with points since; a fallback copy (the live site's is usually newer) |
+| `data/history.json` | Past seasons' standings and every game's score, managers as m1, m2... with first names only |
 | `data/news.json` | Newspaper editions, newest first; the site shows the latest 6 |
 | `data/newsroom.json` | The Newspaper writer's data |
 | `data/logos.json`, `data/brand.json` | Team picture paths, league logo info |
@@ -121,6 +127,7 @@ Tooling notes from past sessions:
 | `.github/workflows/update.yml` | Updates and deploys the site |
 | `.github/workflows/pictures.yml` | Runs on uploads to `team-pictures/` or `league-logo/` |
 | `.github/workflows/newsroom.yml` | Refreshes `data/newsroom.json`; manual or dispatched only |
+| `.github/workflows/history.yml` | Refreshes `data/history.json`; monthly (3rd) or dispatched |
 
 ## The page
 
@@ -138,10 +145,8 @@ in Nov 2026 so one bottom-bar button covers both.
   - The lit button is for the last section whose top has come within 72px of the top of
     the screen; at the very bottom of the page, Podcast.
   - `body` has bottom padding so the footer clears the bar.
-- **Record Book button:** Bryar wants a "history book" page (champions, all-time records,
-  head-to-head) reached by a small book button beside the light/dark button, not a tab.
-  The button's style (`.book-btn`) is in the page, but the button itself goes in only
-  once the Record Book exists (the markup is on the `nav-preview` branch).
+- **Record Book button:** a small book button beside the light/dark button opens the
+  Record Book (Bryar wanted it there rather than as another tab).
 - **Spacing:** sections have `padding-block` of 48px/12px, or 36px/8px on phones.
   Bryar tuned this by eye.
 - **Standings:** shows the head-to-head and median split, with a "Playoff line · Top 6
@@ -215,6 +220,31 @@ in Nov 2026 so one bottom-bar button covers both.
   losing. Don't use either as decoration.
 - **Phones first:** everyone in the league is on iPhone, and many add the site to their
   home screen. The league logo is also the home-screen icon.
+
+## Record Book
+
+`record-book.html`, its own page (added Nov 2026), opened from the header's book button.
+Past seasons (2023 on) come from `data/history.json`; this season so far is added from
+`data/espn.json` on each build, matched to managers through `history.current.teams`.
+
+- **Look:** same tokens and fonts as the main page; a compact navy masthead with a
+  "‹ Home" pill, and its own bottom bar: Home (back to the main page), Champions,
+  All-Time, Records, Rivals.
+- **Champions:** the reigning champion on a navy feature card (final score, seed,
+  regular-season record), earlier champions listed, then a titles count.
+- **All-Time Standings:** current managers only, by winning percentage: record (ESPN's,
+  so median games count from 2025 on; footnoted), Pct, Titles, Playoff trips.
+- **Records:** single-game (highest, lowest, biggest blowout, closest, most points in a
+  loss, fewest in a win; regular season and winners-bracket playoffs, not consolation,
+  this season included) and season (most and fewest points, best and worst record;
+  finished seasons, regular season).
+- **Head-to-Head:** two pickers (current managers) with the series and every meeting,
+  playoffs and consolation included. Starts on the two most recent champions.
+- Managers are named by first name; anyone who has left the league shows as "A former
+  manager". ESPN member IDs must never be saved anywhere in this public repo: they're
+  tied to people's ESPN sign-ins. The scripts map them to short keys in memory.
+- `history.yml` runs monthly to pick up a season once it ends. Run it by hand after the
+  championship if you want it sooner.
 
 ## Newspaper
 
