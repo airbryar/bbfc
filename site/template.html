@@ -534,8 +534,8 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
 
 <nav class="tabs" aria-label="Sections">
   <div class="wrap">
-    <a href="#standings" aria-current="true">Standings</a>
-    <a href="#news">News</a>
+    <a href="#news" aria-current="true">News</a>
+    <a href="#standings">Standings</a>
     <a href="#median">Median</a>
     <a href="#this-week" id="tab-week">Scoreboard</a>
     <a href="#rankings">Rankings</a>
@@ -545,6 +545,20 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
 
 <main class="wrap">
   <p class="note" id="sample-note"><strong>Preview.</strong> The podcast episodes below are samples until the real links go in.</p>
+
+  <section id="news" aria-labelledby="h-news">
+    <div class="sec-head">
+      <h2 id="h-news">Newspaper</h2>
+      <span class="tag" id="news-tag"></span>
+    </div>
+    <div class="edition" id="news-edition"></div>
+    <div class="news" id="news-body"></div>
+    <details class="news-past" id="news-past" hidden>
+      <summary>Earlier editions</summary>
+      <div class="news-past-list" id="news-past-list"></div>
+    </details>
+    <p class="news-credit">Written by Claude from ESPN league data. New editions Tuesday, Thursday and Saturday mornings.</p>
+  </section>
 
   <section id="standings" aria-labelledby="h-standings">
     <div class="sec-head">
@@ -568,20 +582,6 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
         <tbody id="standings-body"></tbody>
       </table>
     </div>
-  </section>
-
-  <section id="news" aria-labelledby="h-news">
-    <div class="sec-head">
-      <h2 id="h-news">Newspaper</h2>
-      <span class="tag" id="news-tag"></span>
-    </div>
-    <div class="edition" id="news-edition"></div>
-    <div class="news" id="news-body"></div>
-    <details class="news-past" id="news-past" hidden>
-      <summary>Earlier editions</summary>
-      <div class="news-past-list" id="news-past-list"></div>
-    </details>
-    <p class="news-credit">Written by Claude from ESPN league data. New editions Tuesday, Thursday and Saturday mornings.</p>
   </section>
 
   <section id="median" aria-labelledby="h-median">
