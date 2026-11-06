@@ -124,14 +124,24 @@ Tooling notes from past sessions:
 
 ## The page
 
-**Section order:** News (Newspaper) → Standings → Scoreboard → Median Watch → Power
-Rankings → Trade Center → Podcast, then the footer. The sticky tab bar uses the same order:
-News, Standings, Scoreboard, Median, Rankings, Trades, Podcast.
+**Section order:** News (Newspaper) → Standings → Power Rankings → Scoreboard → Median
+Watch → Trade Center → Podcast, then the footer. Power Rankings moved up next to Standings
+in Nov 2026 so one bottom-bar button covers both.
 
-- **Tabs:** tapping a tab smooth-scrolls so that section's heading sits about 14px under
-  the tab bar. This uses `scrollToSection`, not the browser's anchor jump.
-  - The active tab is the last section whose top has passed the tab bar plus 72px.
-  - On phones the tab bar scrolls sideways and keeps the active tab in view.
+- **Bottom bar** (Nov 2026; replaced the sticky top tabs, which had gotten crowded): five
+  app-style buttons fixed to the bottom of the screen, icon over label: News, Standings
+  (covers Power Rankings), Scores (Scoreboard and Median Watch), Trades, Podcast. Each
+  link's `data-for` lists the sections it covers.
+  - Tapping one smooth-scrolls so that section's heading sits about 14px under the top of
+    the screen (below the phone's status bar). This uses `scrollToSection`, not the
+    browser's anchor jump.
+  - The lit button is for the last section whose top has come within 72px of the top of
+    the screen; at the very bottom of the page, Podcast.
+  - `body` has bottom padding so the footer clears the bar.
+- **Record Book button:** Bryar wants a "history book" page (champions, all-time records,
+  head-to-head) reached by a small book button beside the light/dark button, not a tab.
+  The button's style (`.book-btn`) is in the page, but the button itself goes in only
+  once the Record Book exists (the markup is on the `nav-preview` branch).
 - **Spacing:** sections have `padding-block` of 48px/12px, or 36px/8px on phones.
   Bryar tuned this by eye.
 - **Standings:** shows the head-to-head and median split, with a "Playoff line · Top 6
@@ -159,7 +169,7 @@ News, Standings, Scoreboard, Median, Rankings, Trades, Podcast.
     story", and an "Earlier editions" list.
   - **Fonts:** stories use Newsreader, a newspaper serif. Headlines are bold serif in
     normal case, deks are italic, and the lead has a drop cap.
-- **Trade Center** (tab "Trades"; added Nov 2026): tiles for the season's trade count and a deadline
+- **Trade Center** (bottom-bar button "Trades"; added Nov 2026): tiles for the season's trade count and a deadline
   countdown ("Deadline · Dec 2" / "26 days", then "Passed"), then one card per trade,
   newest first. The three newest show; the rest sit under "Earlier trades (N)".
   - Each card: "Week N · date" and "Pts since trade", then each team with the players it
@@ -169,13 +179,14 @@ News, Standings, Scoreboard, Median, Rankings, Trades, Podcast.
     "fleeced" labels.
   - A side that got no players got FAAB in this league (Bryar confirmed), so the card says
     "FAAB" there. The trade data has no dollar amounts.
-  - **Trade ticker:** for three days after a trade, a strip between the masthead and the
-    tabs shows a red "TRADE" tag and crawls every recent trade, ESPN-style
+  - **Trade ticker:** for three days after a trade, a strip just under the masthead
+    shows a red "TRADE" tag and crawls every recent trade, ESPN-style
     ("Rico Dowdle to The House Cats for FAAB"; two-sided deals join with " · ", trades
     are separated by a small red diamond). Verb-free on purpose, since team names don't
     take "acquire(s)" cleanly. Tapping it scrolls to the Trade Center. It doesn't move
     for people with reduced motion turned on.
-  - **"New" dot:** a small red dot on the Trades tab for two days after the latest trade,
+  - **"New" dot:** a small red dot on the bottom bar's Trades button for two days after
+    the latest trade,
     or until that viewer reaches the Trade Center (remembered in `localStorage` under
     `bbfc-trades-seen`).
   - Both use each trade's exact time (`at` in `data/trades.json`), falling back to
