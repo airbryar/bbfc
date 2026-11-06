@@ -19,7 +19,7 @@
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png?v=__ICONV__">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=Saira+Condensed:wght@700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Archivo+Black&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=Saira+Condensed:wght@700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Doto:wght@900&display=swap">
 <style>
 html { -webkit-text-size-adjust: 100%; }
 :root { box-sizing: border-box; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
@@ -211,20 +211,23 @@ tbody tr.cut + tr td { border-top: 0; }
 }
 .side.trail .side-score { color: var(--muted); }
 
-/* Scoreboard scores on hand-turned plates: one dark green plate per digit with bold white
-   numbers, blank plates for empty spots, like a ballpark board. Same in both themes. */
-.side-score.plates {
-  display: flex; align-items: flex-end; gap: 2px; padding: 4px; border-radius: 5px; background: #143524;
-  font-family: "Archivo Black", var(--f-num); font-weight: 400; font-size: 21px; line-height: 1; color: #F4F1E6;
+/* Scoreboard scores as stadium bulbs: glowing amber dot-matrix digits over faint unlit
+   bulbs, on a black panel in both themes */
+.side-score.led {
+  display: flex; align-items: center; gap: 0; background: #070707; border-radius: 6px; padding: 4px 8px 3px;
+  font-family: "Doto", var(--f-num); font-weight: 900; font-size: 28px; line-height: 1; color: #FFB23F;
+  font-variant-numeric: normal; text-shadow: 0 0 6px rgba(255, 170, 50, 0.45);
 }
-.plate {
-  width: 21px; height: 30px; display: flex; align-items: center; justify-content: center;
-  background: #1F4C36; border: 1px solid #2D6448; border-radius: 2px;
+.led-grp { display: grid; justify-items: end; }
+.led-grp > span { grid-area: 1 / 1; white-space: pre; }
+.led-off { opacity: 0.13; text-shadow: none; }
+.led-dot {
+  flex: none; align-self: flex-end; width: 0.2em; height: 0.2em; margin: 0 0.06em 0.2em; border-radius: 50%;
+  background: currentColor; box-shadow: 0 0 5px rgba(255, 170, 50, 0.55);
 }
-.plate.blank { background: #102B1E; border-color: #1A3F2C; }
-.plate-dot { flex: none; width: 4px; height: 4px; margin: 0 1px 4px; border-radius: 1px; background: currentColor; }
-.side.trail .side-score.plates { color: #F4F1E6; }
-.side.trail .side-score.plates .plate span, .side.trail .side-score.plates .plate-dot { opacity: 0.62; }
+.side.trail .side-score.led { color: #FFB23F; }
+.side.trail .side-score.led .led-on, .side.trail .side-score.led .led-dot { opacity: 0.6; }
+.side.trail .side-score.led .led-dot { box-shadow: none; }
 .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--down); flex: none; }
 .dot.top { background: var(--up); }
@@ -459,9 +462,7 @@ button.refresh { cursor: pointer; }
   .side-name { font-size: 15px; }
   .side-proj { font-size: 12px; }
   .side-score { font-size: 21px; }
-  .side-score.plates { font-size: 19px; }
-  .plate { width: 19px; height: 27px; }
-  .plate-dot { margin-bottom: 3px; }
+  .side-score.led { font-size: 27px; padding: 4px 8px 3px; }
   .pr-sum { grid-template-columns: 28px minmax(0, 1fr) auto auto 12px; gap: 8px; padding-block: 8px; }
   .pr-rank { font-size: 24px; }
   .pr-team { font-size: 15px; }
@@ -904,26 +905,21 @@ __ESPN__
   btnProj.addEventListener("click", function () { mwMode = "proj"; renderMW(); });
   renderMW();
 
-  // Scoreboard score on hand-turned plates: three plates before the decimal (blank when
-  // empty), a dot, then two plates after it.
-  function plateScore(txt) {
+  // Scoreboard score as stadium bulbs: lit digits sit right-aligned over unlit 8s
+  // (888.88), with a separate lit decimal point like a real scoreboard.
+  function ledScore(txt) {
     var m = /^(\d{1,3})\.(\d\d)$/.exec(txt);
     if (!m) return el("div", "side-score", txt);
-    var box = el("div", "side-score plates");
-    function plate(ch) {
-      var p = el("span", "plate" + (ch ? "" : " blank"));
-      if (ch) p.append(el("span", null, ch));
-      p.setAttribute("aria-hidden", "true");
-      return p;
+    function grp(lit, ghost) {
+      var g = el("span", "led-grp");
+      g.append(el("span", "led-off", ghost), el("span", "led-on", lit));
+      g.setAttribute("aria-hidden", "true");
+      return g;
     }
-    var whole = m[1];
-    for (var i = whole.length; i < 3; i++) box.append(plate(""));
-    whole.split("").forEach(function (c) { box.append(plate(c)); });
-    var dot = el("span", "plate-dot");
+    var dot = el("span", "led-dot");
     dot.setAttribute("aria-hidden", "true");
-    box.append(dot);
-    m[2].split("").forEach(function (c) { box.append(plate(c)); });
-    box.append(el("span", "vh", txt));
+    var box = el("div", "side-score led");
+    box.append(grp(m[1], "888"), dot, grp(m[2], "88"), el("span", "vh", txt));
     return box;
   }
 
@@ -948,7 +944,7 @@ __ESPN__
       info.append(sn);
       info.append(el("div", "side-proj", "Proj " + pts(s[2])));
       row.append(info);
-      row.append(plateScore(pts(s[1])));
+      row.append(ledScore(pts(s[1])));
       card.append(row);
     });
     gbox.append(card);
