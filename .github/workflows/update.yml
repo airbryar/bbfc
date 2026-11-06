@@ -90,6 +90,7 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git stash push --include-untracked -q || true
           git pull --rebase origin main
           git commit --allow-empty -m "Republish the site (automatic)"
           git push
