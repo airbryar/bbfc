@@ -1,0 +1,48 @@
+name: Refresh league history
+
+# Reads past seasons from ESPN into data/history.json for the Record Book. Past seasons
+# don't change, so this only matters once a season ends; it runs monthly to catch that,
+# and can be started by hand. It saves the file to the branch it ran on.
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "23 9 3 * *" # the 3rd of each month
+  push:
+    branches: [record-book]
+    paths: ["scripts/fetch-history.mjs", ".github/workflows/history.yml"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: bbfc-history
+  cancel-in-progress: false
+
+jobs:
+  history:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Read past seasons from ESPN
+        run: node scripts/fetch-history.mjs
+        env:
+          ESPN_S2: ${{ secrets.ESPN_S2 }}
+          ESPN_SWID: ${{ secrets.ESPN_SWID }}
+
+      - name: Save the history
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/history.json
+          if git diff --cached --quiet; then
+            echo "History unchanged"
+          else
+            git commit -m "Update league history"
+            git push origin HEAD:${{ github.ref_name }} || (git pull --rebase origin ${{ github.ref_name }} && git push origin HEAD:${{ github.ref_name }})
+          fi
