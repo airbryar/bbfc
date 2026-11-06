@@ -9,6 +9,7 @@ const pod = JSON.parse(read("data/pod.json"));
 const news = fs.existsSync("data/news.json") ? JSON.parse(read("data/news.json")) : { editions: [] };
 const logos = JSON.parse(read("data/logos.json"));
 const brand = fs.existsSync("data/brand.json") ? JSON.parse(read("data/brand.json")) : { custom: false, iconVersion: "1" };
+const newsroom = fs.existsSync("data/newsroom.json") ? JSON.parse(read("data/newsroom.json")) : {};
 
 // Keeps "</script>" inside data from ever closing a script block early.
 const safe = (obj, pretty) => JSON.stringify(obj, null, pretty ? 1 : 0).replace(/</g, "\\u003c");
@@ -20,6 +21,7 @@ const blocks = {
   __POD__: safe(pod, true),
   __NEWS__: safe({ editions: (news.editions || []).slice(0, 6) }),
   __LOGOS__: safe(logos, true),
+  __TRADES__: safe({ through: newsroom.lastFinishedWeek || null, deadline: newsroom.tradeDeadline || null, trades: newsroom.trades || [] }),
   __ICONV__: brand.iconVersion || "1",
 };
 

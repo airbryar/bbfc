@@ -451,6 +451,38 @@ button.refresh { cursor: pointer; }
   .pr-more { padding: 0 0 12px; }
 }
 
+/* Trades: one card per deal, each side with the players it got and their points since */
+.trades { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+@media (min-width: 620px) { .trades { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.tr-earlier { margin-top: 10px; }
+.trade { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 0 14px 2px; min-width: 0; }
+.tr-meta {
+  display: flex; justify-content: space-between; gap: 10px; padding: 9px 0 7px; border-bottom: 1px solid var(--line);
+  font-family: var(--f-label); font-weight: 600; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+}
+.tr-meta b { color: var(--ink); font-weight: 700; }
+.tr-side { padding-block: 10px 8px; }
+.tr-side + .tr-side { border-top: 1px solid var(--line); }
+.tr-team { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; }
+.tr-name { display: flex; align-items: center; gap: 8px; min-width: 0; font-weight: 600; font-size: 16px; line-height: 1.25; }
+.tr-total { font-family: var(--f-num); font-weight: 700; font-size: 24px; line-height: 1; font-variant-numeric: tabular-nums; }
+.tr-side.trail .tr-total { color: var(--muted); }
+.tr-players { list-style: none; margin: 5px 0 0; padding: 0 0 0 34px; }
+.tr-players li { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 12px; font-size: 14px; line-height: 1.35; padding-block: 2px; }
+.tr-pos { margin-left: 6px; font-family: var(--f-label); font-weight: 600; font-size: 12px; letter-spacing: 0.06em; color: var(--muted); }
+.tr-pp { font-family: var(--f-num); font-weight: 600; font-size: 15px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.tr-none { color: var(--muted); font-style: italic; }
+@media (max-width: 619px) {
+  .trades { gap: 8px; }
+  .trade { padding: 0 12px 2px; }
+  .tr-side { padding-block: 8px 6px; }
+  .tr-name { gap: 6px; font-size: 15px; }
+  .tr-total { font-size: 21px; }
+  .tr-players { padding-left: 27px; margin-top: 3px; }
+  .tr-players li { font-size: 13.5px; }
+  .tr-pp { font-size: 14px; }
+}
+
 /* Podcast: newest episode featured, older ones listed */
 .pod { display: grid; gap: 14px; }
 .pod-follow { font-family: var(--f-label); font-weight: 700; font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); text-decoration: none; white-space: nowrap; }
@@ -540,6 +572,7 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
     <a href="#this-week" id="tab-week">Scoreboard</a>
     <a href="#median">Median</a>
     <a href="#rankings">Rankings</a>
+    <a href="#trades">Trades</a>
     <a href="#podcast">Podcast</a>
   </div>
 </nav>
@@ -632,6 +665,24 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
     <ol class="pr" id="rankings-list"></ol>
   </section>
 
+  <section id="trades" aria-labelledby="h-trades">
+    <div class="sec-head">
+      <h2 id="h-trades">Trades</h2>
+      <span class="tag" id="trades-tag"></span>
+    </div>
+    <p class="lede">Every deal this season, newest first. Each team is listed with the players it got and the points they've scored in its starting lineup since.</p>
+    <div class="mw-tiles">
+      <div class="tile"><div class="tile-label">Trades this season</div><div class="tile-value" id="tr-count">&ndash;</div><div class="tile-note" id="tr-count-note"></div></div>
+      <div class="tile"><div class="tile-label" id="tr-dl-label">Trade deadline</div><div class="tile-value" id="tr-dl">&ndash;</div><div class="tile-note" id="tr-dl-note"></div></div>
+    </div>
+    <div class="trades" id="trades-list"></div>
+    <details class="news-past" id="trades-more" hidden>
+      <summary id="trades-more-sum">Earlier trades</summary>
+      <div class="trades tr-earlier" id="trades-more-list"></div>
+    </details>
+    <p class="mw-foot">A dash means the player hasn't been in that team's starting lineup since the trade.</p>
+  </section>
+
   <section id="podcast" aria-labelledby="h-podcast">
     <div class="sec-head">
       <h2 id="h-podcast">The Poddy</h2>
@@ -647,6 +698,11 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
 <!-- Team images (64px, embedded). Teams without one get an initials badge. -->
 <script type="application/json" id="logo-data">
 __LOGOS__
+</script>
+
+<!-- Trades this season, with points scored for the new team since. -->
+<script type="application/json" id="trades-data">
+__TRADES__
 </script>
 
 <!-- Newspaper editions, newest first. -->
@@ -1055,6 +1111,90 @@ __ESPN__
     li.append(det);
     ol.append(li);
   });
+
+  // Trades: newest first, the latest few shown and the rest behind "Earlier trades"
+  (function () {
+    var T = { trades: [] };
+    try { T = JSON.parse(document.getElementById("trades-data").textContent) || T; } catch (e) {}
+    var list = (T.trades || []).slice().sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
+    var idByName = {};
+    E.teams.forEach(function (t) { idByName[t.name] = t.id; });
+    function shortDay(d, withWeekday) {
+      try {
+        var o = { timeZone: "UTC", month: "short", day: "numeric" };
+        if (withWeekday) o.weekday = "short";
+        return new Date(d + "T12:00:00Z").toLocaleDateString("en-US", o);
+      } catch (e) { return d; }
+    }
+    function one(n) { return Number(n || 0).toFixed(1); }
+
+    if (T.through) document.getElementById("trades-tag").textContent = "Through Week " + T.through;
+    fill("tr-count", String(list.length));
+    if (list.length) fill("tr-count-note", "Latest on " + shortDay(list[0].date));
+
+    if (T.deadline) {
+      var today = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" });
+      var days = Math.round((Date.parse(T.deadline + "T12:00:00Z") - Date.parse(today + "T12:00:00Z")) / 86400000);
+      fill("tr-dl-label", "Deadline · " + shortDay(T.deadline));
+      fill("tr-dl", !isFinite(days) ? "–" : days > 1 ? days + " days" : days === 1 ? "1 day" : days === 0 ? "Today" : "Passed");
+      fill("tr-dl-note", days >= 0 ? "Trades close " + shortDay(T.deadline, true) : "No more trades this season");
+    }
+
+    function card(t) {
+      var art = el("article", "trade");
+      var meta = el("div", "tr-meta");
+      var when = el("span");
+      when.append(el("b", null, "Week " + t.week), " · " + shortDay(t.date, true));
+      meta.append(when, el("span", null, "Pts since trade"));
+      art.append(meta);
+
+      var sides = (t.teams || []).map(function (name) {
+        var got = (t.received || []).filter(function (r) { return r.team === name; })[0];
+        var players = got ? got.players : [];
+        var total = players.reduce(function (s, p) { return s + (p.ptsForNewTeamSince || 0); }, 0);
+        var starts = players.reduce(function (s, p) { return s + (p.startsSince || 0); }, 0);
+        return { name: name, players: players, total: total, starts: starts };
+      });
+      sides.sort(function (a, b) { return (b.players.length ? 1 : 0) - (a.players.length ? 1 : 0); });
+      var best = Math.max.apply(null, sides.map(function (s) { return s.players.length ? s.total : -1; }));
+
+      sides.forEach(function (s) {
+        var has = s.players.length > 0;
+        var side = el("div", "tr-side" + (!has || !s.starts || s.total < best - 0.05 ? " trail" : ""));
+        var top = el("div", "tr-team");
+        var nm = el("div", "tr-name");
+        nm.append(badge(idByName[s.name], s.name), el("span", null, s.name));
+        top.append(nm, el("span", "tr-total", has && s.starts ? one(s.total) : "–"));
+        side.append(top);
+        var ul = el("ul", "tr-players");
+        if (!has) ul.append(el("li", "tr-none", "No players listed"));
+        s.players.forEach(function (p) {
+          var m = /^(.*) \(([A-Z\/]+)\)$/.exec(p.player || "");
+          var li = el("li");
+          var who = el("span");
+          who.append(m ? m[1] : p.player);
+          if (m) who.append(el("span", "tr-pos", m[2]));
+          li.append(who, el("span", "tr-pp", p.startsSince ? one(p.ptsForNewTeamSince) : "–"));
+          ul.append(li);
+        });
+        side.append(ul);
+        art.append(side);
+      });
+      return art;
+    }
+
+    var box = document.getElementById("trades-list");
+    if (!list.length) { box.append(el("p", "empty", "No trades yet this season.")); return; }
+    var SHOW = 4;
+    list.slice(0, SHOW).forEach(function (t) { box.append(card(t)); });
+    if (list.length > SHOW) {
+      var rest = list.slice(SHOW);
+      document.getElementById("trades-more-sum").textContent = "Earlier trades (" + rest.length + ")";
+      var more = document.getElementById("trades-more-list");
+      rest.forEach(function (t) { more.append(card(t)); });
+      document.getElementById("trades-more").hidden = false;
+    }
+  })();
 
   // Podcast: newest featured, the rest listed
   var podEl = document.getElementById("pod-data");
