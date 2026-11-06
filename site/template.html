@@ -556,8 +556,8 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
   <div class="wrap">
     <a href="#news" aria-current="true">News</a>
     <a href="#standings">Standings</a>
-    <a href="#median">Median</a>
     <a href="#this-week" id="tab-week">Scoreboard</a>
+    <a href="#median">Median</a>
     <a href="#rankings">Rankings</a>
     <a href="#podcast">Podcast</a>
   </div>
@@ -604,6 +604,18 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
     </div>
   </section>
 
+  <section id="this-week" aria-labelledby="h-week">
+    <div class="sec-head">
+      <h2 id="h-week">This Week</h2>
+      <span class="tag" id="week-tag"></span>
+    </div>
+    <div class="mw-ctrl">
+      <p class="lede week-lede" id="week-lede"></p>
+      <p class="upd" data-upd></p>
+    </div>
+    <div class="games" id="games"></div>
+  </section>
+
   <section id="median" aria-labelledby="h-median">
     <div class="sec-head">
       <h2 id="h-median">Median Watch</h2>
@@ -623,18 +635,6 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
     </div>
     <div class="mw" id="mw-chart"></div>
     <p class="mw-legend" aria-hidden="true"><span><span class="mk live"></span>Live</span><span><span class="mk final"></span>Final</span><span><span class="mk yet"></span>To play</span></p>
-  </section>
-
-  <section id="this-week" aria-labelledby="h-week">
-    <div class="sec-head">
-      <h2 id="h-week">This Week</h2>
-      <span class="tag" id="week-tag"></span>
-    </div>
-    <div class="mw-ctrl">
-      <p class="lede week-lede" id="week-lede"></p>
-      <p class="upd" data-upd></p>
-    </div>
-    <div class="games" id="games"></div>
   </section>
 
   <section id="rankings" aria-labelledby="h-rankings">
