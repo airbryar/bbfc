@@ -28,6 +28,7 @@ for (const [key, value] of Object.entries(blocks)) {
 fs.rmSync("_site", { recursive: true, force: true });
 fs.mkdirSync("_site/data", { recursive: true });
 fs.cpSync("site/icons", "_site/icons", { recursive: true });
+if (fs.existsSync("site/logos")) fs.cpSync("site/logos", "_site/logos", { recursive: true });
 fs.writeFileSync("_site/index.html", html);
 fs.writeFileSync("_site/data/espn.json", JSON.stringify(espn));
 fs.writeFileSync("_site/data/stamp.json", JSON.stringify({ fetchedAt: espn.fetchedAt }));

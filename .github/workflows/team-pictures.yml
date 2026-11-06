@@ -1,0 +1,56 @@
+name: Team pictures
+
+# When a picture is added, changed or removed in team-pictures/, shrink it for
+# the site, save the result, and republish.
+on:
+  push:
+    branches: [main]
+    paths: ["team-pictures/**"]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: team-pictures
+  cancel-in-progress: false
+
+jobs:
+  pictures:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Get the image tool
+        run: npm install --no-save --no-package-lock --no-audit --no-fund sharp@0.33.5
+
+      - name: Make the site-size pictures
+        run: node scripts/make-logos.mjs
+
+      - name: Save them
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add site/logos data/logos.json team-pictures/README.md
+          if git diff --cached --quiet; then
+            echo "Pictures already up to date"
+          else
+            git commit -m "Update team pictures"
+            git push || (git pull --rebase origin main && git push)
+          fi
+
+      - name: Publish the site
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          curl -sf -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/update.yml/dispatches" \
+            -d '{"ref":"main"}' && echo "Site update started"
