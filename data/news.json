@@ -1,3 +1,49 @@
 {
-  "editions": []
+  "editions": [
+    {
+      "id": "2026-11-06",
+      "date": "2026-11-06",
+      "label": "Friday Edition",
+      "week": 9,
+      "publishedAt": "2026-11-06T15:19:52.937Z",
+      "stories": [
+        {
+          "kicker": "Matchup of the Week",
+          "headline": "Two-Time Champion Tyler Gets His Shot at Michael's Silly Geese",
+          "dek": "Breece's Pieces are projected favorites against the No. 3 seed, though Tyler trails Michael 3-5 in their all-time series.",
+          "body": [
+            "The weekend's marquee game puts the league's only two-time champion against the No. 3 seed. Tyler's Breece's Pieces (9-7) host Michael's Silly Geese (12-4), neither side has scored a point yet, and the projections lean toward the home team, 109.1 to 99.2. It is the first meeting of the season between the two.",
+            "History favors Michael, who holds a 5-3 edge in the all-time series. The 2023 season ended with Tyler as champion and Michael as runner-up, and Tyler added a second title in 2025. Michael is still chasing his first; his only playoff trip in three past seasons came in that 2023 run.",
+            "Breece's Pieces arrive on a climb. They jumped from ninth to sixth in the power rankings after beating GAYleb williams 118.0 to 103.7 in Week 8, with Ja'Marr Chase scoring 25.6 and Drake Maye 22.5. Bucky Irving leads the roster with 121.6 points in eight starts. The bench has been productive as well: Joe Burrow, acquired from Micah in a Week 3 trade, scored 28.9 in Week 7 and 39.5 in Week 8 without starting.",
+            "The Silly Geese have cooled from their early pace. They average 114.9 points a week but 98.3 over the last three, a stretch that included losses to Real Man of Genius and The House Cats before a 111.6 to 87.7 win over I want my Nickleback last week. Josh Allen remains the engine, with 187.3 points in seven starts and 26.6 last week. Michael, who has made five trades and 31 pickups, went back to waivers this week for Devin Singletary, Dylan Sampson, Brian Thomas Jr. and the Bears D/ST.",
+            "The stakes run in both directions. The Silly Geese sit four games clear of seventh place with six weeks left, and a win would help them keep pace with the top two seeds. Breece's Pieces are one game above the 8-8 pair of After Bowers and The Mouse Rats, and their remaining opponents average 109.3 points per game, the toughest slate among the league's top eight. Next week brings The Mouse Rats, a team Tyler is 0-3 against all time."
+          ]
+        },
+        {
+          "kicker": "Top Seed Race",
+          "headline": "Jeremy Keeps Posting the Week's Top Score, but Josh Still Holds No. 1",
+          "dek": "Illegal use of hands has led the league in scoring three weeks running and sits one game behind 14-2 Lisan al Gibbs.",
+          "body": [
+            "Jeremy's Illegal use of hands has posted the league's highest score in three consecutive weeks, 148.9, 126.9 and 136.6, and sits first in the power rankings. It still has not caught Lisan al Gibbs. Josh's team is 14-2, one game ahead of Jeremy at 13-3, and both carry early leads into the weekend against teams near the bottom of the standings.",
+            "Jeremy has won every head-to-head matchup since Week 3, when he edged Pteem Shteevenshun by 1.5 points. His 1,022.0 points are the most in the league, and his 137.5-point average over the last three weeks is nearly 22 points better than anyone else's. Jaxon Smith-Njigba has 188.0 points as a starter, the top total on any roster, with Kyren Williams at 133.5 and Bhayshul Tuten at 110.8.",
+            "The gap comes down to opposing scores. Jeremy has allowed 887.5 points, second-most in the league, while Josh has allowed 727.1, the fewest by almost 50. Lisan al Gibbs has done plenty on its own end, too, with 991.2 points, second only to Jeremy. Its only losses came in Week 4, when GAYleb williams won 126.9 to 97.4 and the score also fell below the median.",
+            "Josh has kept building. He traded DK Metcalf and Ollie Gordon II to Jared for Tee Higgins in Week 8, and Higgins scored 32.5 in his first start, the best individual score of the week. Metcalf had produced 60.5 points for Josh before the deal and scored 0.9 in his debut for Jared. Gordon had cost Josh $55 in FAAB in Week 4, still the largest bid of the season. This week Josh claimed Bo Nix for $8.",
+            "Both leaders are in good shape for Week 9. Josh leads Jared's I want my Nickleback 20.8 to 0 after Cam Little scored 17.0, and the projection favors him 124.2 to 106.9, though Jared is 2-1 against Josh all time. Jeremy leads Micah's Real Man of Genius 8.9 to 0 on Bhayshul Tuten's early points and is projected to win 124.0 to 91.7. Next week, Josh hosts The Silly Geese while Jeremy hosts The House Cats."
+          ]
+        },
+        {
+          "kicker": "Playoff Race",
+          "headline": "Four Teams Within One Game Fight for the Last Three Playoff Spots",
+          "dek": "GAYleb williams meets The Mouse Rats, After Bowers visits Every Inch Matters, and The House Cats try to climb back from 6-10.",
+          "body": [
+            "Below the top three, the playoff race is packed tight. GAYleb williams and Breece's Pieces are 9-7, After Bowers and The Mouse Rats are 8-8, and only three of those four can finish in a playoff seed if the standings hold. With six weeks and 12 games left, median games included, Week 9 puts two of them head to head.",
+            "Landon's GAYleb williams hosts Bryar's The Mouse Rats in a series tied 2-2 all time. The Mouse Rats lead 18.7 to 0 so far, with Parker Washington scoring 13.1 and Derrick Henry 5.6, but GAYleb williams is projected to win 117.0 to 96.2. Landon's team has the fourth-most points in the league at 877.1 and the softest remaining schedule, with opponents averaging 96.2 points per game.",
+            "The Mouse Rats come in after their toughest stretch of the season. They scored 66.7 in Week 8, the lowest total of the week, while Patrick Mahomes put up 25.4 on the bench, and they slid from fifth to eighth in the power rankings. Their 79.4-point average over the last three weeks is the lowest in the league. Bryar was active on the wire, adding Xavier Worthy, Sione Vaki and the Lions D/ST.",
+            "Ezra's After Bowers holds the sixth seed largely through the median game. Its head-to-head record is 3-5, but it is 5-3 against the median, and it moved from sixth to fifth in the power rankings. Ezra leads Garrett's Every Inch Matters 10.2 to 0 behind Chris Rodriguez Jr., though the projections favor Every Inch Matters 112.6 to 104.3. Ezra is 4-2 against Garrett all time and has made 42 pickups this season.",
+            "The House Cats are two games out of sixth at 6-10, but their 105.2-point average over the last three weeks is the third-best in the league. Luke's team leads Caleb's Pteem Shteevenshun 12.0 to 0 on the Jaguars D/ST and is projected to win 120.0 to 113.5 in a series tied 2-2. Luke added J.J. McCarthy on a $9 claim and Brandon Aiyuk this week, and Rico Dowdle scored 11.6 in his first start after a trade with Jared."
+          ]
+        }
+      ]
+    }
+  ]
 }
