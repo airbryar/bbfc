@@ -1281,7 +1281,7 @@ __ESPN__
 
     var box = document.getElementById("trades-list");
     if (!list.length) { box.append(el("p", "empty", "No trades yet this season.")); return; }
-    var SHOW = 4;
+    var SHOW = 3;
     list.slice(0, SHOW).forEach(function (t) { box.append(card(t)); });
     if (list.length > SHOW) {
       var rest = list.slice(SHOW);

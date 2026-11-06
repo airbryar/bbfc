@@ -161,7 +161,7 @@ News, Standings, Scoreboard, Median, Rankings, Trades, Podcast.
     normal case, deks are italic, and the lead has a drop cap.
 - **Trade Center** (tab "Trades"; added Nov 2026): tiles for the season's trade count and a deadline
   countdown ("Deadline · Dec 2" / "26 days", then "Passed"), then one card per trade,
-  newest first. The four newest show; the rest sit under "Earlier trades (N)".
+  newest first. The three newest show; the rest sit under "Earlier trades (N)".
   - Each card: "Week N · date" and "Pts since trade", then each team with the players it
     got. Points count only weeks the player was in that team's starting lineup, finished
     weeks only (tag "Through Week N"). A dash means no starts since.
