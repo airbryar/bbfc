@@ -1,6 +1,9 @@
 # Boys and Bibles Football Club
 
-The BBFC league site: standings, Median Watch, the weekly scoreboard, power rankings and The Poddy.
+The BBFC league site: the Newspaper, standings, the weekly scoreboard, Median Watch, power rankings and The Poddy.
+
+Working on the site with Claude? Start with [CLAUDE.md](CLAUDE.md): it explains how everything fits together
+and the league's standing preferences.
 
 Live at **https://airbryar.github.io/bbfc/**
 
@@ -14,6 +17,9 @@ A GitHub Action (`.github/workflows/update.yml`) runs every 5 minutes during gam
 3. Builds the page (`scripts/build.mjs`) and publishes it to GitHub Pages
 
 Open pages check for new data once a minute and refresh themselves, keeping your place on the page.
+
+The Newspaper is written by a Claude scheduled task on Tuesday, Thursday and Saturday mornings. It
+refreshes `data/newsroom.json` (`.github/workflows/newsroom.yml`) and adds an edition to `data/news.json`.
 
 ## ESPN sign-in
 
@@ -32,3 +38,5 @@ Without them the site keeps showing the last saved data.
 - `data/logos.json` – team images
 - `data/pod.json` – podcast episodes
 - `data/espn.json` – the latest saved league data
+- `data/news.json` – Newspaper editions, newest first
+- `team-pictures/`, `league-logo/` – upload images here (see the README in each)
