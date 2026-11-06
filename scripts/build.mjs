@@ -9,6 +9,8 @@ const pod = JSON.parse(read("data/pod.json"));
 const news = fs.existsSync("data/news.json") ? JSON.parse(read("data/news.json")) : { editions: [] };
 const logos = JSON.parse(read("data/logos.json"));
 const brand = fs.existsSync("data/brand.json") ? JSON.parse(read("data/brand.json")) : { custom: false, iconVersion: "1" };
+// Trades come from scripts/fetch-trades.mjs; an empty list just shows "No trades yet".
+const trades = fs.existsSync("data/trades.json") ? JSON.parse(read("data/trades.json")) : { through: null, deadline: null, trades: [] };
 
 // Keeps "</script>" inside data from ever closing a script block early.
 const safe = (obj, pretty) => JSON.stringify(obj, null, pretty ? 1 : 0).replace(/</g, "\\u003c");
@@ -20,6 +22,7 @@ const blocks = {
   __POD__: safe(pod, true),
   __NEWS__: safe({ editions: (news.editions || []).slice(0, 6) }),
   __LOGOS__: safe(logos, true),
+  __TRADES__: safe({ through: trades.through || null, deadline: trades.deadline || null, trades: trades.trades || [] }),
   __ICONV__: brand.iconVersion || "1",
 };
 
@@ -45,6 +48,7 @@ if (fs.existsSync("site/logos")) fs.cpSync("site/logos", "_site/logos", { recurs
 if (fs.existsSync("site/brand")) fs.cpSync("site/brand", "_site/brand", { recursive: true });
 fs.writeFileSync("_site/index.html", html);
 fs.writeFileSync("_site/data/espn.json", JSON.stringify(espn));
+if (trades.fetchedAt) fs.writeFileSync("_site/data/trades.json", JSON.stringify(trades));
 fs.writeFileSync("_site/data/stamp.json", JSON.stringify({ fetchedAt: espn.fetchedAt }));
 fs.writeFileSync("_site/.nojekyll", "");
 console.log(`Built site with data from ${espn.fetchedAt}`);

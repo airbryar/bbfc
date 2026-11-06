@@ -45,12 +45,16 @@ this site through conversations with Claude, so:
 1. `scripts/fetch-espn.mjs` reads the private league from ESPN with the `ESPN_S2` and
    `ESPN_SWID` repo secrets and writes `data/espn.json`. If ESPN fails, it keeps the last
    good data and the site keeps working.
-2. `scripts/fetch-podcast.mjs` reads The Poddy's SoundCloud RSS feed (set in
+2. `scripts/fetch-trades.mjs` writes `data/trades.json` for the Trades section. Trades
+   change rarely, so it only reads ESPN when its newest copy (the live site's
+   `data/trades.json` or the saved one) is 55+ minutes old, and keeps that copy if ESPN
+   fails. The step has `continue-on-error`, so it can't block an update.
+3. `scripts/fetch-podcast.mjs` reads The Poddy's SoundCloud RSS feed (set in
    `data/league.json`) into `data/pod.json`.
-3. `scripts/build.mjs` fills the placeholders in `site/template.html` (`__ESPN__`,
-   `__PR__`, `__LEAGUE__`, `__POD__`, `__NEWS__`, `__LOGOS__`, `__ICONV__`) and writes
-   `_site/`, including `data/stamp.json`.
-4. The workflow then deploys `_site/` to GitHub Pages.
+4. `scripts/build.mjs` fills the placeholders in `site/template.html` (`__ESPN__`,
+   `__PR__`, `__LEAGUE__`, `__POD__`, `__NEWS__`, `__LOGOS__`, `__TRADES__`,
+   `__ICONV__`) and writes `_site/`, including `data/stamp.json` and `data/trades.json`.
+5. The workflow then deploys `_site/` to GitHub Pages.
 
 When it runs:
 
@@ -101,6 +105,7 @@ Tooling notes from past sessions:
 | `scripts/build.mjs` | Builds `_site/` from the template and data |
 | `scripts/fetch-espn.mjs` | ESPN reader for the site |
 | `scripts/next-run.mjs` | Game-window pacing |
+| `scripts/fetch-trades.mjs` | Trades reader (about hourly); same trade logic as the newsroom script |
 | `scripts/fetch-podcast.mjs` | SoundCloud feed reader |
 | `scripts/power.mjs` | Power-rankings formula, the same one the page uses |
 | `scripts/fetch-newsroom.mjs` | Gathers everything the Newspaper writer needs into `data/newsroom.json` |
@@ -108,6 +113,7 @@ Tooling notes from past sessions:
 | `scripts/make-logos.mjs`, `scripts/make-brand.mjs` | Turn uploaded team pictures and the league logo into site images |
 | `data/league.json` | Power-ranking weights, optional team "takes", league ID and season, podcast feed, `liveEveryMinute` |
 | `data/espn.json`, `data/pod.json` | Latest league data and podcast episodes |
+| `data/trades.json` | Trades with points since; a fallback copy (the live site's is usually newer) |
 | `data/news.json` | Newspaper editions, newest first; the site shows the latest 6 |
 | `data/newsroom.json` | The Newspaper writer's data |
 | `data/logos.json`, `data/brand.json` | Team picture paths, league logo info |
@@ -119,8 +125,8 @@ Tooling notes from past sessions:
 ## The page
 
 **Section order:** News (Newspaper) → Standings → Scoreboard → Median Watch → Power
-Rankings → Podcast, then the footer. The sticky tab bar uses the same order: News,
-Standings, Scoreboard, Median, Rankings, Podcast.
+Rankings → Trades → Podcast, then the footer. The sticky tab bar uses the same order:
+News, Standings, Scoreboard, Median, Rankings, Trades, Podcast.
 
 - **Tabs:** tapping a tab smooth-scrolls so that section's heading sits about 14px under
   the tab bar. This uses `scrollToSection`, not the browser's anchor jump.
@@ -153,6 +159,16 @@ Standings, Scoreboard, Median, Rankings, Podcast.
     story", and an "Earlier editions" list.
   - **Fonts:** stories use Newsreader, a newspaper serif. Headlines are bold serif in
     normal case, deks are italic, and the lead has a drop cap.
+- **Trades** (added Nov 2026): tiles for the season's trade count and a deadline
+  countdown ("Deadline · Dec 2" / "26 days", then "Passed"), then one card per trade,
+  newest first. The four newest show; the rest sit under "Earlier trades (N)".
+  - Each card: "Week N · date" and "Pts since trade", then each team with the players it
+    got. Points count only weeks the player was in that team's starting lineup, finished
+    weeks only (tag "Through Week N"). A dash means no starts since.
+  - Like the Scoreboard, the side ahead is in ink and the other is muted. No "won" or
+    "fleeced" labels.
+  - A side that got no players got FAAB in this league (Bryar confirmed), so the card says
+    "FAAB" there. The trade data has no dollar amounts.
 - **Podcast:** "BBFC Presents: The Poddy" from SoundCloud. The newest episode is clearly
   featured; in dark mode it sits on a navy card so it stands out.
 - **Footer:** the club name, the ESPN updated time, a "Match my phone's light/dark
