@@ -48,6 +48,15 @@ jobs:
           ESPN_S2: ${{ secrets.ESPN_S2 }}
           ESPN_SWID: ${{ secrets.ESPN_SWID }}
 
+      # Trades change rarely, so this reads ESPN about once an hour and keeps the last
+      # good list otherwise. It can never stop the site from updating.
+      - name: Check for trades
+        run: node scripts/fetch-trades.mjs
+        continue-on-error: true
+        env:
+          ESPN_S2: ${{ secrets.ESPN_S2 }}
+          ESPN_SWID: ${{ secrets.ESPN_SWID }}
+
       - name: Check for new podcast episodes
         run: node scripts/fetch-podcast.mjs
 
