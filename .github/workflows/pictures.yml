@@ -1,11 +1,11 @@
-name: Team pictures
+name: Pictures
 
-# When a picture is added, changed or removed in team-pictures/, shrink it for
-# the site, save the result, and republish.
+# When a team picture or the league logo is added, changed or removed, resize it
+# for the site, save the result, and republish.
 on:
   push:
     branches: [main]
-    paths: ["team-pictures/**"]
+    paths: ["team-pictures/**", "league-logo/**"]
   workflow_dispatch: {}
 
 permissions:
@@ -13,7 +13,7 @@ permissions:
   actions: write
 
 concurrency:
-  group: team-pictures
+  group: pictures
   cancel-in-progress: false
 
 jobs:
@@ -30,18 +30,21 @@ jobs:
       - name: Get the image tool
         run: npm install --no-save --no-package-lock --no-audit --no-fund sharp@0.33.5
 
-      - name: Make the site-size pictures
+      - name: Make the site-size team pictures
         run: node scripts/make-logos.mjs
+
+      - name: Make the league logo and home-screen icon
+        run: node scripts/make-brand.mjs
 
       - name: Save them
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add site/logos data/logos.json team-pictures/README.md
+          git add -A site/logos site/brand site/icons data/logos.json data/brand.json team-pictures/README.md
           if git diff --cached --quiet; then
             echo "Pictures already up to date"
           else
-            git commit -m "Update team pictures"
+            git commit -m "Update pictures"
             git push || (git pull --rebase origin main && git push)
           fi
 
