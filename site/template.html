@@ -422,7 +422,7 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
   <div class="wrap">
     <a href="#standings" aria-current="true">Standings</a>
     <a href="#median">Median</a>
-    <a href="#this-week" id="tab-week">This Week</a>
+    <a href="#this-week" id="tab-week">Scoreboard</a>
     <a href="#rankings">Rankings</a>
     <a href="#podcast">Podcast</a>
   </div>
@@ -752,7 +752,6 @@ __ESPN__
   renderMW();
 
   // This week: matchups
-  document.getElementById("tab-week").textContent = isPlayoffs ? "Playoffs" : "Week " + wk;
   document.getElementById("h-week").textContent = isPlayoffs ? "Playoffs" : "Week " + wk + " Scoreboard";
   document.getElementById("week-tag").textContent = started ? "Live" : "Not started";
   document.getElementById("week-lede").textContent = started
