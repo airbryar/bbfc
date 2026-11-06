@@ -140,6 +140,7 @@ async function fromEspn() {
       }
       return {
         date: day(t.date),
+        at: t.date, // exact time, for the ticker and the tab's "new" dot
         week,
         teams: [...new Set(msgs.flatMap((m) => [m.from, m.to]))].map(tname),
         received: Object.entries(sides).map(([tid, players]) => ({ team: tname(Number(tid)), players })),
