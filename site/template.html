@@ -612,7 +612,7 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
     <p class="lede m-hide">Where every team sits against this week's median line. The top six scores win the median game.</p>
     <div class="mw-ctrl">
       <div class="seg" role="group" aria-label="Score view">
-        <button type="button" id="mw-now" aria-pressed="false">Right now</button>
+        <button type="button" id="mw-now" aria-pressed="false">Current</button>
         <button type="button" id="mw-proj" aria-pressed="false">Projected</button>
       </div>
       <p class="upd" data-upd></p>
@@ -838,7 +838,7 @@ __ESPN__
     btnNow.setAttribute("aria-pressed", String(mwMode === "now"));
     btnProj.setAttribute("aria-pressed", String(mwMode === "proj"));
     var useLive = mwMode === "now";
-    fill("mw-med-label", useLive ? "Median right now" : "Projected median");
+    fill("mw-med-label", useLive ? "Current median" : "Projected median");
     var chart = document.getElementById("mw-chart");
     chart.textContent = "";
     function blank(msg) {
