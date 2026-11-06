@@ -45,6 +45,9 @@ img { max-width: 100%; }
   --down: #B3342B;
   --chip: #E9EDF4;
   --tabs-bg: #F3F5F9;
+  --feature: #13294B;
+  --feature-line: #13294B;
+  --feature-soft: #DCE4F2;
   --sun: none;
   --moon: block;
   --f-display: "Saira Condensed", "Arial Narrow", Arial, sans-serif;
@@ -59,14 +62,14 @@ img { max-width: 100%; }
     --bg: #101112; --surface: #1D1E1E; --ink: #FFFFFF; --muted: #A1A2A3; --line: #2C2D2E;
     --accent: #FF5A68; --gilt: #658EEF; --band: #000000; --band-deep: #1D1E1E; --band-ink: #FFFFFF;
     --band-gilt: #A1A2A3; --ribbon: #D3283C; --up: #65B752; --down: #EF8682; --chip: #303132;
-    --tabs-bg: #000000; --sun: block; --moon: none; color-scheme: dark;
+    --tabs-bg: #000000; --feature: #1B3766; --feature-line: #3A5A93; --feature-soft: #C8D5F0; --sun: block; --moon: none; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
     --bg: #101112; --surface: #1D1E1E; --ink: #FFFFFF; --muted: #A1A2A3; --line: #2C2D2E;
   --accent: #FF5A68; --gilt: #658EEF; --band: #000000; --band-deep: #1D1E1E; --band-ink: #FFFFFF;
   --band-gilt: #A1A2A3; --ribbon: #D3283C; --up: #65B752; --down: #EF8682; --chip: #303132;
-  --tabs-bg: #000000; --sun: block; --moon: none; color-scheme: dark;
+  --tabs-bg: #000000; --feature: #1B3766; --feature-line: #3A5A93; --feature-soft: #C8D5F0; --sun: block; --moon: none; color-scheme: dark;
 }
 
 body {
@@ -390,12 +393,12 @@ button.refresh { cursor: pointer; }
 .pod-follow { font-family: var(--f-label); font-weight: 700; font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); text-decoration: none; white-space: nowrap; }
 .pod-follow:hover { text-decoration: underline; }
 .ep-feature {
-  position: relative; overflow: hidden; background: var(--band); color: var(--band-ink);
-  border-radius: 12px; border-bottom: 4px solid var(--ribbon); padding: 20px 20px 0;
+  position: relative; overflow: hidden; background: var(--feature); color: var(--band-ink);
+  border-radius: 12px; border: 1px solid var(--feature-line); border-bottom: 4px solid var(--ribbon); padding: 20px 20px 0;
 }
 .ep-kicker {
   display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px;
-  font-family: var(--f-label); font-weight: 700; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--band-gilt);
+  font-family: var(--f-label); font-weight: 700; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--feature-soft);
 }
 .ep-badge { background: var(--ribbon); color: #FFFFFF; padding: 2px 8px 1px; border-radius: 4px; letter-spacing: 0.1em; }
 .ep-feature h3 {
@@ -404,8 +407,8 @@ button.refresh { cursor: pointer; }
 }
 .ep-age { font-size: 15px; opacity: 0.85; margin: 0; }
 .ep-feature .btn { margin-top: 16px; background: #FFFFFF; color: #13294B; }
-.ep-feature .btn:hover { background: var(--band-gilt); }
-.wave { display: flex; align-items: flex-end; gap: 3px; height: 44px; margin: 18px -20px 0; padding: 0 20px; opacity: 0.22; }
+.ep-feature .btn:hover { background: var(--feature-soft); }
+.wave { display: flex; align-items: flex-end; gap: 3px; height: 44px; margin: 18px -20px 0; padding: 0 20px; opacity: 0.26; }
 .wave span { flex: 1; min-width: 2px; background: var(--band-ink); border-radius: 1px 1px 0 0; }
 .pod-sub { font-family: var(--f-label); font-weight: 700; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin: 8px 0 -4px; }
 .ep-list { list-style: none; margin: 0; padding: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
