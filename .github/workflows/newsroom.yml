@@ -1,0 +1,39 @@
+name: Newsroom data
+
+# Pulls the details the Newspaper is written from (player scores, trades,
+# pickups, league history) and saves them to data/newsroom.json.
+# Started by the Newspaper's scheduled task right before each edition.
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: newsroom
+  cancel-in-progress: false
+
+jobs:
+  newsroom:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Gather league details from ESPN
+        run: node scripts/fetch-newsroom.mjs
+        env:
+          ESPN_S2: ${{ secrets.ESPN_S2 }}
+          ESPN_SWID: ${{ secrets.ESPN_SWID }}
+
+      - name: Save them
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/newsroom.json
+          git commit -m "Update newsroom data" || { echo "No changes"; exit 0; }
+          git push || (git pull --rebase origin main && git push)
