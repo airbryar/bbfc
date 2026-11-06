@@ -76,8 +76,10 @@ h1 {
   line-height: 0.95; letter-spacing: 0.01em; text-transform: uppercase; text-wrap: balance; margin: 0;
 }
 .mast-sub { margin: 8px 0 0; font-size: 15px; opacity: 0.88; }
-.mast-upd { margin: 2px 0 0; font-family: var(--f-label); font-weight: 600; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--band-gilt); }
-.mast-upd b { color: var(--band-ink); font-weight: 700; }
+.upd { margin: 0; display: inline-flex; align-items: center; gap: 6px; font-family: var(--f-label); font-weight: 600; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+.upd b { color: var(--ink); font-weight: 700; }
+.upd-dot { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--muted); }
+.upd-dot.fresh { background: var(--up); }
 .ribbon {
   position: absolute; top: 0; right: max(16px, env(safe-area-inset-right, 0px));
   width: 16px; height: 74px; background: var(--ribbon);
@@ -411,7 +413,6 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
       <p class="eyebrow" id="season-line">BBFC</p>
       <h1>Boys and Bibles Football Club</h1>
       <p class="mast-sub" id="through-line"></p>
-      <p class="mast-upd" id="upd-line"></p>
     </div>
     <span class="ribbon" aria-hidden="true"></span>
   </div>
@@ -465,6 +466,7 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
         <button type="button" id="mw-now" aria-pressed="false">Right now</button>
         <button type="button" id="mw-proj" aria-pressed="false">Projected</button>
       </div>
+      <p class="upd" data-upd></p>
     </div>
     <div class="mw-tiles">
       <div class="tile"><div class="tile-label" id="mw-med-label">Median</div><div class="tile-value" id="mw-med">&ndash;</div><div class="tile-note" id="mw-med-note"></div></div>
@@ -472,7 +474,6 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
     </div>
     <div class="mw" id="mw-chart"></div>
     <p class="mw-legend" aria-hidden="true"><span><span class="mk live"></span>Live</span><span><span class="mk final"></span>Final</span><span><span class="mk yet"></span>To play</span></p>
-    <p class="mw-foot" id="mw-foot"></p>
   </section>
 
   <section id="this-week" aria-labelledby="h-week">
@@ -482,6 +483,7 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
     </div>
     <div class="mw-ctrl">
       <p class="lede week-lede" id="week-lede"></p>
+      <p class="upd" data-upd></p>
     </div>
     <div class="games" id="games"></div>
   </section>
@@ -606,13 +608,15 @@ __ESPN__
   var updTime = "";
   try { updTime = new Date(E.fetchedAt).toLocaleString("en-US", { timeZone: "America/New_York", weekday: "short", hour: "numeric", minute: "2-digit" }) + " ET"; } catch (e) { updTime = ""; }
   function renderUpd() {
-    var line = document.getElementById("upd-line");
     var mins = Math.floor((Date.now() - new Date(E.fetchedAt).getTime()) / 60000);
     var ago = !isFinite(mins) ? "" : mins < 1 ? "just now" : mins < 60 ? mins + " min ago" : mins < 1440 ? Math.floor(mins / 60) + " hr ago" : Math.floor(mins / 1440) + " days ago";
-    line.textContent = "";
-    line.append("Scores updated ");
-    line.append(el("b", null, updTime));
-    if (ago) line.append(" \u00b7 " + ago);
+    Array.prototype.slice.call(document.querySelectorAll("[data-upd]")).forEach(function (line) {
+      line.textContent = "";
+      var dot = el("span", "upd-dot" + (mins < 15 ? " fresh" : ""));
+      dot.setAttribute("aria-hidden", "true");
+      line.append(dot, "Updated ", el("b", null, updTime));
+      if (ago) line.append(" \u00b7 " + ago);
+    });
   }
   renderUpd();
   setInterval(renderUpd, 30000);
@@ -671,7 +675,6 @@ __ESPN__
 
   // Median Watch
   document.getElementById("mw-tag").textContent = isPlayoffs ? "Playoffs" : "Week " + wk + " · " + (started ? "Live" : "Not started");
-  document.getElementById("mw-foot").textContent = "ESPN data as of " + stamp + ".";
   var btnNow = document.getElementById("mw-now");
   var btnProj = document.getElementById("mw-proj");
   var scoredCount = sides.filter(function (s) { return s[1] > 0; }).length;
