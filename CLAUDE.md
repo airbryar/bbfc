@@ -207,9 +207,18 @@ News, Standings, Scoreboard, Median, Rankings, Trades, Podcast.
 
 ## Newspaper
 
-The **BBFC Newspaper** scheduled task (`trig_01MHdDzVwGDM43saxpx6efob`) runs in the
-cloud, without Bryar's Mac, at 7:37 AM Eastern on Tuesday, Thursday and Saturday. Each
-run:
+The Newspaper is two scheduled tasks with the same prompt. They run in the cloud,
+without Bryar's Mac:
+
+- **BBFC Newspaper** (`trig_01MHdDzVwGDM43saxpx6efob`): Thursday and Saturday at
+  4:46 AM Eastern, so editions are up by about 5. Bryar asked for 5 AM (Nov 2026).
+  ESPN's API answered normally during its 4-7 AM ET maintenance window when checked.
+- **BBFC Newspaper (Tuesday)** (`trig_01RPiymJqjQpM2JbV9WrH81q`): Tuesday at 7:37 AM
+  Eastern. Kept later because the recap needs last week to be final on ESPN; move it to
+  4:46 AM once a Tuesday rollover shows ESPN finalizes the week before then. If you
+  change one prompt, change both.
+
+Each run:
 
 1. Dispatches `newsroom.yml` to refresh `data/newsroom.json`.
 2. Writes three stories from that data. The focus depends on the day:
