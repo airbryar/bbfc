@@ -39,6 +39,11 @@ if (!live) {
   process.exit(0);
 }
 
+// Pace it to about one update a minute, counting from when this run read ESPN.
+const readAt = new Date(fs.readFileSync(".espn-ok", "utf8").trim()).getTime();
+const waitMs = Math.max(0, 50000 - (Date.now() - readAt));
+if (waitMs) await new Promise((done) => setTimeout(done, waitMs));
+
 const repo = process.env.GITHUB_REPOSITORY;
 const token = process.env.GH_TOKEN;
 const r = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/update.yml/dispatches`, {
