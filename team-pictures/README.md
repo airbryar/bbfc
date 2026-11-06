@@ -13,13 +13,13 @@ badge, delete the team's picture from this folder.
 | Team | File name | Has a picture |
 | --- | --- | --- |
 | After Bowers | `after-bowers.jpg` | Yes |
-| Breece's Pieces | `breeces-pieces.jpg` | No, shows initials |
+| Breece's Pieces | `breeces-pieces.jpg` | Yes |
 | Every Inch Matters | `every-inch-matters.jpg` | Yes |
-| GAYleb williams | `gayleb-williams.jpg` | No, shows initials |
+| GAYleb williams | `gayleb-williams.jpg` | Yes |
 | I want my Nickleback | `i-want-my-nickleback.jpg` | No, shows initials |
-| Illegal use of hands | `illegal-use-of-hands.jpg` | No, shows initials |
-| Lisan al Gibbs | `lisan-al-gibbs.jpg` | No, shows initials |
-| Pteem Shteevenshun | `pteem-shteevenshun.jpg` | No, shows initials |
+| Illegal use of hands | `illegal-use-of-hands.jpg` | Yes |
+| Lisan al Gibbs | `lisan-al-gibbs.jpg` | Yes |
+| Pteem Shteevenshun | `pteem-shteevenshun.jpg` | Yes |
 | Real Man of Genius | `real-man-of-genius.jpg` | No, shows initials |
 | The House Cats | `the-house-cats.jpg` | Yes |
 | The Mouse Rats | `the-mouse-rats.jpg` | No, shows initials |
