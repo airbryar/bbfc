@@ -1210,11 +1210,21 @@ __ESPN__
   applyTheme();
 
   // Open at the section named in the link (e.g. #median from Get latest)
-  function goToHash() {
+  // Lines a section's heading up just under the sticky tabs, so the space between
+  // sections stays above the screen and more of the section fits below.
+  function scrollToSection(sec, smooth) {
+    var bar = document.querySelector(".tabs");
+    var head = sec.querySelector("h2") || sec;
+    var stuck = bar ? (parseFloat(getComputedStyle(bar).top) || 0) + bar.offsetHeight : 0;
+    var y = head.getBoundingClientRect().top + window.scrollY - stuck - 14;
+    var calm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: Math.max(0, Math.round(y)), behavior: smooth && !calm ? "smooth" : "instant" });
+  }
+  function goToHash(smooth) {
     var id = (location.hash || "").replace(/^#/, "");
     if (!/^[a-z-]+$/.test(id)) return;
     var target = document.getElementById(id);
-    if (target && target.tagName === "SECTION") target.scrollIntoView({ block: "start" });
+    if (target && target.tagName === "SECTION") scrollToSection(target, smooth === true);
   }
   var KEEP = "bbfc-keep";
   var kept = null;
@@ -1226,7 +1236,7 @@ __ESPN__
   }
   restorePlace();
   window.addEventListener("load", restorePlace);
-  window.addEventListener("hashchange", goToHash);
+  window.addEventListener("hashchange", function () { goToHash(true); });
 
   // Reload in place, keeping the scroll position and the Median Watch view.
   // A fresh query string skips any cached copy of the page.
@@ -1293,8 +1303,15 @@ __ESPN__
   }, { passive: true });
   window.addEventListener("resize", updateCurrent);
   links.forEach(function (a) {
-    a.addEventListener("click", function () {
-      setCurrent(a.getAttribute("href").slice(1));
+    a.addEventListener("click", function (e) {
+      var id = a.getAttribute("href").slice(1);
+      var sec = document.getElementById(id);
+      if (sec) {
+        e.preventDefault();
+        scrollToSection(sec, true);
+        try { history.replaceState(null, "", "#" + id); } catch (err) {}
+      }
+      setCurrent(id);
       lockUntil = Date.now() + 900;
       setTimeout(function () { lockUntil = 0; updateCurrent(); }, 950);
     });
