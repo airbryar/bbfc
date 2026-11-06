@@ -471,7 +471,6 @@ button.refresh { cursor: pointer; }
 .tr-players li { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 12px; font-size: 14px; line-height: 1.35; padding-block: 2px; }
 .tr-pos { margin-left: 6px; font-family: var(--f-label); font-weight: 600; font-size: 12px; letter-spacing: 0.06em; color: var(--muted); }
 .tr-pp { font-family: var(--f-num); font-weight: 600; font-size: 15px; color: var(--muted); font-variant-numeric: tabular-nums; }
-.tr-none { color: var(--muted); font-style: italic; }
 @media (max-width: 619px) {
   .trades { gap: 8px; }
   .trade { padding: 0 12px 2px; }
@@ -1167,7 +1166,8 @@ __ESPN__
         top.append(nm, el("span", "tr-total", has && s.starts ? one(s.total) : "–"));
         side.append(top);
         var ul = el("ul", "tr-players");
-        if (!has) ul.append(el("li", "tr-none", "No players listed"));
+        // A side that got no players got FAAB budget instead
+        if (!has) { var faab = el("li"); faab.append(el("span", null, "FAAB")); ul.append(faab); }
         s.players.forEach(function (p) {
           var m = /^(.*) \(([A-Z\/]+)\)$/.exec(p.player || "");
           var li = el("li");
