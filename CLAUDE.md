@@ -125,7 +125,7 @@ Tooling notes from past sessions:
 ## The page
 
 **Section order:** News (Newspaper) → Standings → Scoreboard → Median Watch → Power
-Rankings → Trades → Podcast, then the footer. The sticky tab bar uses the same order:
+Rankings → Trade Center → Podcast, then the footer. The sticky tab bar uses the same order:
 News, Standings, Scoreboard, Median, Rankings, Trades, Podcast.
 
 - **Tabs:** tapping a tab smooth-scrolls so that section's heading sits about 14px under
@@ -159,7 +159,7 @@ News, Standings, Scoreboard, Median, Rankings, Trades, Podcast.
     story", and an "Earlier editions" list.
   - **Fonts:** stories use Newsreader, a newspaper serif. Headlines are bold serif in
     normal case, deks are italic, and the lead has a drop cap.
-- **Trades** (added Nov 2026): tiles for the season's trade count and a deadline
+- **Trade Center** (tab "Trades"; added Nov 2026): tiles for the season's trade count and a deadline
   countdown ("Deadline · Dec 2" / "26 days", then "Passed"), then one card per trade,
   newest first. The four newest show; the rest sit under "Earlier trades (N)".
   - Each card: "Week N · date" and "Pts since trade", then each team with the players it
