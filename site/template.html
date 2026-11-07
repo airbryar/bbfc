@@ -188,6 +188,16 @@ a.tlink:hover { text-decoration: underline; }
 .od-cut { height: 0; border-top: 2px dashed var(--gilt); margin-block: 8px; text-align: center; }
 .od-cut span { position: relative; top: -0.8em; padding: 0 8px; background: var(--surface); font-family: var(--f-label); font-weight: 700; font-size: 11px; line-height: 1.4; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gilt); }
 .od-cut + .od-row { border-top: 0; }
+.od-wk { grid-column: 2 / -1; margin: 6px 0 1px 27px; font-size: 12.5px; line-height: 1.35; color: var(--muted); }
+.od-wk-say { display: block; font-weight: 700; }
+.od-wk-say.in { color: var(--up); }
+.od-wk-say.out { color: var(--down); }
+.od-wk-l { font-family: var(--f-label); font-weight: 700; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; margin-right: 6px; }
+.od-wk-o { white-space: nowrap; }
+.od-wk-o + .od-wk-o::before { content: "·"; margin: 0 6px; }
+.od-wk-o b { font-family: var(--f-num); font-weight: 700; font-size: 14px; color: var(--ink); font-variant-numeric: tabular-nums; }
+.od-wk-o b.in { color: var(--up); }
+.od-wk-o b.out { color: var(--down); }
 #st-odds .how { margin: 0 0 10px; }
 .num { text-align: right; white-space: nowrap; }
 .rk { width: 1.6em; font-family: var(--f-num); font-weight: 700; font-size: 20px; color: var(--muted); padding-right: 4px; }
@@ -1300,7 +1310,8 @@ __ESPN__
       "Each team's scores are based on its scoring average so far, nudged a little toward the league average.",
       "This week uses ESPN's live projections, so the odds move during games.",
       (ODDS.medianOn ? "Median games count, and ties" : "Ties") + " are broken " + (ODDS.tiebreak === "H2H_RECORD" ? "by head-to-head record, then points scored" : ODDS.tiebreak === "TOTAL_POINTS_SCORED" ? "by points scored" : "by points scored, close to the league's own tiebreaker") + ", like ESPN does.",
-      "Clinched and Eliminated only appear when the math guarantees it.",
+      "Under each team: its odds after each possible result this week" + (ODDS.medianOn ? " (2–0 means winning both the head-to-head and the median game)" : "") + ".",
+      "Clinched, Eliminated, In and Out only appear when the math guarantees it.",
     ].forEach(function (t) { how.append(el("li", null, t)); });
     function fmt(p, sure) {
       if (sure === "in") return "100%";
@@ -1309,6 +1320,29 @@ __ESPN__
       if (p > 0 && p < 0.005) return "<1%";
       if (p === 0) return "<1%";
       return Math.round(p * 100) + "%";
+    }
+    // What it takes: the odds after each result this week, and a plain line when one result settles it
+    var RES = ODDS.medianOn ? ["2–0", "1–1", "0–2"] : ["Win", "Loss"];
+    function whatItTakes(o) {
+      var wkOdds = o.week;
+      if (!wkOdds || wkOdds.length !== RES.length) return null;
+      // Nothing at stake this week (every result rounds to >99% or <1%): leave the line off
+      var shown = wkOdds.map(function (v) { return typeof v === "number" ? fmt(v) : v; });
+      if (shown.every(function (v) { return v === ">99%"; }) || shown.every(function (v) { return v === "<1%"; })) return null;
+      var line = el("div", "od-wk");
+      var last = wkOdds.length - 1;
+      var say = null;
+      if (wkOdds[0] === "in") say = ["in", ODDS.medianOn ? (wkOdds[1] === "in" ? "Clinches with a win" : "Clinches with a 2–0 week") : "Clinches with a win"];
+      else if (wkOdds[last] === "out") say = ["out", ODDS.medianOn ? (wkOdds[1] === "out" ? "Needs a 2–0 week to stay alive" : "Eliminated with an 0–2 week") : "Eliminated with a loss"];
+      if (say) line.append(el("span", "od-wk-say " + say[0], say[1]));
+      line.append(el("span", "od-wk-l", "This week"));
+      wkOdds.forEach(function (v, i) {
+        var o2 = el("span", "od-wk-o");
+        o2.append(RES[i] + " ");
+        o2.append(v === "in" ? el("b", "in", "In") : v === "out" ? el("b", "out", "Out") : el("b", null, v == null ? "–" : fmt(v)));
+        line.append(o2);
+      });
+      return line;
     }
     var list = E.teams.map(function (t) {
       var o = ODDS.teams[t.id] || {};
@@ -1341,6 +1375,8 @@ __ESPN__
       row.append(el("span", "od-num od-proj", r.o.projW + "-" + r.o.projL));
       row.append(el("span", "od-num od-bye", ODDS.byes ? (r.o.bye > 0 ? fmt(r.o.bye) : "–") : ""));
       row.append(el("span", "od-num od-pct", fmt(r.o.playoffs, r.sure)));
+      var wkLine = whatItTakes(r.o);
+      if (wkLine && !r.sure) row.append(wkLine);
       box.append(row);
     });
   })();
