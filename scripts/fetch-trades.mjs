@@ -183,7 +183,8 @@ async function fromEspn() {
     const pids = (won.items || []).filter((i) => i.type === "ADD").map((i) => i.playerId);
     return claims
       .filter((c) => c.sp === won.sp && Math.abs(c.processDate - won.processDate) < 3600e3 && (c.items || []).some((i) => i.type === "ADD" && pids.includes(i.playerId)))
-      .map((c) => ({ team: c.teamId, bid: c.bidAmount || 0, won: c.id === won.id }))
+      // void: processed but failed for another reason (roster limit, drop already gone)
+      .map((c) => ({ team: c.teamId, bid: c.bidAmount || 0, won: c.id === won.id, ...(c.id !== won.id && c.status !== "FAILED_INVALIDPLAYERSOURCE" ? { void: true } : {}) }))
       .sort((a, b) => b.won - a.won || b.bid - a.bid);
   }
   const pickups = moves
