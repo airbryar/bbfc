@@ -39,11 +39,11 @@ const safe = (obj, pretty) => JSON.stringify(obj, null, pretty ? 1 : 0).replace(
 const blocks = {
   __ESPN__: safe(espn),
   __PR__: safe(espn), // Power rankings use finished weeks only, so they change when a week goes final.
-  __LEAGUE__: safe({ weights: league.weights, takes: league.takes || {} }, true),
+  __LEAGUE__: safe({ weights: league.weights, takes: league.takes || {}, offline: league.offlineCopy !== false }, true),
   __POD__: safe(pod, true),
   __NEWS__: safe({ editions: (news.editions || []).slice(0, 6) }),
   __LOGOS__: safe(logos, true),
-  __TRADES__: safe({ through: trades.through || null, deadline: trades.deadline || null, trades: trades.trades || [] }),
+  __TRADES__: safe({ through: trades.through || null, deadline: trades.deadline || null, week: trades.week || null, trades: trades.trades || [], faab: trades.faab || null, pickups: trades.pickups || [] }),
   __ODDS__: safe(odds),
   __ALERTS__: safe({ appId: league.onesignalAppId || null }),
   __ICONV__: brand.iconVersion || "1",
@@ -100,15 +100,23 @@ fs.writeFileSync("_site/manifest.webmanifest", JSON.stringify({
     { src: `icons/icon-512.png?v=${iconV}`, sizes: "512x512", type: "image/png" },
   ],
 }, null, 2));
-// OneSignal's worker has to sit at the top of the site to receive alerts
-if (league.onesignalAppId) fs.copyFileSync("site/OneSignalSDKWorker.js", "_site/OneSignalSDKWorker.js");
+// The site's one service worker, at the top of the site: OneSignal's alerts (once set up)
+// plus the offline copy (site/sw-offline.js). "offlineCopy": false in data/league.json turns
+// the offline copy off; phones then drop their saved copies on their next visit.
+{
+  const sw = [];
+  if (league.onesignalAppId) sw.push(read("site/OneSignalSDKWorker.js"));
+  if (league.offlineCopy !== false) sw.push(read("site/sw-offline.js"));
+  else sw.push(`// Offline copy turned off: remove any saved copies\nself.addEventListener("install", function () { self.skipWaiting(); });\nself.addEventListener("activate", function (e) { e.waitUntil(caches.keys().then(function (k) { return Promise.all(k.filter(function (n) { return n.indexOf("bbfc-") === 0; }).map(function (n) { return caches.delete(n); })); })); });\n`);
+  fs.writeFileSync("_site/OneSignalSDKWorker.js", sw.join("\n"));
+}
 
 // Team pages: one page that shows any team (team.html?t=ID)
 if (fs.existsSync("site/team.html")) {
   let page = read("site/team.html");
   const teamBlocks = {
     __ESPN__: safe(espn), __ODDS__: safe(odds), __TEAMX__: safe(teamx), __LOGOS__: safe(logos, true), __ICONV__: brand.iconVersion || "1",
-    __TRADES__: safe({ trades: trades.trades || [] }), __HISTORY__: safe(history),
+    __TRADES__: safe({ trades: trades.trades || [], faab: trades.faab || null, pickups: trades.pickups || [] }), __HISTORY__: safe(history),
   };
   for (const [key, value] of Object.entries(teamBlocks)) {
     if (!page.includes(key)) throw new Error(`team.html is missing ${key}`);

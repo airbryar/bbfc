@@ -465,6 +465,30 @@ button.refresh { cursor: pointer; }
 
 /* Trades: one card per deal, each side with the players it got and their points since */
 .trades { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+/* Waiver Wire: the week's pickups by bid, and each team's FAAB left */
+.wire-head { margin: 28px 0 10px; }
+.wire-h { font-family: var(--f-display); font-weight: 800; font-size: 21px; line-height: 1; text-transform: uppercase; letter-spacing: 0.01em; margin: 0; }
+.wire-card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 0 14px; }
+#wire-more .wire-card { margin-top: 10px; }
+.wire-card.faab { margin-top: 10px; padding-bottom: 6px; }
+.pk { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; padding-block: 9px; }
+.pk + .pk { border-top: 1px solid var(--line); }
+.pk-who { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.pk-text { min-width: 0; }
+.pk-add { font-weight: 600; font-size: 15px; line-height: 1.25; }
+.pk-add .tr-pos { margin-left: 5px; }
+.pk-sub { font-size: 13px; line-height: 1.3; color: var(--muted); margin-top: 1px; }
+.pk-bid { font-family: var(--f-num); font-weight: 700; font-size: 20px; line-height: 1; font-variant-numeric: tabular-nums; text-align: right; }
+.pk-bid.fa { font-family: var(--f-label); font-size: 12px; letter-spacing: 0.08em; color: var(--muted); }
+.fb-head { display: flex; justify-content: space-between; align-items: baseline; padding: 10px 0 4px; font-family: var(--f-label); font-weight: 700; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.fb { display: grid; grid-template-columns: minmax(0, 1fr) 72px 44px; align-items: center; gap: 10px; padding-block: 6px; font-size: 14px; }
+.fb + .fb { border-top: 1px solid var(--line); }
+.fb-name { display: flex; align-items: center; gap: 8px; min-width: 0; font-weight: 600; line-height: 1.2; }
+.fb-name span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fb-bar { height: 4px; border-radius: 2px; background: var(--chip); overflow: hidden; }
+.fb-bar span { display: block; height: 100%; border-radius: 2px; background: var(--gilt); }
+.fb-left { text-align: right; font-family: var(--f-num); font-weight: 700; font-size: 16px; font-variant-numeric: tabular-nums; }
+.fb.mine { background: var(--mine); margin-inline: -14px; padding-inline: 14px; box-shadow: inset 3px 0 0 var(--gilt); }
 @media (min-width: 620px) { .trades { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .tr-earlier { margin-top: 10px; }
 .trade { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 0 14px 2px; min-width: 0; }
@@ -612,6 +636,14 @@ tr.mine td:first-child { box-shadow: inset 3px 0 0 var(--gilt); }
 .mu-team.trail .mu-big { color: var(--muted); }
 .mu-meta { font-size: 12.5px; color: var(--muted); margin-top: 3px; font-variant-numeric: tabular-nums; }
 .mu-vs { align-self: center; padding-top: 22px; font-family: var(--f-label); font-weight: 700; font-size: 13px; letter-spacing: 0.1em; color: var(--muted); }
+.mu-win { display: grid; grid-template-columns: auto 1fr auto; align-items: baseline; column-gap: 8px; margin: 10px 0 2px; }
+.mu-wl { text-align: center; font-family: var(--f-label); font-weight: 700; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.mu-wp { font-family: var(--f-num); font-weight: 600; font-size: 16px; line-height: 1; color: var(--muted); font-variant-numeric: tabular-nums; }
+.mu-wp.r { text-align: right; }
+.mu-wp.fav { color: var(--ink); font-weight: 700; }
+.mu-wbar { grid-column: 1 / -1; display: flex; gap: 2px; height: 6px; margin-top: 6px; }
+.mu-wbar span { min-width: 0; border-radius: 3px; background: var(--chip); }
+.mu-wbar span.fav { background: var(--gilt); }
 .mu-list { margin-top: 12px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
 .mu-row { display: grid; grid-template-columns: minmax(0, 1fr) 46px 36px 46px minmax(0, 1fr); align-items: center; column-gap: 5px; padding: 8px 10px; }
 .mu-row + .mu-row { border-top: 1px solid var(--line); }
@@ -742,7 +774,7 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
   </div>
 </header>
 
-<!-- Trade ticker: shown for three days after a trade, like a TV crawl. Tapping it opens the Trade Center. -->
+<!-- Trade ticker: shown for three days after a trade, like a TV crawl. Tapping it opens Transactions. -->
 <a class="ticker" id="ticker" href="#trades" hidden>
   <span class="tk-label">Trade</span>
   <span class="tk-view"><span class="tk-track" id="tk-track"></span></span>
@@ -754,7 +786,7 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
     <a href="#news" data-for="news"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h13v14H6.2A2.2 2.2 0 0 1 4 16.8Z"/><path d="M17 9h3v8a2 2 0 0 1-2 2h-1"/><path d="M7.5 9h6M7.5 12.5h6M7.5 16h4"/></svg>News</a>
     <a href="#standings" data-for="standings rankings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h1.5M4 12h1.5M4 18h1.5M9 6h11M9 12h8M9 18h5"/></svg>Standings</a>
     <a href="#this-week" data-for="this-week median"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="12" rx="2"/><path d="M12 4.5v12M9 20.5h6M12 16.5v4"/><path d="M6.5 8.5h2v4h-2zM15.5 8.5h2v4h-2z"/></svg>Scores</a>
-    <a href="#trades" data-for="trades"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5h15M15 4.5l4 4-4 4"/><path d="M20 15.5H5M9 11.5l-4 4 4 4"/></svg>Trades</a>
+    <a href="#trades" data-for="trades"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5h15M15 4.5l4 4-4 4"/><path d="M20 15.5H5M9 11.5l-4 4 4 4"/></svg>Moves</a>
     <a href="#podcast" data-for="podcast"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M9 21h6"/></svg>Podcast</a>
   </div>
 </nav>
@@ -860,10 +892,10 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
 
   <section id="trades" aria-labelledby="h-trades">
     <div class="sec-head">
-      <h2 id="h-trades">Trade Center</h2>
+      <h2 id="h-trades">Transactions</h2>
       <span class="tag" id="trades-tag"></span>
     </div>
-    <p class="lede">Every deal this season, newest first. Each team is listed with the players it got and the points they've scored in its starting lineup since.</p>
+    <p class="lede">Every trade this season, newest first, with the points each player has scored in his new team's starting lineup since. Then the Waiver Wire.</p>
     <div class="mw-tiles">
       <div class="tile"><div class="tile-label">Trades this season</div><div class="tile-value" id="tr-count">&ndash;</div><div class="tile-note" id="tr-count-note"></div></div>
       <div class="tile"><div class="tile-label" id="tr-dl-label">Trade deadline</div><div class="tile-value" id="tr-dl">&ndash;</div><div class="tile-note" id="tr-dl-note"></div></div>
@@ -874,6 +906,15 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
       <div class="trades tr-earlier" id="trades-more-list"></div>
     </details>
     <p class="mw-foot">A dash means the player hasn't been in that team's starting lineup since the trade.</p>
+    <div id="wire" hidden>
+      <div class="sec-head wire-head"><h3 class="wire-h">Waiver Wire</h3><span class="tag" id="wire-tag"></span></div>
+      <div class="wire-card" id="wire-list"></div>
+      <details class="news-past" id="wire-more" hidden>
+        <summary id="wire-more-sum">More pickups</summary>
+        <div class="wire-card" id="wire-more-list"></div>
+      </details>
+      <div class="wire-card faab" id="faab-box" hidden></div>
+    </div>
   </section>
 
   <section id="podcast" aria-labelledby="h-podcast">
@@ -1513,6 +1554,35 @@ __ESPN__
   // Matchup details: both lineups for one game, loaded on demand and refreshed while open
   var muBack = document.getElementById("matchup"), muBody = document.getElementById("mu-body");
   var muOpen = null, muData = null, muTimer = null, muLast = null;
+  // Win chance: each side's live projection, with an uncertainty that shrinks as its players
+  // finish (spread grows with the points still to come; sized from how much this league's
+  // weekly scores swing). Same idea as the playoff odds, for one game.
+  var winK = (function () {
+    var by = {}, all = [];
+    (E.games || []).forEach(function (g) { [g.h, g.a].forEach(function (s) { (by[s[0]] = by[s[0]] || []).push(s[1]); all.push(s[1]); }); });
+    if (all.length < 24) return 6;
+    var sq = 0, n = 0, k = 0;
+    Object.keys(by).forEach(function (id) {
+      var v = by[id], m = v.reduce(function (a, b) { return a + b; }, 0) / v.length;
+      v.forEach(function (x) { sq += (x - m) * (x - m); n++; }); k++;
+    });
+    var mean = all.reduce(function (a, b) { return a + b; }, 0) / all.length;
+    return (sq / Math.max(1, n - k)) / mean; // variance per projected point
+  })();
+  function normCdf(z) {
+    var t = 1 / (1 + 0.2316419 * Math.abs(z));
+    var d = 0.3989423 * Math.exp(-z * z / 2);
+    var p = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+    return z > 0 ? 1 - p : p;
+  }
+  // Chance that side A beats side B, from points so far and live projected totals; null once both are done
+  function winChance(ptsA, projA, ptsB, projB) {
+    var rem = Math.max(0, projA - ptsA) + Math.max(0, projB - ptsB);
+    if (rem < 0.5) return null;
+    return normCdf((projA - projB) / Math.sqrt(winK * rem));
+  }
+  function pctText(p) { return p >= 0.995 ? ">99%" : p < 0.005 ? "<1%" : Math.round(p * 100) + "%"; }
+
   function shortName(n, pos, team) {
     if (pos === "D/ST") return team ? team + " D/ST" : n;
     var w = String(n).split(" ");
@@ -1577,6 +1647,22 @@ __ESPN__
     var sc = el("div", "mu-score");
     sc.append(muSide(L, false, R), el("div", "mu-vs", "VS"), muSide(R, true, L));
     muBody.append(sc);
+    var wc = winChance(L.pts, L.proj, R.pts, R.proj);
+    if (wc != null) {
+      var win = el("div", "mu-win");
+      var fav = wc >= 0.5 ? "l" : "r";
+      var lp = el("span", "mu-wp" + (fav === "l" ? " fav" : ""), pctText(wc));
+      var rp = el("span", "mu-wp r" + (fav === "r" ? " fav" : ""), pctText(1 - wc));
+      var bar = el("span", "mu-wbar");
+      var lb = el("span", fav === "l" ? "fav" : ""), rb = el("span", fav === "r" ? "fav" : "");
+      lb.style.width = (wc * 100).toFixed(1) + "%";
+      rb.style.width = ((1 - wc) * 100).toFixed(1) + "%";
+      bar.append(lb, rb);
+      bar.setAttribute("aria-hidden", "true");
+      win.append(lp, el("span", "mu-wl", "Win chance"), rp, bar);
+      win.setAttribute("aria-label", "Win chance: " + nameOf(L.id) + " " + pctText(wc) + ", " + nameOf(R.id) + " " + pctText(1 - wc));
+      muBody.append(win);
+    }
     muBody.append(muRows(L.starters, R.starters));
     var bench = el("details", "mu-bench");
     bench.append(el("summary", null, "Bench"));
@@ -1584,7 +1670,7 @@ __ESPN__
     muBody.append(bench);
     var when = "";
     try { when = new Date(muData.fetchedAt).toLocaleTimeString("en-US", { timeZone: "America/New_York", hour: "numeric", minute: "2-digit" }); } catch (e) {}
-    muBody.append(el("p", "mu-foot", "Projections under each score. Updated " + when + " ET, about once a minute during games."));
+    muBody.append(el("p", "mu-foot", "Projections under each score. Win chance comes from the live projections and the points still to play. Updated " + when + " ET, about once a minute during games."));
   }
   function loadLineups() {
     return fetch("data/lineups.json?ts=" + Date.now(), { cache: "no-store" })
@@ -1791,7 +1877,7 @@ __ESPN__
       addRound();
       track.append(copy);
       ticker.hidden = false;
-      ticker.setAttribute("aria-label", "New trades: " + recent.map(function (t) { return tickerItem(t).textContent; }).join("; ") + ". Open the Trade Center.");
+      ticker.setAttribute("aria-label", "New trades: " + recent.map(function (t) { return tickerItem(t).textContent; }).join("; ") + ". Open Transactions.");
       // Repeat until one pass is wider than the strip, then a second pass makes the loop seamless
       for (var guard = 0; copy.offsetWidth < view.clientWidth && guard < 6; guard++) addRound();
       var copy2 = copy.cloneNode(true);
@@ -1894,6 +1980,67 @@ __ESPN__
       });
       return art;
     }
+
+    // Waiver Wire: this week's pickups (last week's until the first claims of the week), by bid
+    (function () {
+      var picks = T.pickups || [];
+      var faab = T.faab;
+      if (!picks.length && !faab) return;
+      document.getElementById("wire").hidden = false;
+      var wkNow = T.week || E.currentWeek;
+      var wk = picks.some(function (p) { return p.week === wkNow; }) ? wkNow : wkNow - 1;
+      var these = picks.filter(function (p) { return p.week === wk; }).sort(function (a, b) { return b.bid - a.bid || b.at - a.at; });
+      document.getElementById("wire-tag").textContent = these.length ? "Week " + wk : "";
+      function pickRow(p) {
+        var row = el("div", "pk");
+        var who = el("div", "pk-who");
+        who.append(badge(p.team, nameOf(p.team)));
+        var txt = el("div", "pk-text");
+        var add = el("div", "pk-add");
+        p.add.forEach(function (label, i) {
+          var m = /^(.*) \(([A-Z\/]+)\)$/.exec(label || "");
+          if (i) add.append(", ");
+          add.append(m ? m[1] : label);
+          if (m && !/D\/ST$/.test(m[1])) add.append(el("span", "tr-pos", m[2]));
+        });
+        txt.append(add);
+        var sub = el("div", "pk-sub", nameOf(p.team) + (p.drop.length ? " · dropped " + p.drop.map(function (d) { return d.replace(/ \([A-Z\/]+\)$/, ""); }).join(", ") : ""));
+        txt.append(sub);
+        who.append(txt);
+        row.append(who);
+        row.append(p.type === "W" ? el("span", "pk-bid", "$" + p.bid) : el("span", "pk-bid fa", "Free agent"));
+        return row;
+      }
+      var wl = document.getElementById("wire-list");
+      if (!these.length) wl.append(el("p", "empty", "No pickups yet this week."));
+      var SHOWN = 5;
+      these.slice(0, SHOWN).forEach(function (p) { wl.append(pickRow(p)); });
+      if (these.length > SHOWN) {
+        document.getElementById("wire-more-sum").textContent = "More pickups (" + (these.length - SHOWN) + ")";
+        var ml = document.getElementById("wire-more-list");
+        these.slice(SHOWN).forEach(function (p) { ml.append(pickRow(p)); });
+        document.getElementById("wire-more").hidden = false;
+      }
+      if (faab && faab.budget) {
+        var fb = document.getElementById("faab-box");
+        fb.hidden = false;
+        var head = el("div", "fb-head");
+        head.append(el("span", null, "FAAB left"), el("span", null, "of $" + faab.budget));
+        fb.append(head);
+        E.teams.slice().sort(function (a, b) { return (faab.left[b.id] || 0) - (faab.left[a.id] || 0) || a.name.localeCompare(b.name); }).forEach(function (t) {
+          var left = faab.left[t.id] || 0;
+          var r = el("div", "fb" + (mine(t.id) ? " mine" : ""));
+          var nm = el("div", "fb-name");
+          nm.append(badge(t.id, t.name), el("span", null, t.name));
+          var bar = el("div", "fb-bar"), f = el("span");
+          f.style.width = Math.min(100, left / faab.budget * 100).toFixed(1) + "%";
+          bar.append(f);
+          bar.setAttribute("aria-hidden", "true");
+          r.append(nm, bar, el("span", "fb-left", "$" + left));
+          fb.append(r);
+        });
+      }
+    })();
 
     var box = document.getElementById("trades-list");
     if (!list.length) { box.append(el("p", "empty", "No trades yet this season.")); return; }
@@ -2132,6 +2279,17 @@ __ESPN__
   }
   setInterval(checkForUpdate, 60000);
   document.addEventListener("visibilitychange", checkForUpdate);
+  // Offline copy: the site's service worker (shared with alerts) keeps the last copy of each
+  // page so the app opens right away on weak signal. Registered here unless one already is
+  // (OneSignal registers the same file), so the two never trade places.
+  if (L.offline && "serviceWorker" in navigator) {
+    var swBase = location.pathname.replace(/[^\/]*$/, "");
+    navigator.serviceWorker.getRegistration(swBase).then(function (r) {
+      if (!r) return navigator.serviceWorker.register(swBase + "OneSignalSDKWorker.js", { scope: swBase });
+    }).catch(function () {});
+  }
+  // A page opened from the saved copy has older data: look for newer data right away
+  if (Date.now() - new Date(E.fetchedAt).getTime() > 3 * 60000) setTimeout(checkForUpdate, 2500);
 
   // Highlight the bottom-bar button for the section in view
   var links = Array.prototype.slice.call(document.querySelectorAll(".bnav a"));

@@ -1,2 +1,2 @@
-// Receives BBFC alerts (OneSignal). It only handles notifications; it doesn't cache the site.
+// Receives BBFC alerts (OneSignal). build.mjs adds the offline copy (site/sw-offline.js) after this.
 importScripts("https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js");

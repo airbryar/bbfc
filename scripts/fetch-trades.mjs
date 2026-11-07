@@ -4,6 +4,10 @@
 // goes to ESPN about once an hour; in between, and whenever ESPN can't be reached, it
 // keeps the last good copy (the live site's, if that's newer than the saved one).
 // The trade logic matches scripts/fetch-newsroom.mjs, so the site and the Newspaper agree.
+//
+// It also saves the Waiver Wire for the Transactions section: each team's FAAB left, and
+// every waiver claim and free-agent pickup from this week and last (team id, bid, players
+// added and dropped).
 import fs from "node:fs";
 
 const OUT = "data/trades.json";
@@ -73,13 +77,18 @@ async function fromEspn() {
     if (page.length < 50) break;
   }
 
-  // The scoring period a date falls in, judged from the pickups around it
+  // Pickups (waiver claims and free agents), every week so far: they date the trades, and
+  // this week's and last week's feed the Waiver Wire
   const windows = [];
+  const moves = [];
   const lastPeriod = Math.min(Math.max(CUR, lastWeek), REG + 4);
-  if (topics.length) {
-    for (let sp = 1; sp <= lastPeriod; sp++) {
-      const adds = await get(`${LEAGUE}?view=mTransactions2&scoringPeriodId=${sp}`, { transactions: { filterType: { value: ["WAIVER", "FREEAGENT"] }, filterStatus: { value: ["EXECUTED"] } } });
-      for (const x of adds.transactions || []) if (x.status === "EXECUTED") windows.push([x.proposedDate, sp]);
+  for (let sp = 1; sp <= lastPeriod; sp++) {
+    if (!topics.length && sp < CUR - 1) continue; // no trades to date: only the Waiver Wire's weeks
+    const adds = await get(`${LEAGUE}?view=mTransactions2&scoringPeriodId=${sp}`, { transactions: { filterType: { value: ["WAIVER", "FREEAGENT"] }, filterStatus: { value: ["EXECUTED"] } } });
+    for (const x of adds.transactions || []) {
+      if (x.status !== "EXECUTED") continue;
+      windows.push([x.proposedDate, sp]);
+      if (sp >= CUR - 1) moves.push({ ...x, sp });
     }
   }
   windows.sort((x, y) => x[0] - y[0]);
@@ -112,7 +121,10 @@ async function fromEspn() {
   }
 
   // Names for players who never appeared in a box score
-  const needed = [...new Set(topics.flatMap((t) => (t.messages || []).filter((m) => m.messageTypeId === 244).map((m) => m.targetId)))].filter((id) => !playerName[id]);
+  const needed = [...new Set([
+    ...topics.flatMap((t) => (t.messages || []).filter((m) => m.messageTypeId === 244).map((m) => m.targetId)),
+    ...moves.flatMap((x) => (x.items || []).map((i) => i.playerId)),
+  ])].filter((id) => !playerName[id]);
   for (let i = 0; i < needed.length; i += 50) {
     const ps = await get(`${ROOT}/seasons/${SEASON}/players?view=players_wl`, { filterIds: { value: needed.slice(i, i + 50) } });
     for (const p of Array.isArray(ps) ? ps : []) { playerName[p.id] = p.fullName; playerPos[p.id] = POS[p.defaultPositionId] || ""; }
@@ -149,8 +161,28 @@ async function fromEspn() {
     .filter(Boolean)
     .sort((x, y) => y.date.localeCompare(x.date));
 
+  // Waiver Wire: FAAB left for each team, and this week's and last week's pickups
+  const acq = a.settings.acquisitionSettings || {};
+  const budget = acq.isUsingAcquisitionBudget ? acq.acquisitionBudget || 0 : 0;
+  const faab = budget
+    ? { budget, left: Object.fromEntries((a.teams || []).map((t) => [t.id, Math.max(0, budget - ((t.transactionCounter || {}).acquisitionBudgetSpent || 0))])) }
+    : null;
+  const pickups = moves
+    .map((x) => ({
+      at: x.processDate || x.proposedDate,
+      week: x.sp,
+      type: x.type === "WAIVER" ? "W" : "FA",
+      team: x.teamId,
+      bid: x.bidAmount || 0,
+      add: (x.items || []).filter((i) => i.type === "ADD").map((i) => plabel(i.playerId)),
+      drop: (x.items || []).filter((i) => i.type === "DROP").map((i) => plabel(i.playerId)),
+    }))
+    .filter((x) => x.add.length)
+    .sort((x, y) => y.at - x.at)
+    .slice(0, 60);
+
   const deadline = (a.settings.tradeSettings || {}).deadlineDate;
-  return { fetchedAt: new Date().toISOString(), through: lastWeek || null, deadline: deadline ? day(deadline) : null, trades };
+  return { fetchedAt: new Date().toISOString(), through: lastWeek || null, week: CUR, deadline: deadline ? day(deadline) : null, trades, faab, pickups };
 }
 
 // The freshest copy we already have: the live site's, or the saved one
@@ -163,8 +195,10 @@ try {
   // The live site doesn't have a copy yet: the saved one is used.
 }
 
+// The Waiver Wire arrived after the trades did: a copy without it is refreshed right away
+if (last && !("pickups" in last)) last.fetchedAt = "1970-01-01T00:00:00Z";
 const ageMin = last ? (Date.now() - Date.parse(last.fetchedAt)) / 60000 : Infinity;
-if (ageMin < REFRESH_MINUTES) {
+if (ageMin < REFRESH_MINUTES && !process.env.FORCE_TRADES) {
   fs.writeFileSync(OUT, JSON.stringify(last));
   console.log(`Trades: keeping the copy from ${Math.round(ageMin)} min ago (${last.trades.length} trades)`);
 } else {

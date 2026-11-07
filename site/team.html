@@ -190,6 +190,10 @@ h2 { font-family: var(--f-display); font-weight: 800; font-size: 25px; line-heig
 .tline { font-size: 14px; margin-top: 2px; }
 .tline i { font-style: normal; color: var(--muted); }
 
+.faab-line { margin: 0 0 10px; font-size: 15px; color: var(--muted); }
+.faab-line b { font-family: var(--f-num); font-weight: 700; font-size: 18px; color: var(--ink); font-variant-numeric: tabular-nums; }
+.tline .bid { font-family: var(--f-num); font-weight: 700; color: var(--ink); }
+
 /* Manager */
 .mgr { padding: 12px 14px; font-size: 15px; }
 .mgr b { font-weight: 700; }
@@ -249,9 +253,12 @@ footer { margin-top: 28px; border-top: 1px solid var(--line); padding-block: 16p
   </section>
 
   <section id="trades" aria-labelledby="h-trades">
-    <div class="sec-head"><h2 id="h-trades">Trades</h2><span class="tag" id="trades-tag"></span></div>
+    <div class="sec-head"><h2 id="h-trades">Transactions</h2><span class="tag" id="trades-tag"></span></div>
+    <p class="faab-line" id="faab-line" hidden></p>
     <div class="card" id="trades-box"></div>
-    <a class="more" href="./#trades">Trade Center ›</a>
+    <p class="sub" id="pk-head" hidden>Recent pickups</p>
+    <div class="card" id="pk-box" hidden></div>
+    <a class="more" href="./#trades">Transactions ›</a>
   </section>
 
   <section id="manager" aria-labelledby="h-manager">
@@ -268,7 +275,7 @@ footer { margin-top: 28px; border-top: 1px solid var(--line); padding-block: 16p
     <a href="./#news"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h13v14H6.2A2.2 2.2 0 0 1 4 16.8Z"/><path d="M17 9h3v8a2 2 0 0 1-2 2h-1"/><path d="M7.5 9h6M7.5 12.5h6M7.5 16h4"/></svg>News</a>
     <a href="./#standings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h1.5M4 12h1.5M4 18h1.5M9 6h11M9 12h8M9 18h5"/></svg>Standings</a>
     <a href="./#this-week"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="12" rx="2"/><path d="M12 4.5v12M9 20.5h6M12 16.5v4"/><path d="M6.5 8.5h2v4h-2zM15.5 8.5h2v4h-2z"/></svg>Scores</a>
-    <a href="./#trades"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5h15M15 4.5l4 4-4 4"/><path d="M20 15.5H5M9 11.5l-4 4 4 4"/></svg>Trades</a>
+    <a href="./#trades"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5h15M15 4.5l4 4-4 4"/><path d="M20 15.5H5M9 11.5l-4 4 4 4"/></svg>Moves</a>
     <a href="./#podcast"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M9 21h6"/></svg>Podcast</a>
   </div>
 </nav>
@@ -353,6 +360,8 @@ __LOGOS__
     games.forEach(function (g) { if (g.h[0] === t.id) s.push(g.h[1]); if (g.a[0] === t.id) s.push(g.a[1]); });
     ppg[t.id] = s.length ? s.reduce(function (a, b) { return a + b; }, 0) / s.length : 0;
   });
+
+
   var bySeed = E.teams.slice().sort(function (a, b) { return (a.seed || 99) - (b.seed || 99); });
 
   // Managers, from the Record Book's history (first names only)
@@ -630,7 +639,17 @@ __LOGOS__
     // Trades
     var tbox = clear("trades-box");
     var deals = (T.trades || []).filter(function (d) { return (d.teams || []).indexOf(t.name) >= 0; });
-    document.getElementById("trades-tag").textContent = deals.length + (deals.length === 1 ? " this season" : " this season");
+    document.getElementById("trades-tag").textContent = deals.length + (deals.length === 1 ? " trade" : " trades");
+    // FAAB left, and where it ranks
+    var fl = document.getElementById("faab-line");
+    fl.textContent = "";
+    fl.hidden = !(T.faab && T.faab.budget);
+    if (!fl.hidden) {
+      var left = T.faab.left[id] || 0;
+      var more = E.teams.filter(function (x) { return (T.faab.left[x.id] || 0) > left; }).length;
+      var less = E.teams.filter(function (x) { return (T.faab.left[x.id] || 0) < left; }).length;
+      fl.append("FAAB left: ", el("b", null, "$" + left), " of $" + T.faab.budget + " · " + (more === 0 ? "the most in the league" : less === 0 ? "the least in the league" : ord(more + 1) + " most"));
+    }
     if (!deals.length) tbox.append(el("p", "empty", "No trades this season."));
     function plist(arr) { return arr.map(function (p) { return String(p.player).replace(/ \([A-Z\/]+\)$/, ""); }).join(", "); }
     deals.forEach(function (d) {
@@ -645,6 +664,22 @@ __LOGOS__
       var l2 = el("div", "tline"); l2.append(el("i", null, "Sent "), gave.length && gave[0].players.length ? plist(gave[0].players) : "FAAB");
       row.append(l1, l2);
       tbox.append(row);
+    });
+
+    // Recent pickups (this week and last), newest first
+    var picks = (T.pickups || []).filter(function (p) { return p.team === id; }).slice(0, 4);
+    var pkb = clear("pk-box");
+    document.getElementById("pk-head").hidden = pkb.hidden = !picks.length;
+    picks.forEach(function (p) {
+      var row = el("div", "trow");
+      var when = "";
+      try { when = new Date(p.at).toLocaleDateString("en-US", { timeZone: "America/New_York", month: "short", day: "numeric" }); } catch (e) {}
+      row.append(el("div", "twhen", "Week " + p.week + " · " + when + " · " + (p.type === "W" ? "Waiver claim" : "Free agent")));
+      var l1 = el("div", "tline"); l1.append(el("i", null, "Added "), plist(p.add.map(function (x) { return { player: x }; })));
+      if (p.type === "W") l1.append(el("i", null, " for "), el("span", "bid", "$" + p.bid));
+      row.append(l1);
+      if (p.drop.length) { var l2 = el("div", "tline"); l2.append(el("i", null, "Dropped "), plist(p.drop.map(function (x) { return { player: x }; }))); row.append(l2); }
+      pkb.append(row);
     });
 
     // Manager: career from the Record Book's history
