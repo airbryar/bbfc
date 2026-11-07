@@ -265,8 +265,10 @@ in Nov 2026 so one bottom-bar button covers both.
     midday Eastern on the trade date.
   - **Waiver Wire** (Nov 2026), under the trades: this week's pickups (last week's until
     the week's first claim) by bid, five shown and the rest under "More pickups (N)"
-    (player, team, who they dropped, "$N" or "Free agent"), then "FAAB left" for every
-    team with a bar. The ticker, "new" dot and alerts are still trades only.
+    (player, team, who they dropped, "$N" or "Free agent"), then "FAAB left · $100 budget"
+    for every team with a bar, folded behind a tap (Bryar asked, so Transactions stays
+    about the size of the other sections; keep new extras off the main page or behind a
+    tap). The ticker, "new" dot and alerts are still trades only.
 - **Podcast:** "BBFC Presents: The Poddy" from SoundCloud. The newest episode is clearly
   featured; in dark mode it sits on a navy card so it stands out.
 - **Footer:** the club name, the ESPN updated time, and the easter egg.

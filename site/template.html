@@ -469,8 +469,8 @@ button.refresh { cursor: pointer; }
 .wire-head { margin: 28px 0 10px; }
 .wire-h { font-family: var(--f-display); font-weight: 800; font-size: 21px; line-height: 1; text-transform: uppercase; letter-spacing: 0.01em; margin: 0; }
 .wire-card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 0 14px; }
-#wire-more .wire-card { margin-top: 10px; }
-.wire-card.faab { margin-top: 10px; padding-bottom: 6px; }
+#wire-more .wire-card, #faab-more .wire-card { margin-top: 10px; }
+.wire-card.faab { padding-block: 4px; }
 .pk { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; padding-block: 9px; }
 .pk + .pk { border-top: 1px solid var(--line); }
 .pk-who { display: flex; align-items: center; gap: 8px; min-width: 0; }
@@ -913,7 +913,10 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
         <summary id="wire-more-sum">More pickups</summary>
         <div class="wire-card" id="wire-more-list"></div>
       </details>
-      <div class="wire-card faab" id="faab-box" hidden></div>
+      <details class="news-past" id="faab-more" hidden>
+        <summary id="faab-sum">FAAB left</summary>
+        <div class="wire-card faab" id="faab-box"></div>
+      </details>
     </div>
   </section>
 
@@ -2022,11 +2025,10 @@ __ESPN__
         document.getElementById("wire-more").hidden = false;
       }
       if (faab && faab.budget) {
+        // Folded behind a tap (Bryar, Nov 2026) so Transactions isn't the longest section
         var fb = document.getElementById("faab-box");
-        fb.hidden = false;
-        var head = el("div", "fb-head");
-        head.append(el("span", null, "FAAB left"), el("span", null, "of $" + faab.budget));
-        fb.append(head);
+        document.getElementById("faab-more").hidden = false;
+        document.getElementById("faab-sum").textContent = "FAAB left · $" + faab.budget + " budget";
         E.teams.slice().sort(function (a, b) { return (faab.left[b.id] || 0) - (faab.left[a.id] || 0) || a.name.localeCompare(b.name); }).forEach(function (t) {
           var left = faab.left[t.id] || 0;
           var r = el("div", "fb" + (mine(t.id) ? " mine" : ""));
