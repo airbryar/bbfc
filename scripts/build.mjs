@@ -71,12 +71,8 @@ if (!league.onesignalAppId) {
   if (start >= 0 && end > start) html = html.slice(0, start) + html.slice(end + "<!--/bell-->".length);
 }
 
-// The book button in the header opens the Record Book; it's left out if there's no history.
-if (!history) {
-  const start = html.indexOf("<!--book-->");
-  const end = html.indexOf("<!--/book-->");
-  if (start >= 0 && end > start) html = html.slice(0, start) + html.slice(end + "<!--/book-->".length);
-}
+// Record Book links (masthead pill, Standings card) are left out if there's no history.
+if (!history) html = html.replace(/<!--book-->[\s\S]*?<!--\/book-->/g, "");
 
 fs.rmSync("_site", { recursive: true, force: true });
 fs.mkdirSync("_site/data", { recursive: true });
