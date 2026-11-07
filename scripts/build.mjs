@@ -78,6 +78,8 @@ if (fs.existsSync("site/brand")) fs.cpSync("site/brand", "_site/brand", { recurs
 fs.writeFileSync("_site/index.html", html);
 fs.writeFileSync("_site/data/espn.json", JSON.stringify(espn));
 if (trades.fetchedAt) fs.writeFileSync("_site/data/trades.json", JSON.stringify(trades));
+// Lineups for the matchup details sheet; the page downloads this only when a game is opened
+if (fs.existsSync("data/lineups.json")) fs.copyFileSync("data/lineups.json", "_site/data/lineups.json");
 fs.writeFileSync("_site/data/stamp.json", JSON.stringify({ fetchedAt: espn.fetchedAt }));
 fs.writeFileSync("_site/.nojekyll", "");
 
