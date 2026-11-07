@@ -336,8 +336,11 @@ Other notes:
 - **Notifications:** planned with OneSignal's free plan (web push; on iPhones only from the
   home-screen icon, iOS 16.4+, which needs a web app manifest). Waiting on Bryar to create
   the OneSignal app (Custom Code, site URL `https://airbryar.github.io`), share the App ID,
-  and add the App API Key as the `ONESIGNAL_API_KEY` secret himself. Suggested alerts:
-  trades, new Newspaper editions, new Poddy episodes, weekly final results.
+  and add the App API Key as the `ONESIGNAL_API_KEY` secret himself. Each person chooses
+  their own alerts (OneSignal data tags; the free plan allows 6): Trades, Newspaper, The
+  Poddy, Final results, plus a "My team" picker for their own game's final. The bell
+  button and Alerts sheet (switches, team picker, and "add to Home Screen first" steps for
+  Safari) are mocked up on the `alerts-preview` branch; Bryar liked the panel.
 
 ## History
 
