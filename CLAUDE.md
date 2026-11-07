@@ -48,7 +48,11 @@ this site through conversations with Claude, so:
    `ESPN_SWID` repo secrets and writes `data/espn.json` (including `seedingRule`, the
    league's tiebreaker, which the playoff odds follow). If ESPN fails, it keeps the last
    good data and the site keeps working.
-2. `scripts/fetch-trades.mjs` writes `data/trades.json` for the Trades section. Trades
+2. `scripts/fetch-lineups.mjs` writes `data/lineups.json` (both lineups for every game this
+   week) for the matchup details sheet; `continue-on-error`. It reads the fantasy box scores
+   plus ESPN's public NFL scoreboard for opponents, kickoffs and live game clocks (the
+   fantasy NFL schedule is only a backup). If ESPN fails, it keeps the live site's copy.
+   Then `scripts/fetch-trades.mjs` writes `data/trades.json` for the Trades section. Trades
    change rarely, so it only reads ESPN when its newest copy (the live site's
    `data/trades.json` or the saved one) is 55+ minutes old, and keeps that copy if ESPN
    fails. The step has `continue-on-error`, so it can't block an update.
@@ -115,6 +119,7 @@ Tooling notes from past sessions:
 | `scripts/fetch-espn.mjs` | ESPN reader for the site |
 | `scripts/next-run.mjs` | Game-window pacing |
 | `scripts/fetch-trades.mjs` | Trades reader (about hourly); same trade logic as the newsroom script |
+| `scripts/fetch-lineups.mjs` | This week's lineups for the matchup details sheet (every update) |
 | `scripts/fetch-podcast.mjs` | SoundCloud feed reader |
 | `scripts/fetch-history.mjs` | Reads past seasons into `data/history.json` for the Record Book |
 | `site/record-book.html` | The Record Book page |
@@ -127,6 +132,7 @@ Tooling notes from past sessions:
 | `data/league.json` | Power-ranking weights, optional team "takes", league ID and season, podcast feed, `liveEveryMinute` |
 | `data/espn.json`, `data/pod.json` | Latest league data and podcast episodes |
 | `data/trades.json` | Trades with points since; a fallback copy (the live site's is usually newer) |
+| `data/lineups.json` | Written fresh each update and published; not saved in the repo |
 | `data/history.json` | Past seasons' standings and every game's score, managers as m1, m2... with first names only |
 | `data/news.json` | Newspaper editions, newest first; the site shows the latest 6 |
 | `data/newsroom.json` | The Newspaper writer's data |
@@ -192,6 +198,15 @@ in Nov 2026 so one bottom-bar button covers both.
   - Live and final are marked, and there's an "Updated … · N min ago" line.
 - **Scoreboard:** "Week N Scoreboard". Matchup cards with team pictures, projections and
   scores in the regular number font; the trailing score is muted.
+  - **Matchup details** (Nov 2026): each card ends in a "Lineups ›" row, and tapping the
+    card (anywhere but a team name) opens a sheet with both lineups, ESPN-style: team
+    scores, projections and "N to play" at the top, then starters facing each other slot
+    by slot (short names like "J. Gibbs", "SEA D/ST"; second line "@ MIA · Sun 1p", the
+    live clock with a red dot, "Final" or "Bye"; injury tags Q/D/O/IR; points with the
+    projection underneath), and the bench in a collapsed "Bench" list.
+  - The page downloads `data/lineups.json` (~28 KB) only when a game is opened, and
+    refreshes it every 60 seconds while the sheet is open. While any sheet is open the
+    page doesn't auto-reload; it checks again when the sheet closes.
   - Bryar tried LED segments, stadium bulbs and hand-turned plates for the scores. The
     league didn't like them, so they went back to the original font on purpose. Don't
     bring retro score fonts back unless he asks.
