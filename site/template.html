@@ -562,7 +562,7 @@ button.refresh { cursor: pointer; }
 .inline-ic { width: 17px; height: 17px; vertical-align: -3px; fill: none; stroke: var(--gilt); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 html.sheet-open, html.sheet-open body { overflow: hidden; }
 
-/* Record Book: a labeled pill in the masthead, and a card at the end of Standings */
+/* Record Book: a labeled pill in the masthead's lower right corner */
 .book-pill {
   position: absolute; right: max(16px, env(safe-area-inset-right, 0px)); bottom: 18px;
   display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px 5px 10px; border-radius: 999px;
@@ -573,16 +573,6 @@ html.sheet-open, html.sheet-open body { overflow: hidden; }
 @media (max-width: 370px) { .mast-in { padding-bottom: 60px; } }
 .book-pill:hover { background: rgba(255, 255, 255, 0.16); }
 .book-pill:focus-visible { outline: 2px solid var(--band-ink); outline-offset: 2px; }
-.book-card {
-  display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; gap: 12px; align-items: center; margin-top: 14px; padding: 12px 14px;
-  background: var(--surface); border: 1px solid var(--line); border-radius: 10px; color: var(--ink); text-decoration: none;
-}
-.book-card:hover { border-color: var(--gilt); }
-.book-ic { width: 40px; height: 40px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; background: var(--band); color: var(--band-ink); }
-.book-ic svg { width: 21px; height: 21px; }
-.book-card b { display: block; font-family: var(--f-label); font-weight: 700; font-size: 16px; letter-spacing: 0.08em; text-transform: uppercase; }
-.book-card small { display: block; font-size: 13px; color: var(--muted); line-height: 1.3; margin-top: 1px; }
-.book-go { font-family: var(--f-label); font-weight: 700; font-size: 22px; color: var(--accent); line-height: 1; }
 /* Bottom bar: app-style buttons fixed to the bottom of the screen; each can cover two sections */
 body { padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px)); }
 .bnav {
@@ -753,11 +743,6 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
       </details>
       <div class="odds" id="odds-list"></div>
     </div>
-    <!--book--><a class="book-card" href="record-book.html">
-      <span class="book-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.5C10.4 5 8 4.4 3.5 4.4v13.2c4.5 0 6.9.6 8.5 2 1.6-1.4 4-2 8.5-2V4.4C16 4.4 13.6 5 12 6.5Z"/><path d="M12 6.5v13"/></svg></span>
-      <span><b>Record Book</b><small>Champions, all-time standings, records and rivalries</small></span>
-      <span class="book-go" aria-hidden="true">›</span>
-    </a><!--/book-->
   </section>
 
   <section id="rankings" aria-labelledby="h-rankings">

@@ -60,7 +60,7 @@ this site through conversations with Claude, so:
    ranks and top players, `__TRADES__`, `__HISTORY__`, `__LOGOS__`, `__ICONV__`).
    It also builds `_site/record-book.html` from `site/record-book.html` (`__HISTORY__`,
    `__ESPN__`, `__LOGOS__`, `__ICONV__`); without `data/history.json` it skips the Record
-   Book and removes the header's book button (between `<!--book-->` markers).
+   Book and removes its links (between `<!--book-->` markers).
 5. The workflow then deploys `_site/` to GitHub Pages.
 
 When it runs:
@@ -151,8 +151,10 @@ in Nov 2026 so one bottom-bar button covers both.
   - The lit button is for the last section whose top has come within 72px of the top of
     the screen; at the very bottom of the page, Podcast.
   - `body` has bottom padding so the footer clears the bar.
-- **Record Book button:** a small book button beside the light/dark button opens the
-  Record Book (Bryar wanted it there rather than as another tab).
+- **Record Book pill:** a labeled "Record Book ›" pill in the masthead's lower right
+  corner, level with "Through Week N", opens the Record Book. It was first an icon beside
+  the light/dark button, but Bryar felt it didn't belong with the settings buttons (bell,
+  light/dark), and chose the pill alone, without a link card under Standings (Nov 2026).
 - **Spacing:** sections have `padding-block` of 48px/12px, or 36px/8px on phones.
   Bryar tuned this by eye.
 - **Standings:** shows the head-to-head and median split, with a "Playoff line · Top 6
@@ -245,7 +247,7 @@ in `data/league.json` as `onesignalAppId`; the App API Key is the `ONESIGNAL_API
 which Bryar added himself; never ask for it in chat). OneSignal's site URL is
 `https://airbryar.github.io`, Custom Code setup.
 
-- **On the page:** a bell beside the book button (only built in when `onesignalAppId` is
+- **On the page:** a bell beside the light/dark button (only built in when `onesignalAppId` is
   set; between `<!--bell-->` markers) opens the Alerts sheet. It shows Home Screen steps in
   Safari on iPhone (alerts only work from the Home Screen icon, iOS 16.4+), a "Turn on
   alerts" button (iPhone asks permission only from a tap), then switches saved as OneSignal
@@ -267,7 +269,7 @@ which Bryar added himself; never ask for it in chat). OneSignal's site URL is
 
 ## Record Book
 
-`record-book.html`, its own page (added Nov 2026), opened from the header's book button.
+`record-book.html`, its own page (added Nov 2026), opened from the masthead's Record Book pill.
 Past seasons (2023 on) come from `data/history.json`; this season so far is added from
 `data/espn.json` on each build, matched to managers through `history.current.teams`.
 
