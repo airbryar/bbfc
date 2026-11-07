@@ -612,6 +612,14 @@ tr.mine td:first-child { box-shadow: inset 3px 0 0 var(--gilt); }
 .mu-team.trail .mu-big { color: var(--muted); }
 .mu-meta { font-size: 12.5px; color: var(--muted); margin-top: 3px; font-variant-numeric: tabular-nums; }
 .mu-vs { align-self: center; padding-top: 22px; font-family: var(--f-label); font-weight: 700; font-size: 13px; letter-spacing: 0.1em; color: var(--muted); }
+.mu-win { display: grid; grid-template-columns: auto 1fr auto; align-items: baseline; column-gap: 8px; margin: 10px 0 2px; }
+.mu-wl { text-align: center; font-family: var(--f-label); font-weight: 700; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.mu-wp { font-family: var(--f-num); font-weight: 600; font-size: 16px; line-height: 1; color: var(--muted); font-variant-numeric: tabular-nums; }
+.mu-wp.r { text-align: right; }
+.mu-wp.fav { color: var(--ink); font-weight: 700; }
+.mu-wbar { grid-column: 1 / -1; display: flex; gap: 2px; height: 6px; margin-top: 6px; }
+.mu-wbar span { min-width: 0; border-radius: 3px; background: var(--chip); }
+.mu-wbar span.fav { background: var(--gilt); }
 .mu-list { margin-top: 12px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
 .mu-row { display: grid; grid-template-columns: minmax(0, 1fr) 46px 36px 46px minmax(0, 1fr); align-items: center; column-gap: 5px; padding: 8px 10px; }
 .mu-row + .mu-row { border-top: 1px solid var(--line); }
@@ -1513,6 +1521,35 @@ __ESPN__
   // Matchup details: both lineups for one game, loaded on demand and refreshed while open
   var muBack = document.getElementById("matchup"), muBody = document.getElementById("mu-body");
   var muOpen = null, muData = null, muTimer = null, muLast = null;
+  // Win chance: each side's live projection, with an uncertainty that shrinks as its players
+  // finish (spread grows with the points still to come; sized from how much this league's
+  // weekly scores swing). Same idea as the playoff odds, for one game.
+  var winK = (function () {
+    var by = {}, all = [];
+    (E.games || []).forEach(function (g) { [g.h, g.a].forEach(function (s) { (by[s[0]] = by[s[0]] || []).push(s[1]); all.push(s[1]); }); });
+    if (all.length < 24) return 6;
+    var sq = 0, n = 0, k = 0;
+    Object.keys(by).forEach(function (id) {
+      var v = by[id], m = v.reduce(function (a, b) { return a + b; }, 0) / v.length;
+      v.forEach(function (x) { sq += (x - m) * (x - m); n++; }); k++;
+    });
+    var mean = all.reduce(function (a, b) { return a + b; }, 0) / all.length;
+    return (sq / Math.max(1, n - k)) / mean; // variance per projected point
+  })();
+  function normCdf(z) {
+    var t = 1 / (1 + 0.2316419 * Math.abs(z));
+    var d = 0.3989423 * Math.exp(-z * z / 2);
+    var p = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+    return z > 0 ? 1 - p : p;
+  }
+  // Chance that side A beats side B, from points so far and live projected totals; null once both are done
+  function winChance(ptsA, projA, ptsB, projB) {
+    var rem = Math.max(0, projA - ptsA) + Math.max(0, projB - ptsB);
+    if (rem < 0.5) return null;
+    return normCdf((projA - projB) / Math.sqrt(winK * rem));
+  }
+  function pctText(p) { return p >= 0.995 ? ">99%" : p < 0.005 ? "<1%" : Math.round(p * 100) + "%"; }
+
   function shortName(n, pos, team) {
     if (pos === "D/ST") return team ? team + " D/ST" : n;
     var w = String(n).split(" ");
@@ -1577,6 +1614,22 @@ __ESPN__
     var sc = el("div", "mu-score");
     sc.append(muSide(L, false, R), el("div", "mu-vs", "VS"), muSide(R, true, L));
     muBody.append(sc);
+    var wc = winChance(L.pts, L.proj, R.pts, R.proj);
+    if (wc != null) {
+      var win = el("div", "mu-win");
+      var fav = wc >= 0.5 ? "l" : "r";
+      var lp = el("span", "mu-wp" + (fav === "l" ? " fav" : ""), pctText(wc));
+      var rp = el("span", "mu-wp r" + (fav === "r" ? " fav" : ""), pctText(1 - wc));
+      var bar = el("span", "mu-wbar");
+      var lb = el("span", fav === "l" ? "fav" : ""), rb = el("span", fav === "r" ? "fav" : "");
+      lb.style.width = (wc * 100).toFixed(1) + "%";
+      rb.style.width = ((1 - wc) * 100).toFixed(1) + "%";
+      bar.append(lb, rb);
+      bar.setAttribute("aria-hidden", "true");
+      win.append(lp, el("span", "mu-wl", "Win chance"), rp, bar);
+      win.setAttribute("aria-label", "Win chance: " + nameOf(L.id) + " " + pctText(wc) + ", " + nameOf(R.id) + " " + pctText(1 - wc));
+      muBody.append(win);
+    }
     muBody.append(muRows(L.starters, R.starters));
     var bench = el("details", "mu-bench");
     bench.append(el("summary", null, "Bench"));
@@ -1584,7 +1637,7 @@ __ESPN__
     muBody.append(bench);
     var when = "";
     try { when = new Date(muData.fetchedAt).toLocaleTimeString("en-US", { timeZone: "America/New_York", hour: "numeric", minute: "2-digit" }); } catch (e) {}
-    muBody.append(el("p", "mu-foot", "Projections under each score. Updated " + when + " ET, about once a minute during games."));
+    muBody.append(el("p", "mu-foot", "Projections under each score. Win chance comes from the live projections and the points still to play. Updated " + when + " ET, about once a minute during games."));
   }
   function loadLineups() {
     return fetch("data/lineups.json?ts=" + Date.now(), { cache: "no-store" })

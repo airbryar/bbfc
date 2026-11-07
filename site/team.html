@@ -353,6 +353,36 @@ __LOGOS__
     games.forEach(function (g) { if (g.h[0] === t.id) s.push(g.h[1]); if (g.a[0] === t.id) s.push(g.a[1]); });
     ppg[t.id] = s.length ? s.reduce(function (a, b) { return a + b; }, 0) / s.length : 0;
   });
+
+  // Win chance: each side's live projection, with an uncertainty that shrinks as its players
+  // finish (spread grows with the points still to come; sized from how much this league's
+  // weekly scores swing). Same idea as the playoff odds, for one game.
+  var winK = (function () {
+    var by = {}, all = [];
+    (E.games || []).filter(function (g) { return g.p <= reg; }).forEach(function (g) { [g.h, g.a].forEach(function (s) { (by[s[0]] = by[s[0]] || []).push(s[1]); all.push(s[1]); }); });
+    if (all.length < 24) return 6;
+    var sq = 0, n = 0, k = 0;
+    Object.keys(by).forEach(function (id) {
+      var v = by[id], m = v.reduce(function (a, b) { return a + b; }, 0) / v.length;
+      v.forEach(function (x) { sq += (x - m) * (x - m); n++; }); k++;
+    });
+    var mean = all.reduce(function (a, b) { return a + b; }, 0) / all.length;
+    return (sq / Math.max(1, n - k)) / mean; // variance per projected point
+  })();
+  function normCdf(z) {
+    var t = 1 / (1 + 0.2316419 * Math.abs(z));
+    var d = 0.3989423 * Math.exp(-z * z / 2);
+    var p = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+    return z > 0 ? 1 - p : p;
+  }
+  // Chance that side A beats side B, from points so far and live projected totals; null once both are done
+  function winChance(ptsA, projA, ptsB, projB) {
+    var rem = Math.max(0, projA - ptsA) + Math.max(0, projB - ptsB);
+    if (rem < 0.5) return null;
+    return normCdf((projA - projB) / Math.sqrt(winK * rem));
+  }
+  function pctText(p) { return p >= 0.995 ? ">99%" : p < 0.005 ? "<1%" : Math.round(p * 100) + "%"; }
+
   var bySeed = E.teams.slice().sort(function (a, b) { return (a.seed || 99) - (b.seed || 99); });
 
   // Managers, from the Record Book's history (first names only)
@@ -525,6 +555,13 @@ __LOGOS__
         card.append(row);
       });
       wbox.append(card);
+      var us0 = m.h[0] === id ? m.h : m.a, them0 = m.h[0] === id ? m.a : m.h;
+      var wc = winChance(us0[1], us0[2], them0[1], them0[2]);
+      if (wc != null) {
+        var wp = el("p", "series");
+        wp.append("Win chance: ", el("b", null, pctText(wc)));
+        wbox.append(wp);
+      }
       // All-time series with this opponent (manager vs manager, every season)
       var opp = m.h[0] === id ? m.a[0] : m.h[0];
       var a = mgrKey[id], b = mgrKey[opp];
