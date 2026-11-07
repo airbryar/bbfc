@@ -238,6 +238,33 @@ in Nov 2026 so one bottom-bar button covers both.
 - **Phones first:** everyone in the league is on iPhone, and many add the site to their
   home screen. The league logo is also the home-screen icon.
 
+## Alerts (notifications)
+
+Live since Nov 2026, through OneSignal's free plan (App ID `3c3199ae-b5f8-4d8d-a71c-4ccedc07bae2`,
+in `data/league.json` as `onesignalAppId`; the App API Key is the `ONESIGNAL_API_KEY` secret,
+which Bryar added himself; never ask for it in chat). OneSignal's site URL is
+`https://airbryar.github.io`, Custom Code setup.
+
+- **On the page:** a bell beside the book button (only built in when `onesignalAppId` is
+  set; between `<!--bell-->` markers) opens the Alerts sheet. It shows Home Screen steps in
+  Safari on iPhone (alerts only work from the Home Screen icon, iOS 16.4+), a "Turn on
+  alerts" button (iPhone asks permission only from a tap), then switches saved as OneSignal
+  tags: `trades`, `news`, `poddy` (all on when someone first turns alerts on), `final`, and
+  `team` = their team id for "My team". Also blocked and not-available states.
+- **Home-screen app:** `_site/manifest.webmanifest` (built by `build.mjs`; keep its `id`),
+  icons `icon-192.png` / `icon-512.png` (made by `make-brand.mjs` like the 180px icon), and
+  `OneSignalSDKWorker.js` at the site root, registered with scope `/bbfc/`. The icon now
+  opens the site as a full-screen app; people who added it before may need to re-add it.
+- **Sending:** `scripts/notify.mjs` runs in "Update the BBFC site" after the build
+  (`continue-on-error`). It compares the data with `data/alerts-sent.json` (saved by the
+  workflow) and sends: each new trade (ticker wording; one summary if more than 3 at once),
+  a new Newspaper edition (label and lead headline), a new Poddy episode, and when a week
+  goes final a league summary (`final`) plus each team's own result (`team=<id>`). The
+  first run only records what exists. Quiet hours 10 PM–7 AM Eastern: anything new waits.
+  A send that reaches nobody still counts as sent.
+- **Test:** the "Send a test alert" workflow (`alerts-test.yml`, dispatch it) sends one
+  test to everyone subscribed.
+
 ## Record Book
 
 `record-book.html`, its own page (added Nov 2026), opened from the header's book button.
@@ -333,14 +360,6 @@ Other notes:
   playing) is saved on the `podcast-preview` branch, along with a `fetch-podcast.mjs` that
   saves each episode's audio file and length. Bryar chose to keep linking to SoundCloud for
   now. Drop that branch's temporary `podcast-preview.yml` workflow if it's ever merged.
-- **Notifications:** planned with OneSignal's free plan (web push; on iPhones only from the
-  home-screen icon, iOS 16.4+, which needs a web app manifest). Waiting on Bryar to create
-  the OneSignal app (Custom Code, site URL `https://airbryar.github.io`), share the App ID,
-  and add the App API Key as the `ONESIGNAL_API_KEY` secret himself. Each person chooses
-  their own alerts (OneSignal data tags; the free plan allows 6): Trades, Newspaper, The
-  Poddy, Final results, plus a "My team" picker for their own game's final. The bell
-  button and Alerts sheet (switches, team picker, and "add to Home Screen first" steps for
-  Safari) are mocked up on the `alerts-preview` branch; Bryar liked the panel.
 
 ## History
 

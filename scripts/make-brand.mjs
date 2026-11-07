@@ -53,6 +53,13 @@ if (pick) {
       .toBuffer();
     fs.writeFileSync(path.join(ICONS, "apple-touch-icon.png"), touch);
 
+    // Home-screen app icons (the web app manifest asks for 192 and 512), made the same way.
+    for (const size of [192, 512]) {
+      const art = await sharp(trimmed).resize(Math.round(size * 0.8), Math.round(size * 0.8), { fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } }).png().toBuffer();
+      const icon = await sharp({ create: { width: size, height: size, channels: 4, background: TILE } }).composite([{ input: art, gravity: "center" }]).flatten({ background: TILE }).png().toBuffer();
+      fs.writeFileSync(path.join(ICONS, `icon-${size}.png`), icon);
+    }
+
     // Browser tab icon.
     const fav = await sharp(trimmed).resize(32, 32, { fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } }).png().toBuffer();
     fs.writeFileSync(path.join(ICONS, "favicon-32.png"), fav);
@@ -78,6 +85,9 @@ if (!brand) {
   const fav = fs.readFileSync(path.join(DEFAULTS, "favicon-32.png"));
   fs.writeFileSync(path.join(ICONS, "apple-touch-icon.png"), touch);
   fs.writeFileSync(path.join(ICONS, "favicon-32.png"), fav);
+  for (const size of [192, 512]) {
+    fs.writeFileSync(path.join(ICONS, `icon-${size}.png`), await sharp(touch).resize(size, size).png().toBuffer());
+  }
   brand = { custom: false, iconVersion: hash(Buffer.concat([touch, fav])) };
   if (!pick) console.log("No league logo uploaded; using the BBFC seal");
 }

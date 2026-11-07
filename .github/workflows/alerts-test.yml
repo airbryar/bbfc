@@ -1,0 +1,19 @@
+name: Send a test alert
+
+# Started by hand: sends one "BBFC alerts are on" test to everyone who has turned alerts on.
+on:
+  workflow_dispatch: {}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Send the test alert
+        run: node scripts/notify.mjs --test
+        env:
+          ONESIGNAL_API_KEY: ${{ secrets.ONESIGNAL_API_KEY }}

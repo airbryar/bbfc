@@ -12,5 +12,6 @@
     "season": 2026
   },
   "podcastFeed": "https://feeds.soundcloud.com/users/soundcloud:users:693648011/sounds.rss",
-  "liveEveryMinute": true
+  "liveEveryMinute": true,
+  "onesignalAppId": "3c3199ae-b5f8-4d8d-a71c-4ccedc07bae2"
 }

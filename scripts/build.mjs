@@ -45,6 +45,7 @@ const blocks = {
   __LOGOS__: safe(logos, true),
   __TRADES__: safe({ through: trades.through || null, deadline: trades.deadline || null, trades: trades.trades || [] }),
   __ODDS__: safe(odds),
+  __ALERTS__: safe({ appId: league.onesignalAppId || null }),
   __ICONV__: brand.iconVersion || "1",
 };
 
@@ -61,6 +62,13 @@ if (brand.custom && brand.logo) {
   if (start < 0 || end < 0) throw new Error("template is missing the crest markers");
   const img = `<img class="crest-img" src="${brand.logo}" width="${brand.logoWidth}" height="${brand.logoHeight}" alt="BBFC logo">`;
   html = html.slice(0, start) + img + html.slice(end + "<!--/crest-->".length);
+}
+
+// The bell (alerts) only appears once OneSignal is set up (onesignalAppId in data/league.json).
+if (!league.onesignalAppId) {
+  const start = html.indexOf("<!--bell-->");
+  const end = html.indexOf("<!--/bell-->");
+  if (start >= 0 && end > start) html = html.slice(0, start) + html.slice(end + "<!--/bell-->".length);
 }
 
 // The book button in the header opens the Record Book; it's left out if there's no history.
@@ -80,6 +88,26 @@ fs.writeFileSync("_site/data/espn.json", JSON.stringify(espn));
 if (trades.fetchedAt) fs.writeFileSync("_site/data/trades.json", JSON.stringify(trades));
 fs.writeFileSync("_site/data/stamp.json", JSON.stringify({ fetchedAt: espn.fetchedAt }));
 fs.writeFileSync("_site/.nojekyll", "");
+
+// Home-screen app manifest: lets people add BBFC as an app (needed for alerts on iPhone).
+// Keep "id" the same forever; changing it makes phones treat it as a different app.
+const iconV = brand.iconVersion || "1";
+fs.writeFileSync("_site/manifest.webmanifest", JSON.stringify({
+  id: "./",
+  name: "Boys and Bibles Football Club",
+  short_name: "BBFC",
+  start_url: "./",
+  scope: "./",
+  display: "standalone",
+  background_color: "#13294B",
+  theme_color: "#13294B",
+  icons: [
+    { src: `icons/icon-192.png?v=${iconV}`, sizes: "192x192", type: "image/png" },
+    { src: `icons/icon-512.png?v=${iconV}`, sizes: "512x512", type: "image/png" },
+  ],
+}, null, 2));
+// OneSignal's worker has to sit at the top of the site to receive alerts
+if (league.onesignalAppId) fs.copyFileSync("site/OneSignalSDKWorker.js", "_site/OneSignalSDKWorker.js");
 
 // Team pages: one page that shows any team (team.html?t=ID)
 if (fs.existsSync("site/team.html")) {

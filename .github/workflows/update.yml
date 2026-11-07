@@ -63,11 +63,20 @@ jobs:
       - name: Build the site
         run: node scripts/build.mjs
 
+      # Alerts for anything new (trades, Newspaper, The Poddy, weekly results). What's been
+      # sent is kept in data/alerts-sent.json, saved below, so nothing goes out twice.
+      - name: Send alerts
+        run: node scripts/notify.mjs
+        continue-on-error: true
+        env:
+          ONESIGNAL_API_KEY: ${{ secrets.ONESIGNAL_API_KEY }}
+
       - name: Save new episodes and the weekly data copy
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/pod.json
+          if [ -f data/alerts-sent.json ]; then git add data/alerts-sent.json; fi
           if [ "${{ github.event.schedule }}" = "17 13 * * 2" ]; then git add data/espn.json; fi
           if git diff --cached --quiet; then
             echo "Nothing new to save"

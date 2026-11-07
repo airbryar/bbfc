@@ -16,6 +16,7 @@
 </script>
 <meta name="apple-mobile-web-app-title" content="BBFC">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png?v=__ICONV__">
+<link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png?v=__ICONV__">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -517,6 +518,50 @@ button.refresh { cursor: pointer; }
 /* "New" dot on the Trades tab, for two days after a trade or until you've looked */
 .tab-dot { display: inline-block; width: 7px; height: 7px; margin-left: 3px; border-radius: 50%; background: var(--accent); position: relative; top: -0.55em; }
 
+/* Alerts: bell beside the book button, opening a sheet from the bottom (preview) */
+.bell-btn { right: calc(max(16px, env(safe-area-inset-right, 0px)) + 108px); }
+.bell-btn svg { width: 19px; height: 19px; }
+.sheet-back { position: fixed; inset: 0; z-index: 20; background: rgba(5, 10, 20, 0.55); display: flex; align-items: flex-end; justify-content: center; }
+.sheet {
+  width: 100%; max-width: 560px; max-height: 88vh; overflow-y: auto; background: var(--surface); color: var(--ink);
+  border-radius: 16px 16px 0 0; padding: 8px max(18px, env(safe-area-inset-right, 0px)) calc(18px + env(safe-area-inset-bottom, 0px)) max(18px, env(safe-area-inset-left, 0px));
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.3);
+}
+.sheet-grip { display: block; width: 38px; height: 5px; border-radius: 3px; background: var(--line); margin: 0 auto 10px; }
+.sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.sheet-head h2 { margin: 0; }
+.sheet-x { border: 0; background: none; padding: 6px 0; cursor: pointer; font-family: var(--f-label); font-weight: 700; font-size: 16px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+.sheet-sub { margin: 6px 0 12px; font-size: 14px; color: var(--muted); }
+.sw-list { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.sw-row { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 11px 12px; cursor: pointer; }
+.sw-row + .sw-row { border-top: 1px solid var(--line); }
+.sw-ic { width: 34px; height: 34px; border-radius: 9px; display: inline-flex; align-items: center; justify-content: center; background: var(--chip); color: var(--gilt); }
+.sw-ic svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.sw-txt { min-width: 0; line-height: 1.25; }
+.sw-txt b { display: block; font-weight: 600; font-size: 16px; }
+.sw-txt small { display: block; font-size: 13px; color: var(--muted); margin-top: 2px; }
+.sw { appearance: none; -webkit-appearance: none; margin: 0; flex: none; width: 50px; height: 30px; border-radius: 15px; background: var(--line); position: relative; cursor: pointer; transition: background-color .15s; }
+.sw::after { content: ""; position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); transition: transform .15s; }
+.sw:checked { background: var(--gilt); }
+.sw:checked::after { transform: translateX(20px); }
+.sw:focus-visible, .sw-pick:focus-visible, .sheet-x:focus-visible, .sheet-off:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sw-pick {
+  max-width: 132px; appearance: none; -webkit-appearance: none; font: inherit; font-weight: 600; font-size: 14px; color: var(--ink);
+  background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%2356617A' stroke-width='1.6'/%3E%3C/svg%3E") no-repeat right 8px center;
+  border: 1px solid var(--line); border-radius: 8px; padding: 6px 22px 5px 8px; text-overflow: ellipsis;
+}
+.sheet-go { display: block; width: 100%; margin-top: 4px; padding: 13px 16px 12px; border: 0; border-radius: 10px; cursor: pointer; background: var(--accent); color: #FFFFFF; font-family: var(--f-label); font-weight: 700; font-size: 17px; letter-spacing: 0.08em; text-transform: uppercase; }
+.sheet-go:disabled { opacity: 0.6; cursor: default; }
+.sheet-go:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.sheet-note { margin: 10px 0 0; font-size: 13px; color: var(--muted); text-align: center; }
+.sheet-off { display: block; margin: 14px auto 0; border: 0; background: none; cursor: pointer; font-family: var(--f-label); font-weight: 700; font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.steps { list-style: none; margin: 0; padding: 0; border: 1px solid var(--line); border-radius: 12px; }
+.steps li { display: flex; align-items: center; gap: 12px; padding: 12px; font-size: 15px; }
+.steps li + li { border-top: 1px solid var(--line); }
+.step-n { flex: none; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: var(--band); color: var(--band-ink); font-family: var(--f-num); font-weight: 700; font-size: 15px; }
+.inline-ic { width: 17px; height: 17px; vertical-align: -3px; fill: none; stroke: var(--gilt); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+html.sheet-open, html.sheet-open body { overflow: hidden; }
+
 /* Record Book button, beside the light/dark button */
 .book-btn { right: calc(max(16px, env(safe-area-inset-right, 0px)) + 66px); text-decoration: none; }
 .book-btn svg { width: 19px; height: 19px; }
@@ -619,6 +664,9 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
     <!--book--><a class="theme-btn book-btn" href="record-book.html" aria-label="Record Book" title="Record Book">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.5C10.4 5 8 4.4 3.5 4.4v13.2c4.5 0 6.9.6 8.5 2 1.6-1.4 4-2 8.5-2V4.4C16 4.4 13.6 5 12 6.5Z"/><path d="M12 6.5v13"/></svg>
     </a><!--/book-->
+    <!--bell--><button type="button" class="theme-btn bell-btn" id="bell" aria-label="Alerts" title="Alerts" aria-haspopup="dialog">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15Z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg>
+    </button><!--/bell-->
   </div>
 </header>
 
@@ -766,6 +814,47 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
   </section>
 </main>
 
+<!-- Alerts panel, opened by the bell. Choices are saved with the person's OneSignal subscription. -->
+<div class="sheet-back" id="alerts" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="alerts-h">
+    <span class="sheet-grip" aria-hidden="true"></span>
+    <div class="sheet-head">
+      <h2 id="alerts-h">Alerts</h2>
+      <button type="button" class="sheet-x" id="alerts-done">Done</button>
+    </div>
+    <div id="alerts-on">
+      <p class="sheet-sub">Pick what lands on your phone. You can change these anytime.</p>
+      <div class="sw-list">
+        <label class="sw-row"><span class="sw-ic"><svg viewBox="0 0 24 24"><path d="M4 8.5h15M15 4.5l4 4-4 4"/><path d="M20 15.5H5M9 11.5l-4 4 4 4"/></svg></span><span class="sw-txt"><b>Trades</b><small>When a trade goes through</small></span><input type="checkbox" class="sw" data-tag="trades"></label>
+        <label class="sw-row"><span class="sw-ic"><svg viewBox="0 0 24 24"><path d="M4 5h13v14H6.2A2.2 2.2 0 0 1 4 16.8Z"/><path d="M17 9h3v8a2 2 0 0 1-2 2h-1"/><path d="M7.5 9h6M7.5 12.5h6M7.5 16h4"/></svg></span><span class="sw-txt"><b>Newspaper</b><small>New editions, Tuesday, Thursday and Saturday</small></span><input type="checkbox" class="sw" data-tag="news"></label>
+        <label class="sw-row"><span class="sw-ic"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M9 21h6"/></svg></span><span class="sw-txt"><b>The Poddy</b><small>When a new episode is up</small></span><input type="checkbox" class="sw" data-tag="poddy"></label>
+        <label class="sw-row"><span class="sw-ic"><svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="12" rx="2"/><path d="M12 4.5v12M9 20.5h6M12 16.5v4"/></svg></span><span class="sw-txt"><b>Final results</b><small>Each week's results once it goes final</small></span><input type="checkbox" class="sw" data-tag="final"></label>
+        <div class="sw-row"><span class="sw-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg></span><span class="sw-txt"><b>My team</b><small>Your own game's final score</small></span><select class="sw-pick" id="alerts-team" aria-label="My team"><option value="">None</option></select></div>
+      </div>
+      <button type="button" class="sheet-off" id="alerts-off">Turn off all alerts</button>
+    </div>
+    <div id="alerts-start" hidden>
+      <p class="sheet-sub">Get a heads-up on your phone for trades, new Newspaper editions, new episodes of The Poddy and weekly results. You pick which ones.</p>
+      <button type="button" class="sheet-go" id="alerts-go">Turn on alerts</button>
+      <p class="sheet-note" id="alerts-msg" hidden></p>
+    </div>
+    <div id="alerts-blocked" hidden>
+      <p class="sheet-sub">Alerts are turned off for BBFC on this phone. To turn them back on, open <b>Settings › Notifications › BBFC</b> and allow notifications, then come back here.</p>
+    </div>
+    <div id="alerts-none" hidden>
+      <p class="sheet-sub">Alerts aren't available here. On iPhone they need iOS 16.4 or later and the BBFC icon on your Home Screen.</p>
+    </div>
+    <div id="alerts-setup" hidden>
+      <p class="sheet-sub">On iPhone, alerts work from the BBFC icon on your Home Screen. It takes a few seconds:</p>
+      <ol class="steps">
+        <li><span class="step-n">1</span><span>Tap the <b>Share</b> button <svg class="inline-ic" viewBox="0 0 24 24"><path d="M12 15V3.5M8 7l4-4 4 4"/><path d="M6 11H5v9.5h14V11h-1"/></svg> in Safari.</span></li>
+        <li><span class="step-n">2</span><span>Choose <b>Add to Home Screen</b>.</span></li>
+        <li><span class="step-n">3</span><span>Open <b>BBFC</b> from your Home Screen, tap the bell, and tap <b>Allow</b>.</span></li>
+      </ol>
+    </div>
+  </div>
+</div>
+
 <footer class="wrap foot"><span id="footer-line">Boys and Bibles Football Club</span><button type="button" class="link-btn" id="theme-auto" hidden>Match my phone's light/dark setting</button><p class="egg">Darren Waller is a BUM!</p></footer>
 
 <!-- Team images (64px, embedded). Teams without one get an initials badge. -->
@@ -779,6 +868,9 @@ __TRADES__
 </script>
 
 <!-- Playoff odds from scripts/odds.mjs (null outside the regular season). -->
+<script type="application/json" id="alerts-data">
+__ALERTS__
+</script>
 <script type="application/json" id="odds-data">
 __ODDS__
 </script>
@@ -927,6 +1019,118 @@ __ESPN__
       tb.append(cut);
     }
   });
+
+  // Alerts (OneSignal). The bell opens a panel that shows one of:
+  // - setup: iPhone in Safari, where alerts only work from the Home Screen icon
+  // - start: a "Turn on alerts" button (iPhone asks permission only after a tap)
+  // - on: switches for each kind of alert and a My team picker, saved as OneSignal tags
+  // - blocked: notifications were turned off for BBFC in the phone's Settings
+  // - none: this browser can't do alerts
+  // The site's updater (scripts/notify.mjs) sends each alert only to people with that tag.
+  (function () {
+    var back = document.getElementById("alerts"), bell = document.getElementById("bell");
+    if (!back || !bell) return;
+    var cfg = {};
+    try { cfg = JSON.parse(document.getElementById("alerts-data").textContent) || {}; } catch (e) {}
+    var pick = document.getElementById("alerts-team");
+    E.teams.slice().sort(function (a, b) { return a.name.localeCompare(b.name); }).forEach(function (t) { var o = el("option", null, t.name); o.value = String(t.id); pick.append(o); });
+    var switches = Array.prototype.slice.call(back.querySelectorAll(".sw[data-tag]"));
+    var DEFAULTS = { trades: "1", news: "1", poddy: "1" }; // on for everyone who turns alerts on; Final results and My team start off
+    var iOS = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    var installed = window.navigator.standalone === true || (window.matchMedia && matchMedia("(display-mode: standalone)").matches);
+    var OS = null; // OneSignal, once it has loaded
+    var views = ["on", "start", "setup", "blocked", "none"];
+    function show(v) { views.forEach(function (x) { document.getElementById("alerts-" + x).hidden = x !== v; }); }
+    function msg(t) { var m = document.getElementById("alerts-msg"); m.textContent = t || ""; m.hidden = !t; }
+
+    function tagsNow() { try { return (OS && OS.User.getTags && OS.User.getTags()) || {}; } catch (e) { return {}; } }
+    function fillSwitches() {
+      var tags = tagsNow();
+      switches.forEach(function (sw) { sw.checked = tags[sw.getAttribute("data-tag")] === "1"; });
+      pick.value = tags.team && pick.querySelector('option[value="' + tags.team + '"]') ? tags.team : "";
+    }
+    function refresh() {
+      if (iOS && !installed) return show("setup");
+      if (!OS) return show(cfg.appId ? "start" : "none");
+      var supported = true;
+      try { supported = OS.Notifications.isPushSupported(); } catch (e) {}
+      if (!supported) return show("none");
+      var perm = "default";
+      try { perm = OS.Notifications.permissionNative || (OS.Notifications.permission ? "granted" : "default"); } catch (e) {}
+      if (perm === "denied") return show("blocked");
+      var on = false;
+      try { on = OS.Notifications.permission && OS.User.PushSubscription.optedIn; } catch (e) {}
+      if (on) { fillSwitches(); return show("on"); }
+      show("start");
+    }
+
+    // Load OneSignal (only if the site has an App ID). Its worker lives at the top of the site.
+    if (cfg.appId && !(iOS && !installed)) {
+      var base = location.pathname.replace(/[^\/]*$/, "");
+      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      window.OneSignalDeferred.push(function (OneSignal) {
+        return OneSignal.init({
+          appId: cfg.appId,
+          serviceWorkerPath: base.replace(/^\//, "") + "OneSignalSDKWorker.js",
+          serviceWorkerParam: { scope: base },
+          autoResubscribe: true,
+        }).then(function () {
+          OS = OneSignal;
+          try { OneSignal.User.PushSubscription.addEventListener("change", function () { if (!back.hidden) refresh(); }); } catch (e) {}
+          try { OneSignal.Notifications.addEventListener("permissionChange", function () { if (!back.hidden) refresh(); }); } catch (e) {}
+          if (!back.hidden) refresh();
+        }).catch(function () { if (!back.hidden) show("none"); });
+      });
+      var sdk = document.createElement("script");
+      sdk.src = "https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js";
+      sdk.defer = true;
+      sdk.onerror = function () { if (!back.hidden) show("none"); };
+      document.head.append(sdk);
+    }
+
+    // Turn on: must run straight from the tap, or iPhone won't show the "Allow" question
+    var go = document.getElementById("alerts-go");
+    go.addEventListener("click", function () {
+      if (!OS) { msg("Still loading. Try again in a second."); return; }
+      go.disabled = true;
+      msg("");
+      var ask = OS.Notifications.permission ? Promise.resolve() : OS.Notifications.requestPermission();
+      Promise.resolve(ask).then(function () {
+        if (!OS.Notifications.permission) { refresh(); return; }
+        return Promise.resolve(OS.User.PushSubscription.optedIn ? null : OS.User.PushSubscription.optIn()).then(function () {
+          var have = tagsNow();
+          var add = {};
+          Object.keys(DEFAULTS).forEach(function (k) { if (have[k] == null) add[k] = DEFAULTS[k]; });
+          if (Object.keys(add).length) OS.User.addTags(add);
+        });
+      }).catch(function () {
+        msg("That didn't work. Try again, or check Settings › Notifications › BBFC.");
+      }).then(function () { go.disabled = false; refresh(); });
+    });
+    // Each switch adds or removes its tag; the team picker sets "team"
+    switches.forEach(function (sw) {
+      sw.addEventListener("change", function () {
+        if (!OS) return;
+        var key = sw.getAttribute("data-tag");
+        try { if (sw.checked) OS.User.addTag(key, "1"); else OS.User.removeTag(key); } catch (e) {}
+      });
+    });
+    pick.addEventListener("change", function () {
+      if (!OS) return;
+      try { if (pick.value) OS.User.addTag("team", pick.value); else OS.User.removeTag("team"); } catch (e) {}
+    });
+    document.getElementById("alerts-off").addEventListener("click", function () {
+      if (!OS) return;
+      Promise.resolve(OS.User.PushSubscription.optOut()).catch(function () {}).then(refresh);
+    });
+
+    function open() { refresh(); back.hidden = false; document.documentElement.classList.add("sheet-open"); document.getElementById("alerts-done").focus(); }
+    function close() { back.hidden = true; document.documentElement.classList.remove("sheet-open"); bell.focus(); }
+    bell.addEventListener("click", open);
+    document.getElementById("alerts-done").addEventListener("click", close);
+    back.addEventListener("click", function (e) { if (e.target === back) close(); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !back.hidden) close(); });
+  })();
 
   // Playoff odds: a second view of Standings (Table / Playoff odds)
   var stView = "table";
