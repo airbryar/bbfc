@@ -198,8 +198,11 @@ in Nov 2026 so one bottom-bar button covers both.
   - Live and final are marked, and there's an "Updated … · N min ago" line.
 - **Scoreboard:** "Week N Scoreboard". Matchup cards with team pictures, projections and
   scores in the regular number font; the trailing score is muted.
-  - **Matchup details** (Nov 2026): each card ends in a "Lineups ›" row, and tapping the
-    card (anywhere but a team name) opens a sheet with both lineups, ESPN-style: team
+  - **Matchup details** (Nov 2026): each card has a small "›" on its right edge, and the
+    line under the heading says "Tap a game for lineups." (A full-width "Lineups ›" row
+    made the cards too tall; Bryar wants all six games on one phone screen, so keep the
+    cards at their original height.) Tapping the card (anywhere but a team name) opens a
+    sheet with both lineups, ESPN-style: team
     scores, projections and "N to play" at the top, then starters facing each other slot
     by slot (short names like "J. Gibbs", "SEA D/ST"; second line "@ MIA · Sun 1p", the
     live clock with a red dot, "Final" or "Bye"; injury tags Q/D/O/IR; points with the
