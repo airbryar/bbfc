@@ -537,6 +537,46 @@ body { padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px)); }
 .bnav a:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 6px; }
 .bnav .tab-dot { position: absolute; top: 7px; left: calc(50% + 10px); margin: 0; }
 
+/* Podcast player: plays in the featured episode card; past episodes play in the same player */
+.pl { display: flex; align-items: center; gap: 14px; margin-top: 16px; }
+.pl-play { flex: none; width: 56px; height: 56px; border-radius: 50%; border: 0; padding: 0; background: #FFFFFF; color: #13294B; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+.pl-play svg { width: 22px; height: 22px; fill: currentColor; }
+.pl-play .i-play { margin-left: 3px; }
+.pl-play .i-pause { display: none; }
+.playing .pl-play .i-play { display: none; }
+.playing .pl-play .i-pause { display: block; }
+.pl-play:focus-visible, .pl-btn:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 2px; }
+.pl-main { flex: 1; min-width: 0; }
+.pl-times { display: flex; justify-content: space-between; font-family: var(--f-num); font-weight: 600; font-size: 15px; font-variant-numeric: tabular-nums; color: var(--feature-soft); }
+.pl-ctrls { display: flex; align-items: center; gap: 6px; margin-top: 6px; }
+.pl-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 2px; height: 32px; min-width: 40px; padding: 0 9px; border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.28); background: rgba(255, 255, 255, 0.08); color: var(--band-ink); cursor: pointer;
+  font-family: var(--f-label); font-weight: 700; font-size: 13px; letter-spacing: 0.02em; font-variant-numeric: tabular-nums;
+}
+.pl-btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.pl-sc { margin-left: auto; font-family: var(--f-label); font-weight: 700; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--feature-soft); text-decoration: none; white-space: nowrap; }
+.wave.scrub { cursor: pointer; opacity: 1; touch-action: none; }
+.wave.scrub span { opacity: 0.26; }
+.wave.scrub span.on { opacity: 0.95; }
+.wave.scrub:focus-visible { outline: 2px solid #FFFFFF; outline-offset: -4px; }
+.ep-play {
+  display: inline-flex; align-items: center; gap: 6px; border: 0; background: none; padding: 4px 0; cursor: pointer;
+  font-family: var(--f-label); font-weight: 700; font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); white-space: nowrap;
+}
+.ep-play svg { width: 10px; height: 11px; fill: currentColor; }
+.ep-item-date span + span::before { content: " · "; }
+/* Mini player: above the bottom bar while an episode is going and its card is off screen */
+.mini { position: fixed; left: 0; right: 0; bottom: calc(66px + env(safe-area-inset-bottom, 0px)); z-index: 6; }
+.mini-in { position: relative; overflow: hidden; display: flex; align-items: center; gap: 10px; padding: 7px 12px 8px 7px; border-radius: 12px; background: var(--feature); color: var(--band-ink); border: 1px solid var(--feature-line); box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25); }
+.mini .pl-play { width: 40px; height: 40px; }
+.mini .pl-play svg { width: 16px; height: 16px; }
+.mini-title { flex: 1; min-width: 0; padding: 0; border: 0; background: none; color: inherit; text-align: left; cursor: pointer; font: inherit; font-weight: 600; font-size: 14px; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mini-title small { display: block; font-family: var(--f-label); font-weight: 600; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--feature-soft); }
+.mini-time { flex: none; font-family: var(--f-num); font-weight: 600; font-size: 14px; color: var(--feature-soft); font-variant-numeric: tabular-nums; }
+.mini-bar { position: absolute; left: 0; bottom: 0; height: 3px; width: 0; background: var(--ribbon); }
+body.has-mini { padding-bottom: calc(126px + env(safe-area-inset-bottom, 0px)); }
+
 /* Podcast: newest episode featured, older ones listed */
 .pod { display: grid; gap: 14px; }
 .pod-follow { font-family: var(--f-label); font-weight: 700; font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); text-decoration: none; white-space: nowrap; }
@@ -1431,30 +1471,45 @@ __ESPN__
     a.append(label);
     return a;
   }
+  // Episodes with an audio file play right here; the rest link to SoundCloud
   var ebox = document.getElementById("episodes");
   if (!eps.length) ebox.append(el("p", "empty", "No episodes yet."));
+  var ICON_PLAY = '<svg class="i-play" viewBox="0 0 11 12" aria-hidden="true"><path d="M0 0 L11 6 L0 12 Z"/></svg>';
+  var ICON_PAUSE = '<svg class="i-pause" viewBox="0 0 12 12" aria-hidden="true"><path d="M1 0h3.5v12H1zM7.5 0H11v12H7.5z"/></svg>';
+  function clock(sec) {
+    sec = Math.max(0, Math.floor(sec || 0));
+    var h = Math.floor(sec / 3600), m = Math.floor(sec % 3600 / 60), x = sec % 60;
+    return (h ? h + ":" + (m < 10 ? "0" : "") : "") + m + ":" + (x < 10 ? "0" : "") + x;
+  }
+  var podPlayer = null;
   if (eps.length) {
     var top = eps[0];
     var f = el("article", "ep-feature");
     var k = el("div", "ep-kicker");
-    k.append(el("span", "ep-badge", "Latest episode"), el("span", null, epDate(top)));
+    var kBadge = el("span", "ep-badge", "Latest episode"), kDate = el("span", null, epDate(top));
+    k.append(kBadge, kDate);
     f.append(k);
-    f.append(el("h3", null, top.title));
-    f.append(el("p", "ep-age", epAge(top)));
-    if (top.url) f.append(listenLink(top, "btn", "Listen on SoundCloud"));
+    var fTitle = el("h3", null, top.title);
+    var fAge = el("p", "ep-age", epAge(top));
+    f.append(fTitle, fAge);
     var wave = el("div", "wave");
     wave.setAttribute("aria-hidden", "true");
     var seed = 0;
     for (var c = 0; c < top.title.length; c++) seed = (seed * 31 + top.title.charCodeAt(c)) >>> 0;
+    var bars = [];
     for (var b = 0; b < 72; b++) {
       seed = (seed * 1103515245 + 12345) >>> 0;
       var h = 18 + (seed % 70) * (0.55 + 0.45 * Math.abs(Math.sin(b / 7)));
       var bar = el("span");
       bar.style.height = Math.min(100, h).toFixed(0) + "%";
       wave.append(bar);
+      bars.push(bar);
     }
+    if (top.audio) podPlayer = makePlayer(f, wave, bars);
+    else if (top.url) f.append(listenLink(top, "btn", "Listen on SoundCloud"));
     f.append(wave);
     ebox.append(f);
+    if (podPlayer) podPlayer.load(top, true);
   }
   if (eps.length > 1) {
     ebox.append(el("p", "pod-sub", "Past episodes"));
@@ -1462,12 +1517,209 @@ __ESPN__
     eps.slice(1).forEach(function (e) {
       var li = el("li", "ep-item");
       var info = el("div");
-      info.append(el("div", "ep-item-title", e.title), el("div", "ep-item-date", epDate(e)));
+      var dl = el("div", "ep-item-date");
+      dl.append(el("span", null, epDate(e)));
+      if (e.duration) dl.append(el("span", null, Math.round(e.duration / 60) + " min"));
+      info.append(el("div", "ep-item-title", e.title), dl);
       li.append(info);
-      if (e.url) li.append(listenLink(e, null, "Listen ▸"));
+      if (e.audio && podPlayer) {
+        var pb = el("button", "ep-play");
+        pb.type = "button";
+        pb.innerHTML = ICON_PLAY;
+        pb.append("Play");
+        pb.setAttribute("aria-label", "Play " + e.title);
+        pb.addEventListener("click", function () { podPlayer.load(e, false); podPlayer.play(); });
+        li.append(pb);
+      } else if (e.url) li.append(listenLink(e, null, "Listen ▸"));
       ul.append(li);
     });
     ebox.append(ul);
+  }
+
+  // The player: one audio element shared by every episode, with lock-screen controls,
+  // a speed button, 15/30-second skips, the waveform as a progress bar you can tap or drag,
+  // a mini player above the bottom bar, and each episode's spot remembered on this phone.
+  function makePlayer(card, wave, bars) {
+    var audio = new Audio();
+    audio.preload = "none";
+    var cur = null, latest = eps[0];
+    var POS = "bbfc-pod-pos";
+    function positions() { try { return JSON.parse(localStorage.getItem(POS) || "{}") || {}; } catch (e) { return {}; } }
+    function savePos() {
+      if (!cur) return;
+      try {
+        var all = positions();
+        if (audio.ended || (audio.duration && audio.currentTime > audio.duration - 20)) delete all[cur.audio];
+        else if (audio.currentTime > 5) all[cur.audio] = Math.floor(audio.currentTime);
+        localStorage.setItem(POS, JSON.stringify(all));
+      } catch (e) {}
+    }
+
+    var ctl = el("div", "pl");
+    var play = el("button", "pl-play");
+    play.type = "button";
+    play.innerHTML = ICON_PLAY + ICON_PAUSE;
+    var main = el("div", "pl-main");
+    var times = el("div", "pl-times");
+    var tNow = el("span", null, "0:00"), tLeft = el("span", null, "");
+    times.append(tNow, tLeft);
+    var ctrls = el("div", "pl-ctrls");
+    function ctrlBtn(label, html, onClick) {
+      var x = el("button", "pl-btn");
+      x.type = "button";
+      x.setAttribute("aria-label", label);
+      x.innerHTML = html;
+      x.addEventListener("click", onClick);
+      ctrls.append(x);
+      return x;
+    }
+    ctrlBtn("Back 15 seconds", '<svg viewBox="0 0 16 16"><path d="M3.5 5.5A5.5 5.5 0 1 1 2.5 9"/><path d="M3.5 1.8v3.7h3.7"/></svg>15', function () { seek(audio.currentTime - 15); });
+    var speeds = [1, 1.25, 1.5, 2];
+    var speedBtn = ctrlBtn("Playback speed", "1×", function () {
+      var i = (speeds.indexOf(audio.playbackRate) + 1) % speeds.length;
+      audio.playbackRate = speeds[i];
+      speedBtn.textContent = speeds[i] + "×";
+    });
+    ctrlBtn("Forward 30 seconds", '30<svg viewBox="0 0 16 16"><path d="M12.5 5.5A5.5 5.5 0 1 0 13.5 9"/><path d="M12.5 1.8v3.7H8.8"/></svg>', function () { seek(audio.currentTime + 30); });
+    var sc = el("a", "pl-sc", "SoundCloud ↗");
+    sc.target = "_blank"; sc.rel = "noopener";
+    ctrls.append(sc);
+    main.append(times, ctrls);
+    ctl.append(play, main);
+    card.append(ctl);
+
+    // The waveform doubles as the progress bar
+    wave.classList.add("scrub");
+    wave.removeAttribute("aria-hidden");
+    wave.setAttribute("role", "slider");
+    wave.setAttribute("tabindex", "0");
+    wave.setAttribute("aria-label", "Episode progress");
+    function total() { return audio.duration && isFinite(audio.duration) ? audio.duration : (cur && cur.duration) || 0; }
+    function seek(t) {
+      var d = total();
+      t = Math.max(0, d ? Math.min(d - 1, t) : t);
+      audio.currentTime = t;
+      paint();
+    }
+    function fromPointer(ev) {
+      var r = wave.getBoundingClientRect();
+      var x = Math.min(1, Math.max(0, (ev.clientX - r.left) / r.width));
+      if (total()) seek(x * total());
+    }
+    var dragging = false;
+    wave.addEventListener("pointerdown", function (ev) { dragging = true; try { wave.setPointerCapture(ev.pointerId); } catch (e) {} fromPointer(ev); });
+    wave.addEventListener("pointermove", function (ev) { if (dragging) fromPointer(ev); });
+    wave.addEventListener("pointerup", function () { dragging = false; savePos(); });
+    wave.addEventListener("keydown", function (ev) {
+      if (ev.key === "ArrowLeft") { seek(audio.currentTime - 15); ev.preventDefault(); }
+      if (ev.key === "ArrowRight") { seek(audio.currentTime + 30); ev.preventDefault(); }
+    });
+
+    // Mini player
+    var mini = el("div", "mini");
+    mini.hidden = true;
+    var miniWrap = el("div", "wrap");
+    var miniIn = el("div", "mini-in");
+    var mPlay = el("button", "pl-play");
+    mPlay.type = "button";
+    mPlay.innerHTML = ICON_PLAY + ICON_PAUSE;
+    var mTitle = el("button", "mini-title");
+    mTitle.type = "button";
+    var mTime = el("span", "mini-time");
+    var mBar = el("span", "mini-bar");
+    miniIn.append(mPlay, mTitle, mTime, mBar);
+    miniWrap.append(miniIn);
+    mini.append(miniWrap);
+    document.body.append(mini);
+    mTitle.addEventListener("click", function () { scrollToSection(document.getElementById("podcast"), true); });
+    var cardVisible = true;
+    if (window.IntersectionObserver) {
+      new IntersectionObserver(function (entries) { cardVisible = entries[0].isIntersecting; showMini(); }, { threshold: 0.15 }).observe(card);
+    }
+    function showMini() {
+      var on = !!cur && audio.currentTime > 0 && !cardVisible;
+      mini.hidden = !on;
+      document.body.classList.toggle("has-mini", on);
+    }
+
+    function paint() {
+      var d = total(), t = audio.currentTime || 0;
+      var x = d ? Math.min(1, t / d) : 0;
+      tNow.textContent = clock(t);
+      tLeft.textContent = d ? "-" + clock(d - t) : "";
+      mTime.textContent = d ? "-" + clock(d - t) : clock(t);
+      mBar.style.width = (x * 100).toFixed(2) + "%";
+      var lit = Math.round(x * bars.length);
+      for (var i = 0; i < bars.length; i++) bars[i].classList.toggle("on", i < lit);
+      wave.setAttribute("aria-valuenow", String(Math.round(x * 100)));
+      wave.setAttribute("aria-valuetext", clock(t) + " of " + clock(d));
+    }
+    function state() {
+      var on = !audio.paused;
+      ctl.classList.toggle("playing", on);
+      miniIn.classList.toggle("playing", on);
+      play.setAttribute("aria-label", on ? "Pause" : "Play");
+      mPlay.setAttribute("aria-label", on ? "Pause" : "Play");
+      showMini();
+    }
+    function toggle() { if (audio.paused) api.play(); else audio.pause(); }
+    play.addEventListener("click", toggle);
+    mPlay.addEventListener("click", toggle);
+    audio.addEventListener("timeupdate", function () { paint(); showMini(); });
+    audio.addEventListener("loadedmetadata", paint);
+    audio.addEventListener("play", state);
+    audio.addEventListener("pause", function () { state(); savePos(); });
+    audio.addEventListener("ended", function () { savePos(); state(); });
+    var lastSave = 0;
+    audio.addEventListener("timeupdate", function () { if (Date.now() - lastSave > 5000) { lastSave = Date.now(); savePos(); } });
+    window.addEventListener("pagehide", savePos);
+
+    var api = {
+      load: function (e, quiet) {
+        if (cur && cur.audio === e.audio) return;
+        if (cur) savePos();
+        cur = e;
+        audio.src = e.audio;
+        audio.playbackRate = 1;
+        speedBtn.textContent = "1×";
+        var resume = positions()[e.audio];
+        audio.currentTime = 0;
+        if (resume) {
+          var go = function () { audio.currentTime = resume; paint(); audio.removeEventListener("loadedmetadata", go); };
+          audio.addEventListener("loadedmetadata", go);
+        }
+        kBadge.textContent = e === latest ? "Latest episode" : "Past episode";
+        kDate.textContent = epDate(e);
+        fTitle.textContent = e.title;
+        fAge.textContent = resume ? "Picks up at " + clock(resume) : e.duration ? Math.round(e.duration / 60) + " min · " + epAge(e) : epAge(e);
+        sc.href = e.url;
+        mTitle.textContent = "";
+        mTitle.append(el("small", null, "The Poddy"), e.title);
+        tNow.textContent = clock(resume || 0);
+        tLeft.textContent = e.duration ? "-" + clock(e.duration - (resume || 0)) : "";
+        var x = e.duration && resume ? resume / e.duration : 0;
+        for (var i = 0; i < bars.length; i++) bars[i].classList.toggle("on", i < Math.round(x * bars.length));
+        if ("mediaSession" in navigator && window.MediaMetadata) {
+          try {
+            navigator.mediaSession.metadata = new MediaMetadata({ title: e.title, artist: "BBFC Presents: The Poddy", album: "Boys and Bibles Football Club", artwork: [{ src: "icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" }] });
+          } catch (err) {}
+        }
+        if (!quiet) card.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        state();
+      },
+      play: function () { var p = audio.play(); if (p && p.catch) p.catch(function () {}); },
+      playing: function () { return !audio.paused; },
+    };
+    if ("mediaSession" in navigator) {
+      try {
+        navigator.mediaSession.setActionHandler("play", function () { api.play(); });
+        navigator.mediaSession.setActionHandler("pause", function () { audio.pause(); });
+        navigator.mediaSession.setActionHandler("seekbackward", function () { seek(audio.currentTime - 15); });
+        navigator.mediaSession.setActionHandler("seekforward", function () { seek(audio.currentTime + 30); });
+        navigator.mediaSession.setActionHandler("seekto", function (d) { if (d && d.seekTime != null) seek(d.seekTime); });
+      } catch (err) {}
+    }
+    return api;
   }
 
   // Newspaper
@@ -1628,7 +1880,11 @@ __ESPN__
     checking = true;
     fetch("data/stamp.json?ts=" + Date.now(), { cache: "no-store" })
       .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (s) { if (s && s.fetchedAt && s.fetchedAt !== E.fetchedAt) reloadKeepingPlace(s.fetchedAt); })
+      .then(function (s) {
+        if (!s || !s.fetchedAt || s.fetchedAt === E.fetchedAt) return;
+        if (podPlayer && podPlayer.playing()) return; // keep the episode playing; refresh after it pauses
+        reloadKeepingPlace(s.fetchedAt);
+      })
       .catch(function () {})
       .then(function () { checking = false; });
   }
