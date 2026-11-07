@@ -564,11 +564,13 @@ html.sheet-open, html.sheet-open body { overflow: hidden; }
 
 /* Record Book: a labeled pill in the masthead, and a card at the end of Standings */
 .book-pill {
-  display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; padding: 6px 12px 5px 10px; border-radius: 999px;
+  position: absolute; right: max(16px, env(safe-area-inset-right, 0px)); bottom: 18px;
+  display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px 5px 10px; border-radius: 999px;
   color: var(--band-ink); text-decoration: none; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.28);
   font-family: var(--f-label); font-weight: 700; font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; line-height: 1;
 }
 .book-pill svg { width: 16px; height: 16px; }
+@media (max-width: 370px) { .mast-in { padding-bottom: 60px; } }
 .book-pill:hover { background: rgba(255, 255, 255, 0.16); }
 .book-pill:focus-visible { outline: 2px solid var(--band-ink); outline-offset: 2px; }
 .book-card {
@@ -671,8 +673,8 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
       <p class="eyebrow" id="season-line">BBFC</p>
       <h1>Boys and Bibles Football Club</h1>
       <p class="mast-sub" id="through-line"></p>
-      <!--book--><a class="book-pill" href="record-book.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.5C10.4 5 8 4.4 3.5 4.4v13.2c4.5 0 6.9.6 8.5 2 1.6-1.4 4-2 8.5-2V4.4C16 4.4 13.6 5 12 6.5Z"/><path d="M12 6.5v13"/></svg>Record Book<span aria-hidden="true">›</span></a><!--/book-->
     </div>
+    <!--book--><a class="book-pill" href="record-book.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.5C10.4 5 8 4.4 3.5 4.4v13.2c4.5 0 6.9.6 8.5 2 1.6-1.4 4-2 8.5-2V4.4C16 4.4 13.6 5 12 6.5Z"/><path d="M12 6.5v13"/></svg>Record Book<span aria-hidden="true">›</span></a><!--/book-->
     <span class="ribbon" aria-hidden="true"></span>
     <button type="button" class="theme-btn" id="theme-btn" aria-label="Switch to dark mode" title="Switch to dark mode">
       <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 1 1 9.5 3.5a7 7 0 0 0 11 11Z"/></svg>
