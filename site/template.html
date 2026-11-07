@@ -585,14 +585,15 @@ tr.mine td:first-child { box-shadow: inset 3px 0 0 var(--gilt); }
 
 /* Scoreboard: each game opens its lineups */
 .game { cursor: pointer; }
+.game { position: relative; padding-right: 30px; }
 .game-more {
-  display: flex; align-items: center; justify-content: flex-end; gap: 4px; width: calc(100% + 28px); margin: 0 -14px; padding: 6px 14px 7px;
-  border: 0; border-top: 1px solid var(--line); background: none; cursor: pointer; color: var(--accent);
-  font-family: var(--f-label); font-weight: 700; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;
+  position: absolute; top: 0; right: 0; bottom: 0; width: 28px; padding: 0; border: 0; background: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; color: var(--muted);
 }
-.game-more span { font-size: 16px; line-height: 1; }
-.game-more:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
-@media (max-width: 619px) { .game-more { width: calc(100% + 24px); margin: 0 -12px; padding-inline: 12px; } }
+.game-more svg { width: 8px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.game-more:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 0 10px 10px 0; }
+.game:hover .game-more { color: var(--accent); }
+@media (max-width: 619px) { .game { padding-right: 26px; } .game-more { width: 24px; } }
 
 /* Matchup details sheet */
 .mu-sheet { max-height: 92vh; }
@@ -1441,8 +1442,8 @@ __ESPN__
   document.getElementById("h-week").textContent = isPlayoffs ? "Playoffs" : "Week " + wk + " Scoreboard";
   document.getElementById("week-tag").textContent = started ? "Live" : "Not started";
   document.getElementById("week-lede").textContent = started
-    ? "Scores update about once a minute during games."
-    : "No points yet. ESPN's projected totals are under each team.";
+    ? "Live scores update every minute. Tap a game for lineups."
+    : "No points yet, just projections. Tap a game for lineups.";
   var gbox = document.getElementById("games");
   if (!cur.length) gbox.append(el("p", "empty", "No matchups this week."));
   var games = cur.slice();
@@ -1473,8 +1474,8 @@ __ESPN__
     });
     var more = el("button", "game-more");
     more.type = "button";
-    more.append("Lineups", el("span", null, "›"));
     more.setAttribute("aria-label", "Lineups: " + nameOf(m.h[0]) + " vs " + nameOf(m.a[0]));
+    more.innerHTML = '<svg viewBox="0 0 8 14" aria-hidden="true"><path d="M1.5 1.5 6.5 7l-5 5.5"/></svg>';
     card.append(more);
     card.addEventListener("click", function (e) { if (!e.target.closest("a")) openMatchup(m.h[0], m.a[0]); });
     gbox.append(card);
