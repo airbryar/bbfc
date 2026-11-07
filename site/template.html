@@ -465,6 +465,30 @@ button.refresh { cursor: pointer; }
 
 /* Trades: one card per deal, each side with the players it got and their points since */
 .trades { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+/* Waiver Wire: the week's pickups by bid, and each team's FAAB left */
+.wire-head { margin: 28px 0 10px; }
+.wire-h { font-family: var(--f-display); font-weight: 800; font-size: 21px; line-height: 1; text-transform: uppercase; letter-spacing: 0.01em; margin: 0; }
+.wire-card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 0 14px; }
+#wire-more .wire-card { margin-top: 10px; }
+.wire-card.faab { margin-top: 10px; padding-bottom: 6px; }
+.pk { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; padding-block: 9px; }
+.pk + .pk { border-top: 1px solid var(--line); }
+.pk-who { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.pk-text { min-width: 0; }
+.pk-add { font-weight: 600; font-size: 15px; line-height: 1.25; }
+.pk-add .tr-pos { margin-left: 5px; }
+.pk-sub { font-size: 13px; line-height: 1.3; color: var(--muted); margin-top: 1px; }
+.pk-bid { font-family: var(--f-num); font-weight: 700; font-size: 20px; line-height: 1; font-variant-numeric: tabular-nums; text-align: right; }
+.pk-bid.fa { font-family: var(--f-label); font-size: 12px; letter-spacing: 0.08em; color: var(--muted); }
+.fb-head { display: flex; justify-content: space-between; align-items: baseline; padding: 10px 0 4px; font-family: var(--f-label); font-weight: 700; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.fb { display: grid; grid-template-columns: minmax(0, 1fr) 72px 44px; align-items: center; gap: 10px; padding-block: 6px; font-size: 14px; }
+.fb + .fb { border-top: 1px solid var(--line); }
+.fb-name { display: flex; align-items: center; gap: 8px; min-width: 0; font-weight: 600; line-height: 1.2; }
+.fb-name span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fb-bar { height: 4px; border-radius: 2px; background: var(--chip); overflow: hidden; }
+.fb-bar span { display: block; height: 100%; border-radius: 2px; background: var(--gilt); }
+.fb-left { text-align: right; font-family: var(--f-num); font-weight: 700; font-size: 16px; font-variant-numeric: tabular-nums; }
+.fb.mine { background: var(--mine); margin-inline: -14px; padding-inline: 14px; box-shadow: inset 3px 0 0 var(--gilt); }
 @media (min-width: 620px) { .trades { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .tr-earlier { margin-top: 10px; }
 .trade { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 0 14px 2px; min-width: 0; }
@@ -750,7 +774,7 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
   </div>
 </header>
 
-<!-- Trade ticker: shown for three days after a trade, like a TV crawl. Tapping it opens the Trade Center. -->
+<!-- Trade ticker: shown for three days after a trade, like a TV crawl. Tapping it opens Transactions. -->
 <a class="ticker" id="ticker" href="#trades" hidden>
   <span class="tk-label">Trade</span>
   <span class="tk-view"><span class="tk-track" id="tk-track"></span></span>
@@ -762,7 +786,7 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
     <a href="#news" data-for="news"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h13v14H6.2A2.2 2.2 0 0 1 4 16.8Z"/><path d="M17 9h3v8a2 2 0 0 1-2 2h-1"/><path d="M7.5 9h6M7.5 12.5h6M7.5 16h4"/></svg>News</a>
     <a href="#standings" data-for="standings rankings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h1.5M4 12h1.5M4 18h1.5M9 6h11M9 12h8M9 18h5"/></svg>Standings</a>
     <a href="#this-week" data-for="this-week median"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="12" rx="2"/><path d="M12 4.5v12M9 20.5h6M12 16.5v4"/><path d="M6.5 8.5h2v4h-2zM15.5 8.5h2v4h-2z"/></svg>Scores</a>
-    <a href="#trades" data-for="trades"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5h15M15 4.5l4 4-4 4"/><path d="M20 15.5H5M9 11.5l-4 4 4 4"/></svg>Trades</a>
+    <a href="#trades" data-for="trades"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5h15M15 4.5l4 4-4 4"/><path d="M20 15.5H5M9 11.5l-4 4 4 4"/></svg>Moves</a>
     <a href="#podcast" data-for="podcast"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M9 21h6"/></svg>Podcast</a>
   </div>
 </nav>
@@ -868,10 +892,10 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
 
   <section id="trades" aria-labelledby="h-trades">
     <div class="sec-head">
-      <h2 id="h-trades">Trade Center</h2>
+      <h2 id="h-trades">Transactions</h2>
       <span class="tag" id="trades-tag"></span>
     </div>
-    <p class="lede">Every deal this season, newest first. Each team is listed with the players it got and the points they've scored in its starting lineup since.</p>
+    <p class="lede">Every trade this season, newest first, with the points each player has scored in his new team's starting lineup since. Then the Waiver Wire.</p>
     <div class="mw-tiles">
       <div class="tile"><div class="tile-label">Trades this season</div><div class="tile-value" id="tr-count">&ndash;</div><div class="tile-note" id="tr-count-note"></div></div>
       <div class="tile"><div class="tile-label" id="tr-dl-label">Trade deadline</div><div class="tile-value" id="tr-dl">&ndash;</div><div class="tile-note" id="tr-dl-note"></div></div>
@@ -882,6 +906,15 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
       <div class="trades tr-earlier" id="trades-more-list"></div>
     </details>
     <p class="mw-foot">A dash means the player hasn't been in that team's starting lineup since the trade.</p>
+    <div id="wire" hidden>
+      <div class="sec-head wire-head"><h3 class="wire-h">Waiver Wire</h3><span class="tag" id="wire-tag"></span></div>
+      <div class="wire-card" id="wire-list"></div>
+      <details class="news-past" id="wire-more" hidden>
+        <summary id="wire-more-sum">More pickups</summary>
+        <div class="wire-card" id="wire-more-list"></div>
+      </details>
+      <div class="wire-card faab" id="faab-box" hidden></div>
+    </div>
   </section>
 
   <section id="podcast" aria-labelledby="h-podcast">
@@ -1844,7 +1877,7 @@ __ESPN__
       addRound();
       track.append(copy);
       ticker.hidden = false;
-      ticker.setAttribute("aria-label", "New trades: " + recent.map(function (t) { return tickerItem(t).textContent; }).join("; ") + ". Open the Trade Center.");
+      ticker.setAttribute("aria-label", "New trades: " + recent.map(function (t) { return tickerItem(t).textContent; }).join("; ") + ". Open Transactions.");
       // Repeat until one pass is wider than the strip, then a second pass makes the loop seamless
       for (var guard = 0; copy.offsetWidth < view.clientWidth && guard < 6; guard++) addRound();
       var copy2 = copy.cloneNode(true);
@@ -1947,6 +1980,67 @@ __ESPN__
       });
       return art;
     }
+
+    // Waiver Wire: this week's pickups (last week's until the first claims of the week), by bid
+    (function () {
+      var picks = T.pickups || [];
+      var faab = T.faab;
+      if (!picks.length && !faab) return;
+      document.getElementById("wire").hidden = false;
+      var wkNow = T.week || E.currentWeek;
+      var wk = picks.some(function (p) { return p.week === wkNow; }) ? wkNow : wkNow - 1;
+      var these = picks.filter(function (p) { return p.week === wk; }).sort(function (a, b) { return b.bid - a.bid || b.at - a.at; });
+      document.getElementById("wire-tag").textContent = these.length ? "Week " + wk : "";
+      function pickRow(p) {
+        var row = el("div", "pk");
+        var who = el("div", "pk-who");
+        who.append(badge(p.team, nameOf(p.team)));
+        var txt = el("div", "pk-text");
+        var add = el("div", "pk-add");
+        p.add.forEach(function (label, i) {
+          var m = /^(.*) \(([A-Z\/]+)\)$/.exec(label || "");
+          if (i) add.append(", ");
+          add.append(m ? m[1] : label);
+          if (m && !/D\/ST$/.test(m[1])) add.append(el("span", "tr-pos", m[2]));
+        });
+        txt.append(add);
+        var sub = el("div", "pk-sub", nameOf(p.team) + (p.drop.length ? " · dropped " + p.drop.map(function (d) { return d.replace(/ \([A-Z\/]+\)$/, ""); }).join(", ") : ""));
+        txt.append(sub);
+        who.append(txt);
+        row.append(who);
+        row.append(p.type === "W" ? el("span", "pk-bid", "$" + p.bid) : el("span", "pk-bid fa", "Free agent"));
+        return row;
+      }
+      var wl = document.getElementById("wire-list");
+      if (!these.length) wl.append(el("p", "empty", "No pickups yet this week."));
+      var SHOWN = 5;
+      these.slice(0, SHOWN).forEach(function (p) { wl.append(pickRow(p)); });
+      if (these.length > SHOWN) {
+        document.getElementById("wire-more-sum").textContent = "More pickups (" + (these.length - SHOWN) + ")";
+        var ml = document.getElementById("wire-more-list");
+        these.slice(SHOWN).forEach(function (p) { ml.append(pickRow(p)); });
+        document.getElementById("wire-more").hidden = false;
+      }
+      if (faab && faab.budget) {
+        var fb = document.getElementById("faab-box");
+        fb.hidden = false;
+        var head = el("div", "fb-head");
+        head.append(el("span", null, "FAAB left"), el("span", null, "of $" + faab.budget));
+        fb.append(head);
+        E.teams.slice().sort(function (a, b) { return (faab.left[b.id] || 0) - (faab.left[a.id] || 0) || a.name.localeCompare(b.name); }).forEach(function (t) {
+          var left = faab.left[t.id] || 0;
+          var r = el("div", "fb" + (mine(t.id) ? " mine" : ""));
+          var nm = el("div", "fb-name");
+          nm.append(badge(t.id, t.name), el("span", null, t.name));
+          var bar = el("div", "fb-bar"), f = el("span");
+          f.style.width = Math.min(100, left / faab.budget * 100).toFixed(1) + "%";
+          bar.append(f);
+          bar.setAttribute("aria-hidden", "true");
+          r.append(nm, bar, el("span", "fb-left", "$" + left));
+          fb.append(r);
+        });
+      }
+    })();
 
     var box = document.getElementById("trades-list");
     if (!list.length) { box.append(el("p", "empty", "No trades yet this season.")); return; }
@@ -2185,6 +2279,17 @@ __ESPN__
   }
   setInterval(checkForUpdate, 60000);
   document.addEventListener("visibilitychange", checkForUpdate);
+  // Offline copy: the site's service worker (shared with alerts) keeps the last copy of each
+  // page so the app opens right away on weak signal. Registered here unless one already is
+  // (OneSignal registers the same file), so the two never trade places.
+  if (L.offline && "serviceWorker" in navigator) {
+    var swBase = location.pathname.replace(/[^\/]*$/, "");
+    navigator.serviceWorker.getRegistration(swBase).then(function (r) {
+      if (!r) return navigator.serviceWorker.register(swBase + "OneSignalSDKWorker.js", { scope: swBase });
+    }).catch(function () {});
+  }
+  // A page opened from the saved copy has older data: look for newer data right away
+  if (Date.now() - new Date(E.fetchedAt).getTime() > 3 * 60000) setTimeout(checkForUpdate, 2500);
 
   // Highlight the bottom-bar button for the section in view
   var links = Array.prototype.slice.call(document.querySelectorAll(".bnav a"));
