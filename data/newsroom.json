@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-11-06T15:17:42.908Z",
+ "fetchedAt": "2026-11-07T09:46:48.955Z",
  "notes": [
   "Each week a team plays two games: its head-to-head matchup, plus a game against the league median (the top 6 scores of the week win it). 'record' combines both; 'h2h' and 'vsMedian' split them.",
   "The top 6 seeds make the playoffs. The regular season is 14 weeks.",
@@ -332,7 +332,7 @@
    "pa": 892.22,
    "streak": "L2",
    "trades": 4,
-   "pickups": 73,
+   "pickups": 74,
    "faabSpent": 86,
    "h2h": "3-5",
    "vsMedian": "2-6",
@@ -408,7 +408,7 @@
    "pa": 869.5,
    "streak": "L1",
    "trades": 0,
-   "pickups": 20,
+   "pickups": 22,
    "faabSpent": 36,
    "h2h": "2-6",
    "vsMedian": "2-6",
@@ -446,7 +446,7 @@
    "pa": 805.92,
    "streak": "L7",
    "trades": 7,
-   "pickups": 32,
+   "pickups": 33,
    "faabSpent": 95,
    "h2h": "2-6",
    "vsMedian": "1-7",
@@ -1842,7 +1842,7 @@
     "home": "Real Man of Genius",
     "away": "Illegal use of hands",
     "livePoints": "0-8.9",
-    "projected": "91.65-123.99",
+    "projected": "95.4-123.92",
     "allTimeHeadToHead": "Micah 2-2 vs Jeremy",
     "homeRecord": "5-11",
     "awayRecord": "13-3"
@@ -1851,7 +1851,7 @@
     "home": "GAYleb williams",
     "away": "The Mouse Rats",
     "livePoints": "0-18.68",
-    "projected": "116.98-96.23",
+    "projected": "117.07-96.15",
     "allTimeHeadToHead": "Landon 2-2 vs Bryar",
     "homeRecord": "9-7",
     "awayRecord": "8-8"
@@ -1860,7 +1860,7 @@
     "home": "Breece's Pieces",
     "away": "The Silly Geese",
     "livePoints": "0-0",
-    "projected": "109.14-99.24",
+    "projected": "109.1-104.41",
     "allTimeHeadToHead": "Tyler 3-5 vs Michael",
     "homeRecord": "9-7",
     "awayRecord": "12-4"
@@ -1869,7 +1869,7 @@
     "home": "Every Inch Matters",
     "away": "After Bowers",
     "livePoints": "0-10.2",
-    "projected": "112.62-104.27",
+    "projected": "114.63-103.75",
     "allTimeHeadToHead": "Garrett 2-4 vs Ezra",
     "homeRecord": "5-11",
     "awayRecord": "8-8"
@@ -1878,7 +1878,7 @@
     "home": "I want my Nickleback",
     "away": "Lisan al Gibbs",
     "livePoints": "0-20.8",
-    "projected": "106.91-124.24",
+    "projected": "107.02-122.62",
     "allTimeHeadToHead": "Jared 2-1 vs Josh",
     "homeRecord": "3-13",
     "awayRecord": "14-2"
@@ -1887,7 +1887,7 @@
     "home": "The House Cats",
     "away": "Pteem Shteevenshun",
     "livePoints": "12-0",
-    "projected": "119.99-113.53",
+    "projected": "120.07-114.67",
     "allTimeHeadToHead": "Luke 2-2 vs Caleb",
     "homeRecord": "6-10",
     "awayRecord": "4-12"
@@ -2505,6 +2505,32 @@
  ],
  "recentPickups": [
   {
+   "date": "2026-11-07",
+   "week": 9,
+   "type": "waiver claim",
+   "team": "I want my Nickleback",
+   "bid": 0,
+   "added": [
+    "Elijah Mitchell (RB)"
+   ],
+   "dropped": [
+    "Courtland Sutton (WR)"
+   ]
+  },
+  {
+   "date": "2026-11-07",
+   "week": 9,
+   "type": "free agent",
+   "team": "Every Inch Matters",
+   "bid": 0,
+   "added": [
+    "Demarcus Robinson (WR)"
+   ],
+   "dropped": [
+    "MarShawn Lloyd (RB)"
+   ]
+  },
+  {
    "date": "2026-11-06",
    "week": 9,
    "type": "waiver claim",
@@ -2515,6 +2541,30 @@
    ],
    "dropped": [
     "Juwan Johnson (TE)"
+   ]
+  },
+  {
+   "date": "2026-11-06",
+   "week": 9,
+   "type": "free agent",
+   "team": "Pteem Shteevenshun",
+   "bid": 0,
+   "added": [
+    "Hunter Henry (TE)"
+   ],
+   "dropped": []
+  },
+  {
+   "date": "2026-11-06",
+   "week": 9,
+   "type": "free agent",
+   "team": "Pteem Shteevenshun",
+   "bid": 0,
+   "added": [
+    "Buccaneers D/ST (D/ST)"
+   ],
+   "dropped": [
+    "Treylon Burks (WR)"
    ]
   },
   {
@@ -2826,56 +2876,6 @@
    ],
    "dropped": [
     "Kendrick Bourne (WR)"
-   ]
-  },
-  {
-   "date": "2026-11-01",
-   "week": 8,
-   "type": "free agent",
-   "team": "Pteem Shteevenshun",
-   "bid": 0,
-   "added": [
-    "Mason Taylor (TE)"
-   ],
-   "dropped": [
-    "Colby Parkinson (TE)"
-   ]
-  },
-  {
-   "date": "2026-11-01",
-   "week": 8,
-   "type": "free agent",
-   "team": "The Mouse Rats",
-   "bid": 0,
-   "added": [
-    "Roschon Johnson (RB)"
-   ],
-   "dropped": []
-  },
-  {
-   "date": "2026-11-01",
-   "week": 8,
-   "type": "free agent",
-   "team": "Every Inch Matters",
-   "bid": 0,
-   "added": [
-    "Giants D/ST (D/ST)"
-   ],
-   "dropped": [
-    "Brian Thomas Jr. (WR)"
-   ]
-  },
-  {
-   "date": "2026-11-01",
-   "week": 8,
-   "type": "free agent",
-   "team": "Every Inch Matters",
-   "bid": 0,
-   "added": [
-    "Ray Davis (RB)"
-   ],
-   "dropped": [
-    "Tyjae Spears (RB)"
    ]
   }
  ],
