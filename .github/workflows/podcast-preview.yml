@@ -1,0 +1,27 @@
+name: Podcast preview (temporary)
+
+# Preview only: reads the podcast feed on the podcast-preview branch and saves the
+# episode list there. Removed before the player goes live.
+on:
+  push:
+    branches: [podcast-preview]
+    paths: ["scripts/fetch-podcast.mjs", ".github/workflows/podcast-preview.yml"]
+
+permissions:
+  contents: write
+
+jobs:
+  podcast:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node scripts/fetch-podcast.mjs
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/pod.json
+          git diff --cached --quiet || (git commit -m "Podcast preview: episode audio" && git push origin HEAD:podcast-preview)
