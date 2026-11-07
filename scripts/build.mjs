@@ -1,6 +1,8 @@
 // Builds the site into _site/: the page with today's data baked in, plus small
 // data files the page checks once a minute to know when to refresh itself.
 import fs from "node:fs";
+import { computeOdds } from "./odds.mjs";
+import { computePower } from "./power.mjs";
 
 const read = (p) => fs.readFileSync(p, "utf8");
 const espn = JSON.parse(read("data/espn.json"));
@@ -14,6 +16,23 @@ const history = fs.existsSync("data/history.json") ? JSON.parse(read("data/histo
 // Trades come from scripts/fetch-trades.mjs; an empty list just shows "No trades yet".
 const trades = fs.existsSync("data/trades.json") ? JSON.parse(read("data/trades.json")) : { through: null, deadline: null, trades: [] };
 
+// Playoff odds for the rest of the regular season (null once the playoffs start)
+const odds = computeOdds(espn);
+
+// Team pages: power ranking (the same formula as the main page) and top players (from the
+// Newspaper's data, refreshed Tuesday, Thursday and Saturday)
+const newsroom = fs.existsSync("data/newsroom.json") ? JSON.parse(read("data/newsroom.json")) : null;
+const reg = espn.regSeasonWeeks || 99;
+const prWeek = espn.games.reduce((m, g) => (g.p <= reg ? Math.max(m, g.p) : m), 0);
+const pr = prWeek ? computePower(espn, prWeek, league.weights) : null;
+const teamx = { prWeek: pr ? prWeek : null, playersThrough: newsroom ? newsroom.lastFinishedWeek : null, teams: {} };
+for (const t of espn.teams) teamx.teams[t.id] = {};
+if (pr) pr.list.forEach((r, i) => { teamx.teams[r.id].rank = i + 1; });
+for (const row of (newsroom && newsroom.standings) || []) {
+  const t = espn.teams.find((x) => x.name === row.name);
+  if (t) teamx.teams[t.id].top = (row.topPlayers || []).slice(0, 5);
+}
+
 // Keeps "</script>" inside data from ever closing a script block early.
 const safe = (obj, pretty) => JSON.stringify(obj, null, pretty ? 1 : 0).replace(/</g, "\\u003c");
 
@@ -25,6 +44,7 @@ const blocks = {
   __NEWS__: safe({ editions: (news.editions || []).slice(0, 6) }),
   __LOGOS__: safe(logos, true),
   __TRADES__: safe({ through: trades.through || null, deadline: trades.deadline || null, trades: trades.trades || [] }),
+  __ODDS__: safe(odds),
   __ICONV__: brand.iconVersion || "1",
 };
 
@@ -60,6 +80,20 @@ fs.writeFileSync("_site/data/espn.json", JSON.stringify(espn));
 if (trades.fetchedAt) fs.writeFileSync("_site/data/trades.json", JSON.stringify(trades));
 fs.writeFileSync("_site/data/stamp.json", JSON.stringify({ fetchedAt: espn.fetchedAt }));
 fs.writeFileSync("_site/.nojekyll", "");
+
+// Team pages: one page that shows any team (team.html?t=ID)
+if (fs.existsSync("site/team.html")) {
+  let page = read("site/team.html");
+  const teamBlocks = {
+    __ESPN__: safe(espn), __ODDS__: safe(odds), __TEAMX__: safe(teamx), __LOGOS__: safe(logos, true), __ICONV__: brand.iconVersion || "1",
+    __TRADES__: safe({ trades: trades.trades || [] }), __HISTORY__: safe(history),
+  };
+  for (const [key, value] of Object.entries(teamBlocks)) {
+    if (!page.includes(key)) throw new Error(`team.html is missing ${key}`);
+    page = page.split(key).join(value);
+  }
+  fs.writeFileSync("_site/team.html", page);
+}
 
 // The Record Book: past seasons plus this season so far, on its own page.
 if (history && fs.existsSync("site/record-book.html")) {
