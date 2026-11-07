@@ -35,7 +35,7 @@ this site through conversations with Claude, so:
 - **Never ask for the ESPN codes in chat.** They live only in GitHub secrets.
 - **The logo:** the BBFC shield is an NFL-style shield Bryar uploaded himself. Don't
   redraw or recreate the NFL logo.
-- **Easter egg:** the footer's small "Darren Waller is a bum." is a league running joke
+- **Easter egg:** the footer's small "Darren Waller is a BUM!" (Bryar's wording, Nov 2026) is a league running joke
   Bryar asked for. Leave it.
 
 ## How the site updates
@@ -43,7 +43,8 @@ this site through conversations with Claude, so:
 `.github/workflows/update.yml`, "Update the BBFC site", does everything:
 
 1. `scripts/fetch-espn.mjs` reads the private league from ESPN with the `ESPN_S2` and
-   `ESPN_SWID` repo secrets and writes `data/espn.json`. If ESPN fails, it keeps the last
+   `ESPN_SWID` repo secrets and writes `data/espn.json` (including `seedingRule`, the
+   league's tiebreaker, which the playoff odds follow). If ESPN fails, it keeps the last
    good data and the site keeps working.
 2. `scripts/fetch-trades.mjs` writes `data/trades.json` for the Trades section. Trades
    change rarely, so it only reads ESPN when its newest copy (the live site's
@@ -52,8 +53,11 @@ this site through conversations with Claude, so:
 3. `scripts/fetch-podcast.mjs` reads The Poddy's SoundCloud RSS feed (set in
    `data/league.json`) into `data/pod.json`.
 4. `scripts/build.mjs` fills the placeholders in `site/template.html` (`__ESPN__`,
-   `__PR__`, `__LEAGUE__`, `__POD__`, `__NEWS__`, `__LOGOS__`, `__TRADES__`,
+   `__PR__`, `__LEAGUE__`, `__POD__`, `__NEWS__`, `__LOGOS__`, `__TRADES__`, `__ODDS__`,
    `__ICONV__`) and writes `_site/`, including `data/stamp.json` and `data/trades.json`.
+   It computes the playoff odds with `scripts/odds.mjs` on every build, and builds
+   `_site/team.html` from `site/team.html` (`__ESPN__`, `__ODDS__`, `__TEAMX__` for power
+   ranks and top players, `__TRADES__`, `__HISTORY__`, `__LOGOS__`, `__ICONV__`).
    It also builds `_site/record-book.html` from `site/record-book.html` (`__HISTORY__`,
    `__ESPN__`, `__LOGOS__`, `__ICONV__`); without `data/history.json` it skips the Record
    Book and removes the header's book button (between `<!--book-->` markers).
@@ -112,7 +116,9 @@ Tooling notes from past sessions:
 | `scripts/fetch-podcast.mjs` | SoundCloud feed reader |
 | `scripts/fetch-history.mjs` | Reads past seasons into `data/history.json` for the Record Book |
 | `site/record-book.html` | The Record Book page |
-| `scripts/power.mjs` | Power-rankings formula, the same one the page uses |
+| `scripts/power.mjs` | Power-rankings formula, the same one the page uses (also gives team pages their rank) |
+| `scripts/odds.mjs` | Playoff odds: 10,000 simulations of the rest of the regular season |
+| `site/team.html` | Team pages (one page; `team.html?t=<team id>`) |
 | `scripts/fetch-newsroom.mjs` | Gathers everything the Newspaper writer needs into `data/newsroom.json` |
 | `scripts/add-edition.mjs` | Validates a Newspaper draft and adds it to `data/news.json` |
 | `scripts/make-logos.mjs`, `scripts/make-brand.mjs` | Turn uploaded team pictures and the league logo into site images |
@@ -151,6 +157,17 @@ in Nov 2026 so one bottom-bar button covers both.
   Bryar tuned this by eye.
 - **Standings:** shows the head-to-head and median split, with a "Playoff line · Top 6
   make it" divider.
+  - A **Table / Playoff odds** toggle (Nov 2026; kept across automatic refreshes). The odds
+    view lists teams by playoff chance with projected record, first-round bye chance and a
+    bar, a "Playoff line · top 6" divider and a "How the odds work" explainer. Shows
+    ">99%" / "<1%" rather than 100% / 0% unless the team has mathematically clinched or
+    been eliminated, which get green "Clinched" / red "Eliminated" tags.
+  - Odds (`scripts/odds.mjs`): each team's scores are drawn around its average so far,
+    pulled 20% toward the league average, with the league's week-to-week swing; the week
+    in progress uses ESPN's live projections, narrowing as games finish, so the odds move
+    during games. Median games count. Ties follow ESPN's `seedingRule`. Seeded, so the
+    same data gives the same odds. Hidden once the regular season ends.
+- **Team names** in Standings, the Scoreboard and the odds view link to that team's page.
 - **Median scoring:** each week the top 6 scores win a median game. A team's record
   includes median games.
 - **Median Watch:** teams sorted by score, with diverging bars from the median, a cut
@@ -245,6 +262,26 @@ Past seasons (2023 on) come from `data/history.json`; this season so far is adde
   tied to people's ESPN sign-ins. The scripts map them to short keys in memory.
 - `history.yml` runs monthly to pick up a season once it ends. Run it by hand after the
   championship if you want it sooner.
+
+## Team pages
+
+`team.html?t=<id>` (added Nov 2026), one page that renders any team, with a team picker at
+the top and the main page's bottom bar (linking back to its sections). Same look as the
+Record Book: navy masthead with the team picture, "Managed by <first name>", place, record
+and points, and a "‹ Home" pill.
+
+- Tiles: Record (H2H and median split), Playoff odds (projected record, or Clinched /
+  Eliminated), Power rank (same formula as the main page, after the last finished week).
+- This Week: the matchup with live scores and projections, plus one line with the
+  managers' all-time series from the Record Book's history. (Bryar found a series line on
+  every Scoreboard card too much; on the team page he was fine with it.)
+- Season: each finished week's opponent and score with W/L and median W/L chips; then
+  "Still to play" with each opponent's points per game and where the remaining schedule
+  ranks league-wide.
+- Top Players (points while started) come from `data/newsroom.json`, so they refresh with
+  the Newspaper's data (Tuesday, Thursday, Saturday).
+- Trades (got and sent, FAAB where no players went one way) and the manager's career
+  (seasons, record, titles, playoff trips) with links to the Trade Center and Record Book.
 
 ## Newspaper
 

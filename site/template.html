@@ -766,7 +766,7 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
   </section>
 </main>
 
-<footer class="wrap foot"><span id="footer-line">Boys and Bibles Football Club</span><button type="button" class="link-btn" id="theme-auto" hidden>Match my phone's light/dark setting</button><p class="egg">Darren Waller is a bum.</p></footer>
+<footer class="wrap foot"><span id="footer-line">Boys and Bibles Football Club</span><button type="button" class="link-btn" id="theme-auto" hidden>Match my phone's light/dark setting</button><p class="egg">Darren Waller is a BUM!</p></footer>
 
 <!-- Team images (64px, embedded). Teams without one get an initials badge. -->
 <script type="application/json" id="logo-data">
@@ -948,7 +948,7 @@ __ESPN__
       "Plays out the last " + ODDS.weeksLeft + " weeks of the regular season " + ODDS.sims.toLocaleString("en-US") + " times and counts how often each team finishes in the top " + ODDS.spots + ".",
       "Each team's scores are based on its scoring average so far, nudged a little toward the league average.",
       "This week uses ESPN's live projections, so the odds move during games.",
-      (ODDS.medianOn ? "Median games count, and ties" : "Ties") + " are broken by points scored.",
+      (ODDS.medianOn ? "Median games count, and ties" : "Ties") + " are broken " + (ODDS.tiebreak === "H2H_RECORD" ? "by head-to-head record, then points scored" : ODDS.tiebreak === "TOTAL_POINTS_SCORED" ? "by points scored" : "by points scored, close to the league's own tiebreaker") + ", like ESPN does.",
       "Clinched and Eliminated only appear when the math guarantees it.",
     ].forEach(function (t) { how.append(el("li", null, t)); });
     function fmt(p, sure) {

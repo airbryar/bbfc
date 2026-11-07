@@ -10,7 +10,9 @@
 //   as games finish, so the odds move during games.
 // - Head-to-head games come from the schedule; when the league plays median games, the
 //   top half of the week's scores each win one too.
-// Final order: wins, then points scored. Seeded, so the same data gives the same odds.
+// Final order: wins, then the league's tiebreaker from ESPN (head-to-head record, then
+// points scored, if the league breaks ties head-to-head; otherwise points scored).
+// Seeded, so the same data gives the same odds.
 //
 // "Clinched" and "Eliminated" are only set when the math guarantees it, not from the
 // simulation: clinched if at most (spots - 1) other teams can still reach this team's win
@@ -71,6 +73,16 @@ export function computeOdds(E) {
   const weekList = Object.keys(weeks).map(Number).sort((a, b) => a - b);
   const left = weekList.length;
 
+  // Tiebreaker: head-to-head wins between tied teams, when the league uses that
+  const rule = E.seedingRule || "TOTAL_POINTS_SCORED";
+  const byH2h = rule === "H2H_RECORD";
+  const baseH2h = {}; // "x|y" -> times x beat y this season
+  if (byH2h) for (const g of E.games || []) {
+    if (g.p > reg || g.w === "T") continue;
+    const [win, lose] = g.w === "H" ? [g.h[0], g.a[0]] : [g.a[0], g.h[0]];
+    baseH2h[win + "|" + lose] = (baseH2h[win + "|" + lose] || 0) + 1;
+  }
+
   const made = Object.fromEntries(ids.map((id) => [id, 0]));
   const bye = Object.fromEntries(ids.map((id) => [id, 0]));
   const winsSum = Object.fromEntries(ids.map((id) => [id, 0]));
@@ -87,6 +99,7 @@ export function computeOdds(E) {
   for (let s = 0; s < SIMS; s++) {
     const w = {}, pf = {};
     for (const id of ids) { w[id] = team[id].w + (team[id].t || 0) / 2; pf[id] = team[id].pf; }
+    const h2h = byH2h ? Object.assign({}, baseH2h) : null;
     for (const p of weekList) {
       const sc = {};
       for (const id of ids) {
@@ -100,8 +113,8 @@ export function computeOdds(E) {
         pf[id] += sc[id];
       }
       for (const [h, a] of weeks[p]) {
-        if (sc[h] > sc[a]) w[h]++;
-        else if (sc[a] > sc[h]) w[a]++;
+        if (sc[h] > sc[a]) { w[h]++; if (h2h) h2h[h + "|" + a] = (h2h[h + "|" + a] || 0) + 1; }
+        else if (sc[a] > sc[h]) { w[a]++; if (h2h) h2h[a + "|" + h] = (h2h[a + "|" + h] || 0) + 1; }
         else { w[h] += 0.5; w[a] += 0.5; }
       }
       if (medianOn) {
@@ -109,7 +122,7 @@ export function computeOdds(E) {
         for (let i = 0; i < Math.floor(order.length / 2); i++) w[order[i]]++;
       }
     }
-    const final = ids.slice().sort((x, y) => w[y] - w[x] || pf[y] - pf[x]);
+    const final = ids.slice().sort((x, y) => w[y] - w[x] || (h2h ? (h2h[y + "|" + x] || 0) - (h2h[x + "|" + y] || 0) : 0) || pf[y] - pf[x]);
     final.forEach((id, i) => {
       if (i < spots) made[id]++;
       if (i < byes) bye[id]++;
@@ -137,5 +150,5 @@ export function computeOdds(E) {
       eliminated: alreadyAbove >= spots,
     };
   }
-  return { sims: SIMS, weeksLeft: left, week: cur, spots, byes, medianOn, teams: out };
+  return { sims: SIMS, weeksLeft: left, week: cur, spots, byes, medianOn, tiebreak: rule, teams: out };
 }
