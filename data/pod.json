@@ -4,22 +4,30 @@
     {
       "title": "Shabbat Shalom! - The Poddy, October 23rd",
       "url": "https://soundcloud.com/thepoddy/shabbat-shalom-the-poddy",
-      "date": "2026-10-23T17:35:07.000Z"
+      "date": "2026-10-23T17:35:07.000Z",
+      "audio": "https://feeds.soundcloud.com/stream/2424759975-thepoddy-shabbat-shalom-the-poddy.mp3",
+      "duration": 1660
     },
     {
       "title": "The Poddy! - October 9th",
       "url": "https://soundcloud.com/thepoddy/the-poddy-october-9th",
-      "date": "2026-10-09T18:21:01.000Z"
+      "date": "2026-10-09T18:21:01.000Z",
+      "audio": "https://feeds.soundcloud.com/stream/2416151046-thepoddy-the-poddy-october-9th.mp3",
+      "duration": 781
     },
     {
       "title": "THE PODDY! - September 24th",
       "url": "https://soundcloud.com/thepoddy/the-poddy-september-24th",
-      "date": "2026-09-25T00:52:59.000Z"
+      "date": "2026-09-25T00:52:59.000Z",
+      "audio": "https://feeds.soundcloud.com/stream/2407353264-thepoddy-the-poddy-september-24th.mp3",
+      "duration": 2331
     },
     {
       "title": "The Poddy Week 7 Featuring Micah",
       "url": "https://soundcloud.com/thepoddy/the-poddy-week-7-featuring-micah",
-      "date": "2025-10-15T01:15:46.000Z"
+      "date": "2025-10-15T01:15:46.000Z",
+      "audio": "https://feeds.soundcloud.com/stream/2190435231-thepoddy-the-poddy-week-7-featuring-micah.mp3",
+      "duration": 1972
     }
   ]
 }
