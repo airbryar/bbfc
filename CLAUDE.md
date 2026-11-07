@@ -326,6 +326,19 @@ Other notes:
 - **League logo:** he uploads to `league-logo/`. `make-brand.mjs` makes the header logo,
   the favicon and the 180px home-screen icon.
 
+## On hold
+
+- **Podcast player** (Nov 2026): an in-page player (featured card plays in place, waveform
+  as progress, past episodes, mini player, lock-screen controls, auto-refresh waits while
+  playing) is saved on the `podcast-preview` branch, along with a `fetch-podcast.mjs` that
+  saves each episode's audio file and length. Bryar chose to keep linking to SoundCloud for
+  now. Drop that branch's temporary `podcast-preview.yml` workflow if it's ever merged.
+- **Notifications:** planned with OneSignal's free plan (web push; on iPhones only from the
+  home-screen icon, iOS 16.4+, which needs a web app manifest). Waiting on Bryar to create
+  the OneSignal app (Custom Code, site URL `https://airbryar.github.io`), share the App ID,
+  and add the App API Key as the `ONESIGNAL_API_KEY` secret himself. Suggested alerts:
+  trades, new Newspaper editions, new Poddy episodes, weekly final results.
+
 ## History
 
 - The site started as a Claude artifact
