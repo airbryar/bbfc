@@ -52,10 +52,12 @@ this site through conversations with Claude, so:
    week) for the matchup details sheet; `continue-on-error`. It reads the fantasy box scores
    plus ESPN's public NFL scoreboard for opponents, kickoffs and live game clocks (the
    fantasy NFL schedule is only a backup). If ESPN fails, it keeps the live site's copy.
-   Then `scripts/fetch-trades.mjs` writes `data/trades.json` for the Trades section. Trades
-   change rarely, so it only reads ESPN when its newest copy (the live site's
-   `data/trades.json` or the saved one) is 55+ minutes old, and keeps that copy if ESPN
-   fails. The step has `continue-on-error`, so it can't block an update.
+   Then `scripts/fetch-trades.mjs` writes `data/trades.json` for the Transactions section:
+   the trades, plus the Waiver Wire (`faab`: budget and each team's FAAB left; `pickups`:
+   this week's and last week's waiver claims and free-agent adds with bids). It only reads
+   ESPN when its newest copy (the live site's `data/trades.json` or the saved one) is 55+
+   minutes old (`FORCE_TRADES=1` skips that), and keeps that copy if ESPN fails. The step
+   has `continue-on-error`, so it can't block an update.
 3. `scripts/fetch-podcast.mjs` reads The Poddy's SoundCloud RSS feed (set in
    `data/league.json`) into `data/pod.json`.
 4. `scripts/build.mjs` fills the placeholders in `site/template.html` (`__ESPN__`,
@@ -118,7 +120,8 @@ Tooling notes from past sessions:
 | `scripts/build.mjs` | Builds `_site/` from the template and data |
 | `scripts/fetch-espn.mjs` | ESPN reader for the site |
 | `scripts/next-run.mjs` | Game-window pacing |
-| `scripts/fetch-trades.mjs` | Trades reader (about hourly); same trade logic as the newsroom script |
+| `scripts/fetch-trades.mjs` | Trades and Waiver Wire reader (about hourly); same trade logic as the newsroom script |
+| `site/sw-offline.js` | The offline copy, added to the service worker by `build.mjs` |
 | `scripts/fetch-lineups.mjs` | This week's lineups for the matchup details sheet (every update) |
 | `scripts/fetch-podcast.mjs` | SoundCloud feed reader |
 | `scripts/fetch-history.mjs` | Reads past seasons into `data/history.json` for the Record Book |
@@ -146,12 +149,13 @@ Tooling notes from past sessions:
 ## The page
 
 **Section order:** News (Newspaper) → Standings → Power Rankings → Scoreboard → Median
-Watch → Trade Center → Podcast, then the footer. Power Rankings moved up next to Standings
+Watch → Transactions → Podcast, then the footer. Power Rankings moved up next to Standings
 in Nov 2026 so one bottom-bar button covers both.
 
 - **Bottom bar** (Nov 2026; replaced the sticky top tabs, which had gotten crowded): five
   app-style buttons fixed to the bottom of the screen, icon over label: News, Standings
-  (covers Power Rankings), Scores (Scoreboard and Median Watch), Trades, Podcast. Each
+  (covers Power Rankings), Scores (Scoreboard and Median Watch), Moves (Transactions;
+  it read "Trades" until Nov 2026), Podcast. Each
   link's `data-for` lists the sections it covers.
   - Tapping one smooth-scrolls so that section's heading sits about 14px under the top of
     the screen (below the phone's status bar). This uses `scrollToSection`, not the
@@ -214,6 +218,10 @@ in Nov 2026 so one bottom-bar button covers both.
     by slot (short names like "J. Gibbs", "SEA D/ST"; second line "@ MIA · Sun 1p", the
     live clock with a red dot, "Final" or "Bye"; injury tags Q/D/O/IR; points with the
     projection underneath), and the bench in a collapsed "Bench" list.
+  - **Win chance** (Nov 2026) under the two scores in that sheet: "57% · Win chance · 43%"
+    and a bar (favored side `--gilt`), from each side's live projection with a spread that
+    grows with the points still to play (`winK`, sized from the league's weekly swing).
+    Hidden once both sides are done. Bryar didn't want it on team pages.
   - The page downloads `data/lineups.json` (~28 KB) only when a game is opened, and
     refreshes it every 60 seconds while the sheet is open. While any sheet is open the
     page doesn't auto-reload; it checks again when the sheet closes.
@@ -232,7 +240,8 @@ in Nov 2026 so one bottom-bar button covers both.
     story", and an "Earlier editions" list.
   - **Fonts:** stories use Newsreader, a newspaper serif. Headlines are bold serif in
     normal case, deks are italic, and the lead has a drop cap.
-- **Trade Center** (bottom-bar button "Trades"; added Nov 2026): tiles for the season's trade count and a deadline
+- **Transactions** (bottom-bar button "Moves"; added Nov 2026 as the Trade Center, renamed
+  when the Waiver Wire joined it; Bryar picked the name): tiles for the season's trade count and a deadline
   countdown ("Deadline · Dec 2" / "26 days", then "Passed"), then one card per trade,
   newest first. The three newest show; the rest sit under "Earlier trades (N)".
   - Each card: "Week N · date" and "Pts since trade", then each team with the players it
@@ -254,6 +263,10 @@ in Nov 2026 so one bottom-bar button covers both.
     `bbfc-trades-seen`).
   - Both use each trade's exact time (`at` in `data/trades.json`), falling back to
     midday Eastern on the trade date.
+  - **Waiver Wire** (Nov 2026), under the trades: this week's pickups (last week's until
+    the week's first claim) by bid, five shown and the rest under "More pickups (N)"
+    (player, team, who they dropped, "$N" or "Free agent"), then "FAAB left" for every
+    team with a bar. The ticker, "new" dot and alerts are still trades only.
 - **Podcast:** "BBFC Presents: The Poddy" from SoundCloud. The newest episode is clearly
   featured; in dark mode it sits on a navy card so it stands out.
 - **Footer:** the club name, the ESPN updated time, and the easter egg.
@@ -295,7 +308,9 @@ which Bryar added himself; never ask for it in chat). OneSignal's site URL is
   also change from a team page. Also blocked and not-available states.
 - **Home-screen app:** `_site/manifest.webmanifest` (built by `build.mjs`; keep its `id`),
   icons `icon-192.png` / `icon-512.png` (made by `make-brand.mjs` like the 180px icon), and
-  `OneSignalSDKWorker.js` at the site root, registered with scope `/bbfc/`. The icon now
+  `OneSignalSDKWorker.js` at the site root, registered with scope `/bbfc/`. It's the
+  site's one service worker: `build.mjs` writes it from `site/OneSignalSDKWorker.js`
+  (OneSignal) plus `site/sw-offline.js` (the offline copy, below). The icon now
   opens the site as a full-screen app; people who added it before may need to re-add it.
 - **Sending:** `scripts/notify.mjs` runs in "Update the BBFC site" after the build
   (`continue-on-error`). It compares the data with `data/alerts-sent.json` (saved by the
@@ -305,7 +320,19 @@ which Bryar added himself; never ask for it in chat). OneSignal's site URL is
   first run only records what exists. Quiet hours 10 PM–7 AM Eastern: anything new waits.
   A send that reaches nobody still counts as sent.
 - **Test:** the "Send a test alert" workflow (`alerts-test.yml`, dispatch it) sends one
-  test to everyone subscribed.
+  test to everyone subscribed, so ask Bryar before running it.
+
+## Offline copy
+
+Added Nov 2026 so the home-screen app opens right away on weak signal (`site/sw-offline.js`).
+Pages (main, team, Record Book) load from the network as before; if there's a saved copy and
+the network hasn't answered in 1.5 seconds, or can't be reached, the saved copy shows while
+the fresh page downloads, and the page's update check (also run 2.5 seconds after opening
+when its data is 3+ minutes old) refreshes it in place. The page's own "?v=" refresh waits
+for the network. Team pictures and icons are served saved-first. The main page registers the
+worker unless one is already registered (OneSignal registers the same file), so the two
+never trade places. `"offlineCopy": false` in `data/league.json` turns it off and clears
+saved copies. Tested with a slow and a dead local server: about 1.5 seconds to open.
 
 ## Record Book
 
@@ -353,8 +380,9 @@ and points, and a "‹ Home" pill.
   ranks league-wide.
 - Top Players (points while started) come from `data/newsroom.json`, so they refresh with
   the Newspaper's data (Tuesday, Thursday, Saturday).
-- Trades (got and sent, FAAB where no players went one way) and the manager's career
-  (seasons, record, titles, playoff trips) with links to the Trade Center and Record Book.
+- Transactions: "FAAB left: $N of $100 · Nth most", trades (got and sent, FAAB where no
+  players went one way), and the team's four latest pickups; then the manager's career
+  (seasons, record, titles, playoff trips) with links to Transactions and the Record Book.
 
 ## Newspaper
 
