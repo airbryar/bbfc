@@ -50,6 +50,14 @@ jobs:
 
       # Trades change rarely, so this reads ESPN about once an hour and keeps the last
       # good list otherwise. It can never stop the site from updating.
+      # Both lineups for every game, for the matchup details sheet. Never blocks an update.
+      - name: Get this week's lineups
+        run: node scripts/fetch-lineups.mjs
+        continue-on-error: true
+        env:
+          ESPN_S2: ${{ secrets.ESPN_S2 }}
+          ESPN_SWID: ${{ secrets.ESPN_SWID }}
+
       - name: Check for trades
         run: node scripts/fetch-trades.mjs
         continue-on-error: true
