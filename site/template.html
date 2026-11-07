@@ -44,7 +44,7 @@ img { max-width: 100%; }
   --ribbon: #C21F32;
   --up: #23794A;
   --down: #B3342B;
-  --chip: #E9EDF4;
+  --chip: #E9EDF4; --mine: #E6EDF8;
   --tabs-bg: #F3F5F9;
   --feature: #13294B;
   --feature-line: #13294B;
@@ -63,14 +63,14 @@ img { max-width: 100%; }
   :root:not([data-theme="light"]) {
     --bg: #101112; --surface: #1D1E1E; --ink: #FFFFFF; --muted: #A1A2A3; --line: #2C2D2E;
     --accent: #FF5A68; --gilt: #658EEF; --band: #000000; --band-deep: #1D1E1E; --band-ink: #FFFFFF;
-    --band-gilt: #A1A2A3; --ribbon: #D3283C; --up: #65B752; --down: #EF8682; --chip: #303132;
+    --band-gilt: #A1A2A3; --ribbon: #D3283C; --up: #65B752; --down: #EF8682; --chip: #303132; --mine: #1E2a3f;
     --tabs-bg: #000000; --feature: #1B3766; --feature-line: #3A5A93; --feature-soft: #C8D5F0; --sun: block; --moon: none; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
     --bg: #101112; --surface: #1D1E1E; --ink: #FFFFFF; --muted: #A1A2A3; --line: #2C2D2E;
   --accent: #FF5A68; --gilt: #658EEF; --band: #000000; --band-deep: #1D1E1E; --band-ink: #FFFFFF;
-  --band-gilt: #A1A2A3; --ribbon: #D3283C; --up: #65B752; --down: #EF8682; --chip: #303132;
+  --band-gilt: #A1A2A3; --ribbon: #D3283C; --up: #65B752; --down: #EF8682; --chip: #303132; --mine: #1E2a3f;
   --tabs-bg: #000000; --feature: #1B3766; --feature-line: #3A5A93; --feature-soft: #C8D5F0; --sun: block; --moon: none; color-scheme: dark;
 }
 
@@ -562,6 +562,18 @@ button.refresh { cursor: pointer; }
 .inline-ic { width: 17px; height: 17px; vertical-align: -3px; fill: none; stroke: var(--gilt); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 html.sheet-open, html.sheet-open body { overflow: hidden; }
 
+/* My team: each person picks it on a team page (saved on their phone). Their team gets a
+   soft blue tint and a bar on the left in every list, and their game comes first. */
+tr.mine td { background: var(--mine); }
+tr.mine td:first-child { box-shadow: inset 3px 0 0 var(--gilt); }
+.od-row.mine { background: var(--mine); margin-inline: -12px; padding-inline: 12px; box-shadow: inset 3px 0 0 var(--gilt); }
+.mw-row.mine { background: var(--mine); margin-inline: -14px; padding-inline: 14px; box-shadow: inset 3px 0 0 var(--gilt); }
+@media (max-width: 619px) { .mw-row.mine { margin-inline: -10px; padding-inline: 10px; } }
+.pr-item.mine { background: var(--mine); margin-inline: -10px; padding-inline: 10px; box-shadow: inset 3px 0 0 var(--gilt); border-radius: 4px; }
+.game.mine { border-color: var(--gilt); box-shadow: inset 0 0 0 1px var(--gilt); }
+.game-mine { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding-top: 9px; font-family: var(--f-label); font-weight: 700; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gilt); }
+.game-mine a { color: var(--gilt); text-decoration: none; letter-spacing: 0.06em; }
+
 /* Record Book: a labeled pill in the masthead's lower right corner */
 .book-pill {
   position: absolute; right: max(16px, env(safe-area-inset-right, 0px)); bottom: 18px;
@@ -932,6 +944,11 @@ __ESPN__
     return w.map(function (x) { return x.charAt(0); }).join("").toUpperCase().slice(0, 3) || "?";
   }
   function teamLink(id, text) { var a = el("a", "tlink", text); a.href = "team.html?t=" + id; return a; }
+  // My team: picked with the star on a team page and saved on this phone only
+  var myTeam = null;
+  try { myTeam = Number(localStorage.getItem("bbfc-my-team")) || null; } catch (e) {}
+  if (myTeam && !E.teams.some(function (t) { return t.id === myTeam; })) myTeam = null;
+  function mine(id) { return !!myTeam && Number(id) === myTeam; }
   function badge(id, name) {
     var src = LOGOS[String(id)];
     if (src) {
@@ -977,7 +994,7 @@ __ESPN__
   try { updTime = new Date(E.fetchedAt).toLocaleString("en-US", { timeZone: "America/New_York", weekday: "short", hour: "numeric", minute: "2-digit" }) + " ET"; } catch (e) { updTime = ""; }
   function renderUpd() {
     var mins = Math.floor((Date.now() - new Date(E.fetchedAt).getTime()) / 60000);
-    var ago = !isFinite(mins) ? "" : mins < 1 ? "just now" : mins < 60 ? mins + " min ago" : mins < 1440 ? Math.floor(mins / 60) + " hr ago" : Math.floor(mins / 1440) + " days ago";
+    var ago = !isFinite(mins) ? "" : mins < 1 ? "just now" : mins < 60 ? mins + " min ago" : mins < 1440 ? Math.floor(mins / 60) + " hr ago" : (Math.floor(mins / 1440) === 1 ? "1 day ago" : Math.floor(mins / 1440) + " days ago");
     Array.prototype.slice.call(document.querySelectorAll("[data-upd]")).forEach(function (line) {
       line.textContent = "";
       var dot = el("span", "upd-dot" + (mins < 15 ? " fresh" : ""));
@@ -1004,7 +1021,7 @@ __ESPN__
 
   var tb = document.getElementById("standings-body");
   rows.forEach(function (t, i) {
-    var tr = el("tr");
+    var tr = el("tr", mine(t.id) ? "mine" : null);
     tr.append(el("td", "rk", String(i + 1)));
     var tn = el("td", "team-name");
     var tw = el("span", "tn");
@@ -1107,6 +1124,7 @@ __ESPN__
           var have = tagsNow();
           var add = {};
           Object.keys(DEFAULTS).forEach(function (k) { if (have[k] == null) add[k] = DEFAULTS[k]; });
+          if (have.team == null && myTeam) add.team = String(myTeam);
           if (Object.keys(add).length) OS.User.addTags(add);
         });
       }).catch(function () {
@@ -1183,7 +1201,7 @@ __ESPN__
         cut.append(el("span", null, "Playoff line · top " + ODDS.spots));
         box.append(cut);
       }
-      var row = el("div", "od-row");
+      var row = el("div", "od-row" + (mine(r.id) ? " mine" : ""));
       row.append(el("span", "od-rk", String(i + 1)));
       var nameCol = el("div", "od-name");
       var tn = el("div", "od-team");
@@ -1272,7 +1290,7 @@ __ESPN__
       }
       var m = r.val - med;
       var dir = m >= 0 ? "up" : "down";
-      var row = el("div", "mw-row");
+      var row = el("div", "mw-row" + (mine(r.id) ? " mine" : ""));
       row.append(el("span", "mw-rk", String(i + 1)));
       var nm = el("span", "mw-name");
       nm.append(badge(r.id, nameOf(r.id)), el("span", null, nameOf(r.id)));
@@ -1305,8 +1323,18 @@ __ESPN__
     : "No points yet. ESPN's projected totals are under each team.";
   var gbox = document.getElementById("games");
   if (!cur.length) gbox.append(el("p", "empty", "No matchups this week."));
-  cur.forEach(function (m) {
-    var card = el("article", "game");
+  var games = cur.slice();
+  if (myTeam) games.sort(function (a, b) { return (mine(b.h[0]) || mine(b.a[0]) ? 1 : 0) - (mine(a.h[0]) || mine(a.a[0]) ? 1 : 0); });
+  games.forEach(function (m) {
+    var isMine = mine(m.h[0]) || mine(m.a[0]);
+    var card = el("article", "game" + (isMine ? " mine" : ""));
+    if (isMine) {
+      var lab = el("div", "game-mine");
+      var tp = el("a", null, "Team page ›");
+      tp.href = "team.html?t=" + myTeam;
+      lab.append(el("span", null, "My game"), tp);
+      card.append(lab);
+    }
     [m.h, m.a].forEach(function (s, idx) {
       var other = idx === 0 ? m.a : m.h;
       var cls = "side";
@@ -1420,7 +1448,7 @@ __ESPN__
   (nowPR ? nowPR.list : []).forEach(function (r, i) {
     var rank = i + 1;
     var tname = prName[r.id] || nameOf(r.id);
-    var li = el("li", "pr-item");
+    var li = el("li", "pr-item" + (mine(r.id) ? " mine" : ""));
     var det = el("details");
     var sum = el("summary", "pr-sum");
     sum.append(el("span", "pr-rank", String(rank)));
