@@ -188,6 +188,11 @@ a.tlink:hover { text-decoration: underline; }
 .od-cut { height: 0; border-top: 2px dashed var(--gilt); margin-block: 8px; text-align: center; }
 .od-cut span { position: relative; top: -0.8em; padding: 0 8px; background: var(--surface); font-family: var(--f-label); font-weight: 700; font-size: 11px; line-height: 1.4; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gilt); }
 .od-cut + .od-row { border-top: 0; }
+.od-wk { grid-column: 2 / -1; margin: 5px 0 1px 27px; font-size: 13px; line-height: 1.3; font-weight: 700; }
+.od-wk.in { color: var(--up); }
+.od-wk.out { color: var(--down); }
+.od-tag-line { display: table; margin: 6px 0 0 27px; }
+.od-tag-line.st { margin: 4px 0 0 34px; }
 #st-odds .how { margin: 0 0 10px; }
 .num { text-align: right; white-space: nowrap; }
 .rk { width: 1.6em; font-family: var(--f-num); font-weight: 700; font-size: 20px; color: var(--muted); padding-right: 4px; }
@@ -1093,6 +1098,19 @@ __ESPN__
   var mt = document.getElementById("median-tag");
   if (lastMed != null) { mt.append("Week " + lastWeek + " median "); mt.append(el("b", null, pts(lastMed))); }
 
+  // Playoff odds data (also used by the odds view below): Clinched / Eliminated tags in the table
+  var ODDS0 = null;
+  try { ODDS0 = JSON.parse(document.getElementById("odds-data").textContent); } catch (e) {}
+  // The plain line when one result this week would settle a team's spot, or null
+  function settleLine(o) {
+    var w = o && o.week, med = ODDS0 && ODDS0.medianOn;
+    if (!w || !w.length || o.clinched || o.eliminated) return null;
+    var last = w.length - 1;
+    if (w[0] === "in") return ["in", med && w[1] !== "in" ? "Clinches with a 2–0 week" : "Clinches with a win"];
+    if (w[last] === "out") return ["out", med ? (w[1] === "out" ? "Needs a 2–0 week to stay alive" : "Eliminated with an 0–2 week") : "Eliminated with a loss"];
+    return null;
+  }
+
   // Standings in ESPN seed order
   var rows = E.teams.map(function (t) {
     var hh = h2h[t.id];
@@ -1106,7 +1124,9 @@ __ESPN__
     var tn = el("td", "team-name");
     var tw = el("span", "tn");
     tw.append(badge(t.id, t.team), teamLink(t.id, t.team));
+    var oz = ODDS0 && ODDS0.teams ? ODDS0.teams[t.id] : null;
     tn.append(tw);
+    if (oz && (oz.clinched || oz.eliminated)) tn.append(el("span", "od-tag od-tag-line st " + (oz.clinched ? "in" : "out"), oz.clinched ? "Clinched" : "Eliminated"));
     tr.append(tn);
     tr.append(el("td", "num rec", t.w + "\u2013" + t.l));
     tr.append(el("td", "num sm", wl(t.h2h)));
@@ -1300,7 +1320,8 @@ __ESPN__
       "Each team's scores are based on its scoring average so far, nudged a little toward the league average.",
       "This week uses ESPN's live projections, so the odds move during games.",
       (ODDS.medianOn ? "Median games count, and ties" : "Ties") + " are broken " + (ODDS.tiebreak === "H2H_RECORD" ? "by head-to-head record, then points scored" : ODDS.tiebreak === "TOTAL_POINTS_SCORED" ? "by points scored" : "by points scored, close to the league's own tiebreaker") + ", like ESPN does.",
-      "Clinched and Eliminated only appear when the math guarantees it.",
+      "When one result this week would settle a team's spot, it says so under the team" + (ODDS.medianOn ? " (a 2–0 week means winning both the head-to-head and the median game)" : "") + ".",
+      "Clinched and Eliminated, and those lines, only appear when the math guarantees it.",
     ].forEach(function (t) { how.append(el("li", null, t)); });
     function fmt(p, sure) {
       if (sure === "in") return "100%";
@@ -1309,6 +1330,12 @@ __ESPN__
       if (p > 0 && p < 0.005) return "<1%";
       if (p === 0) return "<1%";
       return Math.round(p * 100) + "%";
+    }
+    // What it takes: a plain line when one result this week would settle a team's spot
+    // Only when the math says one result this week would settle it (Bryar didn't want every number)
+    function whatItTakes(o) {
+      var say = settleLine(o);
+      return say ? el("div", "od-wk " + say[0], say[1]) : null;
     }
     var list = E.teams.map(function (t) {
       var o = ODDS.teams[t.id] || {};
@@ -1329,18 +1356,20 @@ __ESPN__
       var nameCol = el("div", "od-name");
       var tn = el("div", "od-team");
       tn.append(badge(r.id, r.name), teamLink(r.id, r.name));
-      if (r.sure === "in") tn.append(el("span", "od-tag in", "Clinched"));
-      if (r.sure === "out") tn.append(el("span", "od-tag out", "Eliminated"));
       nameCol.append(tn);
       var bar = el("div", "od-bar"), fill = el("span");
       fill.style.width = (r.sure === "in" ? 100 : r.sure === "out" ? 0 : r.o.playoffs * 100).toFixed(1) + "%";
       bar.append(fill);
       bar.setAttribute("aria-hidden", "true");
       nameCol.append(bar);
+      // Clinched / Eliminated on their own line, so long team names keep their room
+      if (r.sure) nameCol.append(el("span", "od-tag od-tag-line " + r.sure, r.sure === "in" ? "Clinched" : "Eliminated"));
       row.append(nameCol);
       row.append(el("span", "od-num od-proj", r.o.projW + "-" + r.o.projL));
       row.append(el("span", "od-num od-bye", ODDS.byes ? (r.o.bye > 0 ? fmt(r.o.bye) : "–") : ""));
       row.append(el("span", "od-num od-pct", fmt(r.o.playoffs, r.sure)));
+      var wkLine = whatItTakes(r.o);
+      if (wkLine && !r.sure) row.append(wkLine);
       box.append(row);
     });
   })();

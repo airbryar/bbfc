@@ -17,6 +17,11 @@
 // "Clinched" and "Eliminated" are only set when the math guarantees it, not from the
 // simulation: clinched if at most (spots - 1) other teams can still reach this team's win
 // total; eliminated if at least (spots) teams already have more wins than it can reach.
+//
+// "What it takes": each team's odds after each possible result this week (2-0, 1-1 or 0-2
+// with median games; a win or a loss without), from the simulations where that happened.
+// "in" / "out" replace the number when the math guarantees it, using the same tests with
+// this week's result added (and, after a head-to-head win, one less win for the opponent).
 
 const SIMS = 10000;
 const SHRINK = 0.8; // how much of a team's difference from the league average to trust
@@ -86,6 +91,10 @@ export function computeOdds(E) {
   const made = Object.fromEntries(ids.map((id) => [id, 0]));
   const bye = Object.fromEntries(ids.map((id) => [id, 0]));
   const winsSum = Object.fromEntries(ids.map((id) => [id, 0]));
+  // This week's result in each simulation, and how often the team made it after each one
+  const perWeek0 = medianOn ? 2 : 1;
+  const wkCount = Object.fromEntries(ids.map((id) => [id, new Array(perWeek0 + 1).fill(0)]));
+  const wkMade = Object.fromEntries(ids.map((id) => [id, new Array(perWeek0 + 1).fill(0)]));
   let pow = 1;
   while (pow < spots) pow *= 2;
   const byes = spots >= 3 ? pow - spots : 0;
@@ -97,7 +106,7 @@ export function computeOdds(E) {
   };
 
   for (let s = 0; s < SIMS; s++) {
-    const w = {}, pf = {};
+    const w = {}, pf = {}, wk = {};
     for (const id of ids) { w[id] = team[id].w + (team[id].t || 0) / 2; pf[id] = team[id].pf; }
     const h2h = byH2h ? Object.assign({}, baseH2h) : null;
     for (const p of weekList) {
@@ -112,6 +121,7 @@ export function computeOdds(E) {
         }
         pf[id] += sc[id];
       }
+      const before = p === cur ? Object.assign({}, w) : null;
       for (const [h, a] of weeks[p]) {
         if (sc[h] > sc[a]) { w[h]++; if (h2h) h2h[h + "|" + a] = (h2h[h + "|" + a] || 0) + 1; }
         else if (sc[a] > sc[h]) { w[a]++; if (h2h) h2h[a + "|" + h] = (h2h[a + "|" + h] || 0) + 1; }
@@ -121,9 +131,11 @@ export function computeOdds(E) {
         const order = ids.slice().sort((x, y) => sc[y] - sc[x]);
         for (let i = 0; i < Math.floor(order.length / 2); i++) w[order[i]]++;
       }
+      if (before) for (const id of ids) wk[id] = Math.floor(w[id] - before[id]); // a tie counts as no win
     }
     const final = ids.slice().sort((x, y) => w[y] - w[x] || (h2h ? (h2h[y + "|" + x] || 0) - (h2h[x + "|" + y] || 0) : 0) || pf[y] - pf[x]);
     final.forEach((id, i) => {
+      if (id in wk) { wkCount[id][wk[id]]++; if (i < spots) wkMade[id][wk[id]]++; }
       if (i < spots) made[id]++;
       if (i < byes) bye[id]++;
       winsSum[id] += w[id];
@@ -141,6 +153,20 @@ export function computeOdds(E) {
     const alreadyAbove = others.filter((o) => wins(o) > wins(id) + maxGain).length;
     const games = finishedWeeks * perWeek + maxGain;
     const projW = winsSum[id] / SIMS;
+    // What it takes this week: index 0 is the best result (2-0), the last is the worst
+    let week = null;
+    if (left > 0 && weekList[0] === cur) {
+      const opp = (weeks[cur].find(([h, a]) => h === id || a === id) || []).find((x) => x !== id);
+      week = [];
+      for (let k = perWeek; k >= 0; k--) {
+        const mine = wins(id) + k;
+        const reach = (o) => wins(o) + maxGain - (o === opp && k === perWeek ? 1 : 0);
+        if (others.filter((o) => reach(o) >= mine).length <= spots - 1) { week.push("in"); continue; }
+        if (others.filter((o) => wins(o) > mine + (left - 1) * perWeek).length >= spots) { week.push("out"); continue; }
+        const nSims = wkCount[id][k];
+        week.push(nSims >= SIMS / 100 ? Math.round((wkMade[id][k] / nSims) * 1000) / 1000 : null); // too rare to say
+      }
+    }
     out[id] = {
       playoffs: made[id] / SIMS,
       bye: byes ? bye[id] / SIMS : null,
@@ -148,6 +174,7 @@ export function computeOdds(E) {
       projL: games - Math.round(projW),
       clinched: canReach <= spots - 1,
       eliminated: alreadyAbove >= spots,
+      week,
     };
   }
   return { sims: SIMS, weeksLeft: left, week: cur, spots, byes, medianOn, tiebreak: rule, teams: out };

@@ -128,6 +128,31 @@ h2 { font-family: var(--f-display); font-weight: 800; font-size: 25px; line-heig
 .side.trail .side-score { color: var(--muted); }
 .series { margin: 8px 0 0; font-size: 14px; color: var(--muted); }
 .series b { color: var(--ink); }
+.series.say { font-weight: 700; }
+.series.say.in { color: var(--up); }
+.series.say.out { color: var(--down); }
+
+/* Season chart: each finished week's score above or below that week's median */
+.chart { padding: 10px 14px 12px; margin-bottom: 10px; }
+.chart-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.chart-title { font-family: var(--f-label); font-weight: 700; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.chart-sum { font-size: 14px; color: var(--muted); text-align: right; }
+.chart-sum b { font-family: var(--f-num); font-weight: 700; font-size: 17px; color: var(--ink); font-variant-numeric: tabular-nums; }
+.chart svg { display: block; width: 100%; height: auto; margin-top: 6px; overflow: visible; -webkit-tap-highlight-color: transparent; }
+.chart .c-up { fill: var(--up); }
+.chart .c-down { fill: var(--down); }
+.chart .c-zero { stroke: var(--muted); stroke-width: 1; }
+.chart .c-sel { fill: var(--chip); }
+.chart .c-dot { fill: var(--line); }
+.chart .c-wk { font-family: var(--f-label); font-weight: 600; font-size: 11px; fill: var(--muted); text-anchor: middle; }
+.chart .c-wk.on { fill: var(--ink); font-weight: 700; }
+.chart .c-val { font-family: var(--f-num); font-weight: 700; font-size: 11.5px; fill: var(--ink); text-anchor: middle; }
+.chart .c-axis { font-family: var(--f-label); font-weight: 600; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; fill: var(--muted); }
+.chart .c-hit { fill: transparent; cursor: pointer; }
+.chart-detail { margin: 6px 0 0; font-size: 14px; line-height: 1.35; min-height: 2.7em; }
+.chart-detail .up { color: var(--up); font-weight: 700; }
+.chart-detail .down { color: var(--down); font-weight: 700; }
+.chart-detail .dim { color: var(--muted); }
 
 /* Results and schedule */
 .log { padding: 0 14px; }
@@ -210,6 +235,7 @@ footer { margin-top: 28px; border-top: 1px solid var(--line); padding-block: 16p
 
   <section id="results" aria-labelledby="h-results">
     <div class="sec-head"><h2 id="h-results">Season</h2><span class="tag" id="results-tag"></span></div>
+    <div class="card chart" id="chart-box" hidden></div>
     <div class="card log" id="results-box"></div>
     <p class="sub" id="ahead-head">Still to play</p>
     <div class="card log" id="ahead-box"></div>
@@ -301,6 +327,19 @@ __LOGOS__
   var games = E.games.filter(function (g) { return g.p <= reg; });
   var weekScores = {};
   games.forEach(function (g) { (weekScores[g.p] = weekScores[g.p] || []).push(g.h[1], g.a[1]); });
+  // Each week's median: the midpoint of the 6th and 7th scores, like Median Watch
+  function medianOf(p) {
+    var s = (weekScores[p] || []).slice().sort(function (a, b) { return b - a; });
+    var half = Math.floor(s.length / 2);
+    return half ? (s[half - 1] + s[half]) / 2 : null;
+  }
+  // One scale for every team (the league's biggest swing), so switching teams compares fairly
+  var chartMax = 10;
+  Object.keys(weekScores).forEach(function (p) {
+    var m = medianOf(p);
+    if (m != null) weekScores[p].forEach(function (v) { chartMax = Math.max(chartMax, Math.abs(v - m)); });
+  });
+  chartMax = Math.ceil(chartMax / 10) * 10;
   function medianWin(p, score) {
     var s = (weekScores[p] || []).slice().sort(function (a, b) { return b - a; });
     var half = Math.floor(s.length / 2);
@@ -350,6 +389,88 @@ __LOGOS__
     try { if (on) localStorage.removeItem(MY); else localStorage.setItem(MY, String(shown)); } catch (e) {}
     paintMine(!on);
   });
+
+  // Season chart: one bar per regular-season week, up (green) or down (red) from that week's
+  // median by the points this team was above or below it. Tap a week for its numbers.
+  var SVGNS = "http://www.w3.org/2000/svg";
+  function sv(tag, attrs, text) {
+    var n = document.createElementNS(SVGNS, tag);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    if (text != null) n.textContent = text;
+    return n;
+  }
+  function drawChart(id, mine) {
+    var box = clear("chart-box");
+    var weeks = mine.map(function (g) {
+      var home = g.h[0] === id, us = home ? g.h : g.a, them = home ? g.a : g.h;
+      var med = medianOf(g.p);
+      return { p: g.p, pts: us[1], med: med, d: us[1] - med, opp: them[0], won: g.w === (home ? "H" : "A"), tie: g.w === "T" };
+    }).filter(function (w) { return w.med != null; });
+    box.hidden = !weeks.length;
+    if (!weeks.length) return;
+    var above = weeks.filter(function (w) { return w.d > 0; }).length;
+    var avg = weeks.reduce(function (a, w) { return a + w.d; }, 0) / weeks.length;
+    var head = el("div", "chart-head");
+    head.append(el("span", "chart-title", "Vs. the weekly median"));
+    var sum = el("span", "chart-sum");
+    sum.append(el("b", null, above + " of " + weeks.length), " weeks above");
+    head.append(sum);
+    box.append(head);
+
+    var W = 330, top = 16, half = 50, base = top + half, Hh = top + half * 2 + 16 + 14;
+    var left = 44, slots = reg, slotW = (W - left) / slots, barW = Math.min(14, slotW * 0.6), r = 3;
+    var svg = sv("svg", { viewBox: "0 0 " + W + " " + Hh, role: "img", "aria-label": nameOf(id) + ": above the weekly median in " + above + " of " + weeks.length + " weeks, an average of " + (avg >= 0 ? "+" : "−") + Math.abs(avg).toFixed(1) + " points. The full results are listed below." });
+    var selBg = sv("rect", { class: "c-sel", x: 0, y: 2, width: slotW, height: base + half + 12, rx: 6, opacity: 0 });
+    svg.append(selBg);
+    svg.append(sv("line", { class: "c-zero", x1: left - 2, x2: W, y1: base, y2: base }));
+    var byWeek = {};
+    weeks.forEach(function (w) { byWeek[w.p] = w; });
+    // Label the best and worst weeks right on the chart
+    var best = weeks.reduce(function (a, w) { return w.d > a.d ? w : a; }, weeks[0]);
+    var worst = weeks.reduce(function (a, w) { return w.d < a.d ? w : a; }, weeks[0]);
+    var labels = [];
+    for (var p = 1; p <= slots; p++) {
+      var cx = left + slotW * (p - 0.5), w = byWeek[p];
+      if (w) {
+        var h = Math.max(2, Math.min(1, Math.abs(w.d) / chartMax) * half), x = cx - barW / 2;
+        var d = w.d >= 0
+          ? "M" + x + "," + base + "V" + (base - h + r) + "Q" + x + "," + (base - h) + " " + (x + r) + "," + (base - h) + "H" + (x + barW - r) + "Q" + (x + barW) + "," + (base - h) + " " + (x + barW) + "," + (base - h + r) + "V" + base + "Z"
+          : "M" + x + "," + base + "V" + (base + h - r) + "Q" + x + "," + (base + h) + " " + (x + r) + "," + (base + h) + "H" + (x + barW - r) + "Q" + (x + barW) + "," + (base + h) + " " + (x + barW) + "," + (base + h - r) + "V" + base + "Z";
+        if (h <= r * 2) d = "M" + x + "," + (w.d >= 0 ? base - h : base) + "h" + barW + "v" + h + "h" + (-barW) + "Z";
+        svg.append(sv("path", { class: w.d >= 0 ? "c-up" : "c-down", d: d }));
+        if ((w === best && w.d > 0) || (w === worst && w.d < 0)) labels.push(sv("text", { class: "c-val", x: cx, y: w.d >= 0 ? base - h - 4 : base + h + 12 }, (w.d >= 0 ? "+" : "−") + Math.abs(w.d).toFixed(1)));
+      } else {
+        svg.append(sv("circle", { class: "c-dot", cx: cx, cy: base, r: 2 }));
+      }
+      svg.append(sv("text", { class: "c-wk", x: cx, y: Hh - 2, "data-wk": p }, String(p)));
+    }
+    labels.forEach(function (t) { svg.append(t); });
+    svg.append(sv("text", { class: "c-axis", x: 0, y: top + 8 }, "Above"));
+    svg.append(sv("text", { class: "c-axis", x: 0, y: base + 3.5 }, "Median"));
+    svg.append(sv("text", { class: "c-axis", x: 0, y: base + half - 1 }, "Below"));
+    // Tap targets: the whole column for each played week
+    var detail = el("p", "chart-detail");
+    function pick(p) {
+      var w = byWeek[p];
+      if (!w) return;
+      selBg.setAttribute("x", left + slotW * (p - 1));
+      selBg.setAttribute("opacity", 1);
+      Array.prototype.forEach.call(svg.querySelectorAll(".c-wk"), function (t) { t.classList.toggle("on", Number(t.getAttribute("data-wk")) === p); });
+      detail.textContent = "";
+      detail.append(el("b", null, "Week " + p), " · " + pts(w.pts) + " points, ");
+      detail.append(el("span", w.d >= 0 ? "up" : "down", (w.d >= 0 ? "+" : "−") + Math.abs(w.d).toFixed(2)));
+      detail.append(" vs. the " + pts(w.med) + " median");
+      detail.append(el("span", "dim", " · " + (w.tie ? "Tied " : w.won ? "Beat " : "Lost to ") + nameOf(w.opp)));
+    }
+    weeks.forEach(function (w) {
+      var hit = sv("rect", { class: "c-hit", x: left + slotW * (w.p - 1), y: 0, width: slotW, height: Hh });
+      hit.addEventListener("click", function () { pick(w.p); });
+      svg.append(hit);
+    });
+    svg.insertBefore(selBg, svg.firstChild);
+    box.append(svg, detail);
+    pick(weeks[weeks.length - 1].p);
+  }
 
   function render(id) {
     var t = teams[id];
@@ -434,11 +555,19 @@ __LOGOS__
         }
         wbox.append(p);
       }
+      // What it takes: only when one result this week would settle this team's playoff spot
+      if (o && o.week && o.week.length && !o.clinched && !o.eliminated) {
+        var med = ODDS && ODDS.medianOn, last = o.week.length - 1, say = null;
+        if (o.week[0] === "in") say = ["in", med && o.week[1] !== "in" ? "Clinches a playoff spot with a 2–0 week" : "Clinches a playoff spot with a win"];
+        else if (o.week[last] === "out") say = ["out", med ? (o.week[1] === "out" ? "Needs a 2–0 week to stay in the playoff race" : "Eliminated from the playoffs with an 0–2 week") : "Eliminated from the playoffs with a loss"];
+        if (say) wbox.append(el("p", "series say " + say[0], say[1]));
+      }
     }
 
     // Results
     var rbox = clear("results-box");
     var mine = games.filter(function (g) { return g.h[0] === id || g.a[0] === id; }).sort(function (x, y) { return x.p - y.p; });
+    drawChart(id, mine);
     document.getElementById("results-tag").textContent = lastDone ? "Through Week " + lastDone : "";
     if (!mine.length) rbox.append(el("p", "empty", "No finished games yet."));
     mine.forEach(function (g) {
