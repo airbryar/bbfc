@@ -1,0 +1,31 @@
+name: Preview bids (temporary)
+
+# Preview only: reads the Waiver Wire with every bid on the bids-preview branch and saves it
+# there. Removed before the preview goes live.
+on:
+  push:
+    branches: [bids-preview]
+    paths: ["scripts/fetch-trades.mjs", ".github/workflows/bids-preview.yml"]
+
+permissions:
+  contents: write
+
+jobs:
+  data:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node scripts/fetch-trades.mjs
+        env:
+          ESPN_S2: ${{ secrets.ESPN_S2 }}
+          ESPN_SWID: ${{ secrets.ESPN_SWID }}
+          FORCE_TRADES: "1"
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f data/trades.json
+          git diff --cached --quiet || (git commit -m "Preview data" && git push origin HEAD:bids-preview)

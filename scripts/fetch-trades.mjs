@@ -7,7 +7,9 @@
 //
 // It also saves the Waiver Wire for the Transactions section: each team's FAAB left, and
 // every waiver claim and free-agent pickup from this week and last (team id, bid, players
-// added and dropped).
+// added and dropped). Each won claim also lists every bid on that player in the same waiver
+// run (ESPN's Waiver Report, which every league member can see once claims process). Claims
+// that haven't processed yet are never saved: they're private, and the site is public.
 import fs from "node:fs";
 
 const OUT = "data/trades.json";
@@ -82,15 +84,24 @@ async function fromEspn() {
   const windows = [];
   const moves = [];
   const lastPeriod = Math.min(Math.max(CUR, lastWeek), REG + 4);
+  const claims = []; // processed waiver claims, won or lost, for the bids on each pickup
+  const statusCount = {};
   for (let sp = 1; sp <= lastPeriod; sp++) {
     if (!topics.length && sp < CUR - 1) continue; // no trades to date: only the Waiver Wire's weeks
-    const adds = await get(`${LEAGUE}?view=mTransactions2&scoringPeriodId=${sp}`, { transactions: { filterType: { value: ["WAIVER", "FREEAGENT"] }, filterStatus: { value: ["EXECUTED"] } } });
+    const recent = sp >= CUR - 1;
+    const filter = recent
+      ? { transactions: { filterType: { value: ["WAIVER", "FREEAGENT"] } } }
+      : { transactions: { filterType: { value: ["WAIVER", "FREEAGENT"] }, filterStatus: { value: ["EXECUTED"] } } };
+    const adds = await get(`${LEAGUE}?view=mTransactions2&scoringPeriodId=${sp}`, filter);
     for (const x of adds.transactions || []) {
+      if (recent && x.type === "WAIVER") statusCount[x.status] = (statusCount[x.status] || 0) + 1;
+      if (recent && x.type === "WAIVER" && x.status !== "PENDING" && x.status !== "CANCELED" && x.processDate) claims.push({ ...x, sp });
       if (x.status !== "EXECUTED") continue;
       windows.push([x.proposedDate, sp]);
-      if (sp >= CUR - 1) moves.push({ ...x, sp });
+      if (recent) moves.push({ ...x, sp });
     }
   }
+  console.log("Waiver claims this week and last, by status: " + JSON.stringify(statusCount));
   windows.sort((x, y) => x[0] - y[0]);
   function periodAt(ms) {
     let sp = 1;
@@ -167,6 +178,14 @@ async function fromEspn() {
   const faab = budget
     ? { budget, left: Object.fromEntries((a.teams || []).map((t) => [t.id, Math.max(0, budget - ((t.transactionCounter || {}).acquisitionBudgetSpent || 0))])) }
     : null;
+  // Every processed bid on the same player in the same waiver run (within an hour), highest first
+  function bidsFor(won) {
+    const pids = (won.items || []).filter((i) => i.type === "ADD").map((i) => i.playerId);
+    return claims
+      .filter((c) => c.sp === won.sp && Math.abs(c.processDate - won.processDate) < 3600e3 && (c.items || []).some((i) => i.type === "ADD" && pids.includes(i.playerId)))
+      .map((c) => ({ team: c.teamId, bid: c.bidAmount || 0, won: c.id === won.id }))
+      .sort((a, b) => b.won - a.won || b.bid - a.bid);
+  }
   const pickups = moves
     .map((x) => ({
       at: x.processDate || x.proposedDate,
@@ -176,6 +195,7 @@ async function fromEspn() {
       bid: x.bidAmount || 0,
       add: (x.items || []).filter((i) => i.type === "ADD").map((i) => plabel(i.playerId)),
       drop: (x.items || []).filter((i) => i.type === "DROP").map((i) => plabel(i.playerId)),
+      bids: x.type === "WAIVER" ? bidsFor(x) : undefined,
     }))
     .filter((x) => x.add.length)
     .sort((x, y) => y.at - x.at)
