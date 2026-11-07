@@ -59,6 +59,7 @@ async function fromEspn() {
     currentWeek: cur,
     regSeasonWeeks: ss.matchupPeriodCount,
     playoffTeams: ss.playoffTeamCount,
+    seedingRule: ss.playoffSeedingRule || null, // how ties in the standings are broken
     teams,
     games,
     current,
@@ -70,7 +71,7 @@ try {
   const data = await fromEspn();
   fs.writeFileSync(OUT, JSON.stringify(data));
   fs.writeFileSync(".espn-ok", data.fetchedAt);
-  console.log(`ESPN: week ${data.currentWeek}, ${data.games.length} finished games, saved ${data.fetchedAt}`);
+  console.log(`ESPN: week ${data.currentWeek}, ${data.games.length} finished games, tiebreak ${data.seedingRule}, saved ${data.fetchedAt}`);
 } catch (err) {
   const reason = !headers.Cookie ? "the ESPN_S2 / ESPN_SWID secrets aren't set yet" : err.message;
   console.log(`::warning::Couldn't read ESPN (${reason}). Keeping the last good data.`);

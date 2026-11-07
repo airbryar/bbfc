@@ -165,6 +165,30 @@ tbody tr.cut td {
   text-transform: uppercase; color: var(--gilt); text-align: center;
 }
 tbody tr.cut + tr td { border-top: 0; }
+/* Team names open that team's page */
+a.tlink { color: inherit; text-decoration: none; }
+a.tlink:hover { text-decoration: underline; }
+/* Playoff odds (Standings toggle) */
+.odds { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 0 12px 4px; }
+.od-row { display: grid; grid-template-columns: 20px minmax(0, 1fr) 52px 44px 56px; column-gap: 8px; align-items: center; padding-block: 8px 7px; border-top: 1px solid var(--line); }
+.od-head { border-top: 0; padding-block: 9px 4px; font-family: var(--f-label); font-weight: 600; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.od-rk { font-family: var(--f-num); font-weight: 700; font-size: 15px; color: var(--muted); }
+.od-name { min-width: 0; }
+.od-team { display: flex; align-items: center; gap: 6px; font-weight: 600; font-size: 14px; line-height: 1.2; min-width: 0; }
+.od-team .tlink { min-width: 0; }
+.od-bar { height: 4px; border-radius: 2px; background: var(--chip); margin: 5px 0 0 27px; overflow: hidden; }
+.od-bar span { display: block; height: 100%; background: var(--gilt); border-radius: 2px; }
+.od-num { text-align: right; font-family: var(--f-num); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.od-proj, .od-bye { font-weight: 600; font-size: 15px; color: var(--muted); }
+.od-pct { font-weight: 700; font-size: 18px; }
+.od-head .od-num { font-family: inherit; font-size: inherit; font-weight: inherit; color: inherit; }
+.od-tag { flex: none; font-family: var(--f-label); font-weight: 700; font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; padding: 1px 5px; border-radius: 4px; background: var(--chip); }
+.od-tag.in { color: var(--up); }
+.od-tag.out { color: var(--down); }
+.od-cut { height: 0; border-top: 2px dashed var(--gilt); margin-block: 8px; text-align: center; }
+.od-cut span { position: relative; top: -0.8em; padding: 0 8px; background: var(--surface); font-family: var(--f-label); font-weight: 700; font-size: 11px; line-height: 1.4; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gilt); }
+.od-cut + .od-row { border-top: 0; }
+#st-odds .how { margin: 0 0 10px; }
 .num { text-align: right; white-space: nowrap; }
 .rk { width: 1.6em; font-family: var(--f-num); font-weight: 700; font-size: 20px; color: var(--muted); padding-right: 4px; }
 .team-name { font-weight: 600; font-size: 16px; line-height: 1.25; }
@@ -638,7 +662,11 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
       <span class="tag" id="median-tag"></span>
     </div>
     <p class="lede">Record counts two games a week: head-to-head plus the median game.</p>
-    <div class="table-wrap">
+    <div class="seg" role="group" aria-label="Standings view" id="st-seg" hidden>
+      <button type="button" id="st-table-btn" aria-pressed="true">Table</button>
+      <button type="button" id="st-odds-btn" aria-pressed="false">Playoff odds</button>
+    </div>
+    <div class="table-wrap" id="st-table">
       <table>
         <thead>
           <tr>
@@ -653,6 +681,13 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
         </thead>
         <tbody id="standings-body"></tbody>
       </table>
+    </div>
+    <div id="st-odds" hidden>
+      <details class="how">
+        <summary>How the odds work</summary>
+        <ul id="odds-how"></ul>
+      </details>
+      <div class="odds" id="odds-list"></div>
     </div>
   </section>
 
@@ -731,7 +766,7 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
   </section>
 </main>
 
-<footer class="wrap foot"><span id="footer-line">Boys and Bibles Football Club</span><button type="button" class="link-btn" id="theme-auto" hidden>Match my phone's light/dark setting</button><p class="egg">Darren Waller is a bum.</p></footer>
+<footer class="wrap foot"><span id="footer-line">Boys and Bibles Football Club</span><button type="button" class="link-btn" id="theme-auto" hidden>Match my phone's light/dark setting</button><p class="egg">Darren Waller is a BUM!</p></footer>
 
 <!-- Team images (64px, embedded). Teams without one get an initials badge. -->
 <script type="application/json" id="logo-data">
@@ -741,6 +776,11 @@ __LOGOS__
 <!-- Trades this season, with points scored for the new team since. -->
 <script type="application/json" id="trades-data">
 __TRADES__
+</script>
+
+<!-- Playoff odds from scripts/odds.mjs (null outside the regular season). -->
+<script type="application/json" id="odds-data">
+__ODDS__
 </script>
 
 <!-- Newspaper editions, newest first. -->
@@ -793,6 +833,7 @@ __ESPN__
     var w = String(name).split(/[^A-Za-z0-9']+/).filter(function (x) { return x && !skip[x.toLowerCase()]; });
     return w.map(function (x) { return x.charAt(0); }).join("").toUpperCase().slice(0, 3) || "?";
   }
+  function teamLink(id, text) { var a = el("a", "tlink", text); a.href = "team.html?t=" + id; return a; }
   function badge(id, name) {
     var src = LOGOS[String(id)];
     if (src) {
@@ -869,7 +910,7 @@ __ESPN__
     tr.append(el("td", "rk", String(i + 1)));
     var tn = el("td", "team-name");
     var tw = el("span", "tn");
-    tw.append(badge(t.id, t.team), el("span", null, t.team));
+    tw.append(badge(t.id, t.team), teamLink(t.id, t.team));
     tn.append(tw);
     tr.append(tn);
     tr.append(el("td", "num rec", t.w + "\u2013" + t.l));
@@ -886,6 +927,72 @@ __ESPN__
       tb.append(cut);
     }
   });
+
+  // Playoff odds: a second view of Standings (Table / Playoff odds)
+  var stView = "table";
+  var ODDS = null;
+  try { ODDS = JSON.parse(document.getElementById("odds-data").textContent); } catch (e) {}
+  function showStandings(v) {
+    stView = v;
+    document.getElementById("st-table-btn").setAttribute("aria-pressed", String(v === "table"));
+    document.getElementById("st-odds-btn").setAttribute("aria-pressed", String(v === "odds"));
+    document.getElementById("st-table").hidden = v !== "table";
+    document.getElementById("st-odds").hidden = v !== "odds";
+  }
+  if (ODDS && ODDS.teams) (function () {
+    document.getElementById("st-seg").hidden = false;
+    document.getElementById("st-table-btn").addEventListener("click", function () { showStandings("table"); });
+    document.getElementById("st-odds-btn").addEventListener("click", function () { showStandings("odds"); });
+    var how = document.getElementById("odds-how");
+    [
+      "Plays out the last " + ODDS.weeksLeft + " weeks of the regular season " + ODDS.sims.toLocaleString("en-US") + " times and counts how often each team finishes in the top " + ODDS.spots + ".",
+      "Each team's scores are based on its scoring average so far, nudged a little toward the league average.",
+      "This week uses ESPN's live projections, so the odds move during games.",
+      (ODDS.medianOn ? "Median games count, and ties" : "Ties") + " are broken " + (ODDS.tiebreak === "H2H_RECORD" ? "by head-to-head record, then points scored" : ODDS.tiebreak === "TOTAL_POINTS_SCORED" ? "by points scored" : "by points scored, close to the league's own tiebreaker") + ", like ESPN does.",
+      "Clinched and Eliminated only appear when the math guarantees it.",
+    ].forEach(function (t) { how.append(el("li", null, t)); });
+    function fmt(p, sure) {
+      if (sure === "in") return "100%";
+      if (sure === "out") return "0%";
+      if (p >= 0.995) return ">99%";
+      if (p > 0 && p < 0.005) return "<1%";
+      if (p === 0) return "<1%";
+      return Math.round(p * 100) + "%";
+    }
+    var list = E.teams.map(function (t) {
+      var o = ODDS.teams[t.id] || {};
+      return { id: t.id, name: t.name, o: o, sure: o.clinched ? "in" : o.eliminated ? "out" : null };
+    }).sort(function (a, b) { return b.o.playoffs - a.o.playoffs || (b.o.bye || 0) - (a.o.bye || 0) || b.o.projW - a.o.projW; });
+    var box = document.getElementById("odds-list");
+    var head = el("div", "od-row od-head");
+    head.append(el("span"), el("span", null, "Team"), el("span", "od-num", "Proj"), el("span", "od-num", ODDS.byes ? "Bye" : ""), el("span", "od-num", "Playoffs"));
+    box.append(head);
+    list.forEach(function (r, i) {
+      if (i === ODDS.spots) {
+        var cut = el("div", "od-cut");
+        cut.append(el("span", null, "Playoff line · top " + ODDS.spots));
+        box.append(cut);
+      }
+      var row = el("div", "od-row");
+      row.append(el("span", "od-rk", String(i + 1)));
+      var nameCol = el("div", "od-name");
+      var tn = el("div", "od-team");
+      tn.append(badge(r.id, r.name), teamLink(r.id, r.name));
+      if (r.sure === "in") tn.append(el("span", "od-tag in", "Clinched"));
+      if (r.sure === "out") tn.append(el("span", "od-tag out", "Eliminated"));
+      nameCol.append(tn);
+      var bar = el("div", "od-bar"), fill = el("span");
+      fill.style.width = (r.sure === "in" ? 100 : r.sure === "out" ? 0 : r.o.playoffs * 100).toFixed(1) + "%";
+      bar.append(fill);
+      bar.setAttribute("aria-hidden", "true");
+      nameCol.append(bar);
+      row.append(nameCol);
+      row.append(el("span", "od-num od-proj", r.o.projW + "-" + r.o.projL));
+      row.append(el("span", "od-num od-bye", ODDS.byes ? (r.o.bye > 0 ? fmt(r.o.bye) : "–") : ""));
+      row.append(el("span", "od-num od-pct", fmt(r.o.playoffs, r.sure)));
+      box.append(row);
+    });
+  })();
 
   // Shared: this week's sides
   var wk = E.currentWeek;
@@ -997,7 +1104,7 @@ __ESPN__
       var row = el("div", cls);
       var info = el("div", "side-info");
       var sn = el("div", "side-name");
-      sn.append(badge(s[0], nameOf(s[0])), el("span", null, nameOf(s[0])));
+      sn.append(badge(s[0], nameOf(s[0])), teamLink(s[0], nameOf(s[0])));
       info.append(sn);
       info.append(el("div", "side-proj", "Proj " + pts(s[2])));
       row.append(info);
@@ -1484,6 +1591,7 @@ __ESPN__
   var kept = null;
   try { kept = JSON.parse(sessionStorage.getItem(KEEP) || "null"); sessionStorage.removeItem(KEEP); } catch (e) { kept = null; }
   if (kept && (kept.mw === "now" || kept.mw === "proj") && kept.mw !== mwMode) { mwMode = kept.mw; renderMW(); }
+  if (kept && kept.sv === "odds" && document.getElementById("st-odds-btn")) showStandings("odds");
   // After an automatic refresh, land right back where the reader was, with no visible scroll.
   if (kept && typeof kept.hash === "string" && kept.hash && !location.hash) {
     try { history.replaceState(null, "", location.pathname + location.search + kept.hash); } catch (e) {}
@@ -1499,7 +1607,7 @@ __ESPN__
   // Reload in place, keeping the scroll position and the Median Watch view.
   // A fresh query string skips any cached copy of the page.
   function reloadKeepingPlace(stamp) {
-    try { sessionStorage.setItem(KEEP, JSON.stringify({ y: window.scrollY, mw: mwMode, hash: location.hash })); } catch (e) {}
+    try { sessionStorage.setItem(KEEP, JSON.stringify({ y: window.scrollY, mw: mwMode, sv: stView, hash: location.hash })); } catch (e) {}
     var v = stamp ? new Date(stamp).getTime() : Date.now();
     // The #section is left off the reload address so the browser doesn't jump to it first;
     // it's put back once the page has returned to the same spot.
