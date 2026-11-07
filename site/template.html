@@ -44,7 +44,7 @@ img { max-width: 100%; }
   --ribbon: #C21F32;
   --up: #23794A;
   --down: #B3342B;
-  --chip: #E9EDF4;
+  --chip: #E9EDF4; --mine: #E6EDF8;
   --tabs-bg: #F3F5F9;
   --feature: #13294B;
   --feature-line: #13294B;
@@ -63,14 +63,14 @@ img { max-width: 100%; }
   :root:not([data-theme="light"]) {
     --bg: #101112; --surface: #1D1E1E; --ink: #FFFFFF; --muted: #A1A2A3; --line: #2C2D2E;
     --accent: #FF5A68; --gilt: #658EEF; --band: #000000; --band-deep: #1D1E1E; --band-ink: #FFFFFF;
-    --band-gilt: #A1A2A3; --ribbon: #D3283C; --up: #65B752; --down: #EF8682; --chip: #303132;
+    --band-gilt: #A1A2A3; --ribbon: #D3283C; --up: #65B752; --down: #EF8682; --chip: #303132; --mine: #1E2a3f;
     --tabs-bg: #000000; --feature: #1B3766; --feature-line: #3A5A93; --feature-soft: #C8D5F0; --sun: block; --moon: none; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
     --bg: #101112; --surface: #1D1E1E; --ink: #FFFFFF; --muted: #A1A2A3; --line: #2C2D2E;
   --accent: #FF5A68; --gilt: #658EEF; --band: #000000; --band-deep: #1D1E1E; --band-ink: #FFFFFF;
-  --band-gilt: #A1A2A3; --ribbon: #D3283C; --up: #65B752; --down: #EF8682; --chip: #303132;
+  --band-gilt: #A1A2A3; --ribbon: #D3283C; --up: #65B752; --down: #EF8682; --chip: #303132; --mine: #1E2a3f;
   --tabs-bg: #000000; --feature: #1B3766; --feature-line: #3A5A93; --feature-soft: #C8D5F0; --sun: block; --moon: none; color-scheme: dark;
 }
 
@@ -109,8 +109,7 @@ body::before {
 .theme-btn:hover { background: rgba(255, 255, 255, 0.16); }
 .theme-btn:focus-visible { outline: 2px solid var(--band-ink); outline-offset: 2px; }
 .theme-btn svg { width: 18px; height: 18px; }
-.theme-btn .i-sun { display: var(--sun); }
-.theme-btn .i-moon { display: var(--moon); }
+.theme-btn svg { width: 19px; height: 19px; }
 .eyebrow {
   font-family: var(--f-label); font-weight: 600; font-size: 13px; letter-spacing: 0.14em;
   text-transform: uppercase; color: var(--band-gilt); margin: 0 0 4px;
@@ -519,8 +518,6 @@ button.refresh { cursor: pointer; }
 .tab-dot { display: inline-block; width: 7px; height: 7px; margin-left: 3px; border-radius: 50%; background: var(--accent); position: relative; top: -0.55em; }
 
 /* Alerts: bell beside the book button, opening a sheet from the bottom (preview) */
-.bell-btn { right: calc(max(16px, env(safe-area-inset-right, 0px)) + 66px); }
-.bell-btn svg { width: 19px; height: 19px; }
 .sheet-back { position: fixed; inset: 0; z-index: 20; background: rgba(5, 10, 20, 0.55); display: flex; align-items: flex-end; justify-content: center; }
 .sheet {
   width: 100%; max-width: 560px; max-height: 88vh; overflow-y: auto; background: var(--surface); color: var(--ink);
@@ -554,6 +551,18 @@ button.refresh { cursor: pointer; }
 .sheet-go:disabled { opacity: 0.6; cursor: default; }
 .sheet-go:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 .sheet-note { margin: 10px 0 0; font-size: 13px; color: var(--muted); text-align: center; }
+.set-h { margin: 18px 0 8px; font-family: var(--f-label); font-weight: 700; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.sheet-head + .set-h { margin-top: 10px; }
+.set-team select {
+  width: 100%; appearance: none; -webkit-appearance: none; font: inherit; font-weight: 600; font-size: 16px; color: var(--ink);
+  background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%2356617A' stroke-width='1.6'/%3E%3C/svg%3E") no-repeat right 12px center;
+  border: 1px solid var(--line); border-radius: 10px; padding: 11px 30px 10px 12px;
+}
+.set-team select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.set-note { margin: 6px 0 0; font-size: 13px; color: var(--muted); }
+.set-seg { display: flex; width: 100%; }
+.set-seg button { flex: 1; }
+.sw:disabled { opacity: 0.45; cursor: default; }
 .sheet-off { display: block; margin: 14px auto 0; border: 0; background: none; cursor: pointer; font-family: var(--f-label); font-weight: 700; font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
 .steps { list-style: none; margin: 0; padding: 0; border: 1px solid var(--line); border-radius: 12px; }
 .steps li { display: flex; align-items: center; gap: 12px; padding: 12px; font-size: 15px; }
@@ -561,6 +570,18 @@ button.refresh { cursor: pointer; }
 .step-n { flex: none; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: var(--band); color: var(--band-ink); font-family: var(--f-num); font-weight: 700; font-size: 15px; }
 .inline-ic { width: 17px; height: 17px; vertical-align: -3px; fill: none; stroke: var(--gilt); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 html.sheet-open, html.sheet-open body { overflow: hidden; }
+
+/* My team: each person picks it on a team page (saved on their phone). Their team gets a
+   soft blue tint and a bar on the left in every list, and their game comes first. */
+tr.mine td { background: var(--mine); }
+tr.mine td:first-child { box-shadow: inset 3px 0 0 var(--gilt); }
+.od-row.mine { background: var(--mine); margin-inline: -12px; padding-inline: 12px; box-shadow: inset 3px 0 0 var(--gilt); }
+.mw-row.mine { background: var(--mine); margin-inline: -14px; padding-inline: 14px; box-shadow: inset 3px 0 0 var(--gilt); }
+@media (max-width: 619px) { .mw-row.mine { margin-inline: -10px; padding-inline: 10px; } }
+.pr-item.mine { background: var(--mine); margin-inline: -10px; padding-inline: 10px; box-shadow: inset 3px 0 0 var(--gilt); border-radius: 4px; }
+.game.mine { border-color: var(--gilt); box-shadow: inset 0 0 0 1px var(--gilt); }
+.game-mine { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding-top: 9px; font-family: var(--f-label); font-weight: 700; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gilt); }
+.game-mine a { color: var(--gilt); text-decoration: none; letter-spacing: 0.06em; }
 
 /* Record Book: a labeled pill in the masthead's lower right corner */
 .book-pill {
@@ -666,13 +687,7 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
     </div>
     <!--book--><a class="book-pill" href="record-book.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.5C10.4 5 8 4.4 3.5 4.4v13.2c4.5 0 6.9.6 8.5 2 1.6-1.4 4-2 8.5-2V4.4C16 4.4 13.6 5 12 6.5Z"/><path d="M12 6.5v13"/></svg>Record Book<span aria-hidden="true">›</span></a><!--/book-->
     <span class="ribbon" aria-hidden="true"></span>
-    <button type="button" class="theme-btn" id="theme-btn" aria-label="Switch to dark mode" title="Switch to dark mode">
-      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 1 1 9.5 3.5a7 7 0 0 0 11 11Z"/></svg>
-      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M2 12h2.5M19.5 12H22M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
-    </button>
-    <!--bell--><button type="button" class="theme-btn bell-btn" id="bell" aria-label="Alerts" title="Alerts" aria-haspopup="dialog">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15Z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg>
-    </button><!--/bell-->
+    <button type="button" class="theme-btn" id="settings-btn" aria-label="Settings" title="Settings" aria-haspopup="dialog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg></button>
   </div>
 </header>
 
@@ -820,22 +835,39 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
   </section>
 </main>
 
-<!-- Alerts panel, opened by the bell. Choices are saved with the person's OneSignal subscription. -->
-<div class="sheet-back" id="alerts" hidden>
-  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="alerts-h">
+<!-- Settings, opened by the gear: My team and Appearance (saved on this phone) and Alerts
+     (saved with the person's OneSignal subscription). -->
+<div class="sheet-back" id="settings" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="settings-h">
     <span class="sheet-grip" aria-hidden="true"></span>
     <div class="sheet-head">
-      <h2 id="alerts-h">Alerts</h2>
-      <button type="button" class="sheet-x" id="alerts-done">Done</button>
+      <h2 id="settings-h">Settings</h2>
+      <button type="button" class="sheet-x" id="settings-done">Done</button>
     </div>
+
+    <h3 class="set-h">My team</h3>
+    <div class="set-team">
+      <select id="my-team-pick" aria-label="My team"><option value="">None</option></select>
+    </div>
+    <p class="set-note">Your team is highlighted around the site and its game shows first on the Scoreboard. Only on this phone.</p>
+
+    <h3 class="set-h">Appearance</h3>
+    <div class="seg set-seg" role="group" aria-label="Appearance">
+      <button type="button" data-theme-pick="auto" aria-pressed="false">Match phone</button>
+      <button type="button" data-theme-pick="light" aria-pressed="false">Light</button>
+      <button type="button" data-theme-pick="dark" aria-pressed="false">Dark</button>
+    </div>
+
+    <!--alerts-->
+    <h3 class="set-h">Alerts</h3>
     <div id="alerts-on">
-      <p class="sheet-sub">Pick what lands on your phone. You can change these anytime.</p>
+      <p class="sheet-sub">Pick what lands on your phone.</p>
       <div class="sw-list">
         <label class="sw-row"><span class="sw-ic"><svg viewBox="0 0 24 24"><path d="M4 8.5h15M15 4.5l4 4-4 4"/><path d="M20 15.5H5M9 11.5l-4 4 4 4"/></svg></span><span class="sw-txt"><b>Trades</b><small>When a trade goes through</small></span><input type="checkbox" class="sw" data-tag="trades"></label>
         <label class="sw-row"><span class="sw-ic"><svg viewBox="0 0 24 24"><path d="M4 5h13v14H6.2A2.2 2.2 0 0 1 4 16.8Z"/><path d="M17 9h3v8a2 2 0 0 1-2 2h-1"/><path d="M7.5 9h6M7.5 12.5h6M7.5 16h4"/></svg></span><span class="sw-txt"><b>Newspaper</b><small>New editions, Tuesday, Thursday and Saturday</small></span><input type="checkbox" class="sw" data-tag="news"></label>
         <label class="sw-row"><span class="sw-ic"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M9 21h6"/></svg></span><span class="sw-txt"><b>The Poddy</b><small>When a new episode is up</small></span><input type="checkbox" class="sw" data-tag="poddy"></label>
         <label class="sw-row"><span class="sw-ic"><svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="12" rx="2"/><path d="M12 4.5v12M9 20.5h6M12 16.5v4"/></svg></span><span class="sw-txt"><b>Final results</b><small>Each week's results once it goes final</small></span><input type="checkbox" class="sw" data-tag="final"></label>
-        <div class="sw-row"><span class="sw-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg></span><span class="sw-txt"><b>My team</b><small>Your own game's final score</small></span><select class="sw-pick" id="alerts-team" aria-label="My team"><option value="">None</option></select></div>
+        <label class="sw-row"><span class="sw-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg></span><span class="sw-txt"><b>My team's result</b><small id="sw-team-note">Your own game's final score</small></span><input type="checkbox" class="sw" id="sw-team"></label>
       </div>
       <button type="button" class="sheet-off" id="alerts-off">Turn off all alerts</button>
     </div>
@@ -855,13 +887,14 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
       <ol class="steps">
         <li><span class="step-n">1</span><span>Tap the <b>Share</b> button <svg class="inline-ic" viewBox="0 0 24 24"><path d="M12 15V3.5M8 7l4-4 4 4"/><path d="M6 11H5v9.5h14V11h-1"/></svg> in Safari.</span></li>
         <li><span class="step-n">2</span><span>Choose <b>Add to Home Screen</b>.</span></li>
-        <li><span class="step-n">3</span><span>Open <b>BBFC</b> from your Home Screen, tap the bell, and tap <b>Allow</b>.</span></li>
+        <li><span class="step-n">3</span><span>Open <b>BBFC</b> from your Home Screen, tap Settings <svg class="inline-ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg>, then <b>Turn on alerts</b>.</span></li>
       </ol>
     </div>
+    <!--/alerts-->
   </div>
 </div>
 
-<footer class="wrap foot"><span id="footer-line">Boys and Bibles Football Club</span><button type="button" class="link-btn" id="theme-auto" hidden>Match my phone's light/dark setting</button><p class="egg">Darren Waller is a BUM!</p></footer>
+<footer class="wrap foot"><span id="footer-line">Boys and Bibles Football Club</span><p class="egg">Darren Waller is a BUM!</p></footer>
 
 <!-- Team images (64px, embedded). Teams without one get an initials badge. -->
 <script type="application/json" id="logo-data">
@@ -932,6 +965,11 @@ __ESPN__
     return w.map(function (x) { return x.charAt(0); }).join("").toUpperCase().slice(0, 3) || "?";
   }
   function teamLink(id, text) { var a = el("a", "tlink", text); a.href = "team.html?t=" + id; return a; }
+  // My team: picked with the star on a team page and saved on this phone only
+  var myTeam = null;
+  try { myTeam = Number(localStorage.getItem("bbfc-my-team")) || null; } catch (e) {}
+  if (myTeam && !E.teams.some(function (t) { return t.id === myTeam; })) myTeam = null;
+  function mine(id) { return !!myTeam && Number(id) === myTeam; }
   function badge(id, name) {
     var src = LOGOS[String(id)];
     if (src) {
@@ -977,7 +1015,7 @@ __ESPN__
   try { updTime = new Date(E.fetchedAt).toLocaleString("en-US", { timeZone: "America/New_York", weekday: "short", hour: "numeric", minute: "2-digit" }) + " ET"; } catch (e) { updTime = ""; }
   function renderUpd() {
     var mins = Math.floor((Date.now() - new Date(E.fetchedAt).getTime()) / 60000);
-    var ago = !isFinite(mins) ? "" : mins < 1 ? "just now" : mins < 60 ? mins + " min ago" : mins < 1440 ? Math.floor(mins / 60) + " hr ago" : Math.floor(mins / 1440) + " days ago";
+    var ago = !isFinite(mins) ? "" : mins < 1 ? "just now" : mins < 60 ? mins + " min ago" : mins < 1440 ? Math.floor(mins / 60) + " hr ago" : (Math.floor(mins / 1440) === 1 ? "1 day ago" : Math.floor(mins / 1440) + " days ago");
     Array.prototype.slice.call(document.querySelectorAll("[data-upd]")).forEach(function (line) {
       line.textContent = "";
       var dot = el("span", "upd-dot" + (mins < 15 ? " fresh" : ""));
@@ -1004,7 +1042,7 @@ __ESPN__
 
   var tb = document.getElementById("standings-body");
   rows.forEach(function (t, i) {
-    var tr = el("tr");
+    var tr = el("tr", mine(t.id) ? "mine" : null);
     tr.append(el("td", "rk", String(i + 1)));
     var tn = el("td", "team-name");
     var tw = el("span", "tn");
@@ -1026,36 +1064,70 @@ __ESPN__
     }
   });
 
-  // Alerts (OneSignal). The bell opens a panel that shows one of:
+  // Settings (the gear): My team, Appearance (light/dark code further down) and Alerts.
+  // Alerts (OneSignal) show one of:
   // - setup: iPhone in Safari, where alerts only work from the Home Screen icon
   // - start: a "Turn on alerts" button (iPhone asks permission only after a tap)
-  // - on: switches for each kind of alert and a My team picker, saved as OneSignal tags
+  // - on: switches for each kind of alert, saved as OneSignal tags; "My team's result"
+  //   saves team = the My team id
   // - blocked: notifications were turned off for BBFC in the phone's Settings
   // - none: this browser can't do alerts
   // The site's updater (scripts/notify.mjs) sends each alert only to people with that tag.
   (function () {
-    var back = document.getElementById("alerts"), bell = document.getElementById("bell");
-    if (!back || !bell) return;
+    var back = document.getElementById("settings"), gear = document.getElementById("settings-btn");
+    if (!back || !gear) return;
+
+    // My team
+    var teamPick = document.getElementById("my-team-pick");
+    E.teams.slice().sort(function (a, b) { return a.name.localeCompare(b.name); }).forEach(function (t) { var o = el("option", null, t.name); o.value = String(t.id); teamPick.append(o); });
+    teamPick.value = myTeam ? String(myTeam) : "";
+    var teamChanged = false;
+    teamPick.addEventListener("change", function () {
+      myTeam = Number(teamPick.value) || null;
+      try { if (myTeam) localStorage.setItem("bbfc-my-team", String(myTeam)); else localStorage.removeItem("bbfc-my-team"); } catch (e) {}
+      teamChanged = true;
+      syncTeamTag();
+      paintTeamSwitch();
+    });
+
+    // Alerts
+    var hasAlerts = !!document.getElementById("alerts-on");
     var cfg = {};
     try { cfg = JSON.parse(document.getElementById("alerts-data").textContent) || {}; } catch (e) {}
-    var pick = document.getElementById("alerts-team");
-    E.teams.slice().sort(function (a, b) { return a.name.localeCompare(b.name); }).forEach(function (t) { var o = el("option", null, t.name); o.value = String(t.id); pick.append(o); });
     var switches = Array.prototype.slice.call(back.querySelectorAll(".sw[data-tag]"));
-    var DEFAULTS = { trades: "1", news: "1", poddy: "1" }; // on for everyone who turns alerts on; Final results and My team start off
+    var teamSw = document.getElementById("sw-team");
+    var DEFAULTS = { trades: "1", news: "1", poddy: "1" }; // on for everyone who turns alerts on; Final results starts off
     var iOS = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
     var installed = window.navigator.standalone === true || (window.matchMedia && matchMedia("(display-mode: standalone)").matches);
     var OS = null; // OneSignal, once it has loaded
     var views = ["on", "start", "setup", "blocked", "none"];
-    function show(v) { views.forEach(function (x) { document.getElementById("alerts-" + x).hidden = x !== v; }); }
-    function msg(t) { var m = document.getElementById("alerts-msg"); m.textContent = t || ""; m.hidden = !t; }
-
+    function show(v) { if (hasAlerts) views.forEach(function (x) { document.getElementById("alerts-" + x).hidden = x !== v; }); }
+    function msg(t) { var m = document.getElementById("alerts-msg"); if (m) { m.textContent = t || ""; m.hidden = !t; } }
     function tagsNow() { try { return (OS && OS.User.getTags && OS.User.getTags()) || {}; } catch (e) { return {}; } }
+    function paintTeamSwitch() {
+      if (!teamSw) return;
+      teamSw.disabled = !myTeam;
+      document.getElementById("sw-team-note").textContent = myTeam ? "Your game's final score, " + nameOf(myTeam) : "Pick your team above first";
+      if (!myTeam) teamSw.checked = false;
+    }
+    // Keep the "team" alert tag pointed at the current My team (it can change on a team page too)
+    function syncTeamTag() {
+      if (!OS) return;
+      var tags = tagsNow();
+      try {
+        if (tags.team == null) return;
+        if (!myTeam) OS.User.removeTag("team");
+        else if (tags.team !== String(myTeam)) OS.User.addTag("team", String(myTeam));
+      } catch (e) {}
+    }
     function fillSwitches() {
       var tags = tagsNow();
       switches.forEach(function (sw) { sw.checked = tags[sw.getAttribute("data-tag")] === "1"; });
-      pick.value = tags.team && pick.querySelector('option[value="' + tags.team + '"]') ? tags.team : "";
+      paintTeamSwitch();
+      if (teamSw && myTeam) teamSw.checked = tags.team != null;
     }
     function refresh() {
+      if (!hasAlerts) return;
       if (iOS && !installed) return show("setup");
       if (!OS) return show(cfg.appId ? "start" : "none");
       var supported = true;
@@ -1071,7 +1143,7 @@ __ESPN__
     }
 
     // Load OneSignal (only if the site has an App ID). Its worker lives at the top of the site.
-    if (cfg.appId && !(iOS && !installed)) {
+    if (hasAlerts && cfg.appId && !(iOS && !installed)) {
       var base = location.pathname.replace(/[^\/]*$/, "");
       window.OneSignalDeferred = window.OneSignalDeferred || [];
       window.OneSignalDeferred.push(function (OneSignal) {
@@ -1082,6 +1154,7 @@ __ESPN__
           autoResubscribe: true,
         }).then(function () {
           OS = OneSignal;
+          syncTeamTag();
           try { OneSignal.User.PushSubscription.addEventListener("change", function () { if (!back.hidden) refresh(); }); } catch (e) {}
           try { OneSignal.Notifications.addEventListener("permissionChange", function () { if (!back.hidden) refresh(); }); } catch (e) {}
           if (!back.hidden) refresh();
@@ -1094,46 +1167,55 @@ __ESPN__
       document.head.append(sdk);
     }
 
-    // Turn on: must run straight from the tap, or iPhone won't show the "Allow" question
-    var go = document.getElementById("alerts-go");
-    go.addEventListener("click", function () {
-      if (!OS) { msg("Still loading. Try again in a second."); return; }
-      go.disabled = true;
-      msg("");
-      var ask = OS.Notifications.permission ? Promise.resolve() : OS.Notifications.requestPermission();
-      Promise.resolve(ask).then(function () {
-        if (!OS.Notifications.permission) { refresh(); return; }
-        return Promise.resolve(OS.User.PushSubscription.optedIn ? null : OS.User.PushSubscription.optIn()).then(function () {
-          var have = tagsNow();
-          var add = {};
-          Object.keys(DEFAULTS).forEach(function (k) { if (have[k] == null) add[k] = DEFAULTS[k]; });
-          if (Object.keys(add).length) OS.User.addTags(add);
-        });
-      }).catch(function () {
-        msg("That didn't work. Try again, or check Settings › Notifications › BBFC.");
-      }).then(function () { go.disabled = false; refresh(); });
-    });
-    // Each switch adds or removes its tag; the team picker sets "team"
-    switches.forEach(function (sw) {
-      sw.addEventListener("change", function () {
-        if (!OS) return;
-        var key = sw.getAttribute("data-tag");
-        try { if (sw.checked) OS.User.addTag(key, "1"); else OS.User.removeTag(key); } catch (e) {}
+    if (hasAlerts) {
+      // Turn on: must run straight from the tap, or iPhone won't show the "Allow" question
+      var go = document.getElementById("alerts-go");
+      go.addEventListener("click", function () {
+        if (!OS) { msg("Still loading. Try again in a second."); return; }
+        go.disabled = true;
+        msg("");
+        var ask = OS.Notifications.permission ? Promise.resolve() : OS.Notifications.requestPermission();
+        Promise.resolve(ask).then(function () {
+          if (!OS.Notifications.permission) { refresh(); return; }
+          return Promise.resolve(OS.User.PushSubscription.optedIn ? null : OS.User.PushSubscription.optIn()).then(function () {
+            var have = tagsNow();
+            var add = {};
+            Object.keys(DEFAULTS).forEach(function (k) { if (have[k] == null) add[k] = DEFAULTS[k]; });
+            if (have.team == null && myTeam) add.team = String(myTeam);
+            if (Object.keys(add).length) OS.User.addTags(add);
+          });
+        }).catch(function () {
+          msg("That didn't work. Try again, or check Settings › Notifications › BBFC.");
+        }).then(function () { go.disabled = false; refresh(); });
       });
-    });
-    pick.addEventListener("change", function () {
-      if (!OS) return;
-      try { if (pick.value) OS.User.addTag("team", pick.value); else OS.User.removeTag("team"); } catch (e) {}
-    });
-    document.getElementById("alerts-off").addEventListener("click", function () {
-      if (!OS) return;
-      Promise.resolve(OS.User.PushSubscription.optOut()).catch(function () {}).then(refresh);
-    });
+      // Each switch adds or removes its tag
+      switches.forEach(function (sw) {
+        sw.addEventListener("change", function () {
+          if (!OS) return;
+          var key = sw.getAttribute("data-tag");
+          try { if (sw.checked) OS.User.addTag(key, "1"); else OS.User.removeTag(key); } catch (e) {}
+        });
+      });
+      if (teamSw) teamSw.addEventListener("change", function () {
+        if (!OS || !myTeam) return;
+        try { if (teamSw.checked) OS.User.addTag("team", String(myTeam)); else OS.User.removeTag("team"); } catch (e) {}
+      });
+      document.getElementById("alerts-off").addEventListener("click", function () {
+        if (!OS) return;
+        Promise.resolve(OS.User.PushSubscription.optOut()).catch(function () {}).then(refresh);
+      });
+    }
 
-    function open() { refresh(); back.hidden = false; document.documentElement.classList.add("sheet-open"); document.getElementById("alerts-done").focus(); }
-    function close() { back.hidden = true; document.documentElement.classList.remove("sheet-open"); bell.focus(); }
-    bell.addEventListener("click", open);
-    document.getElementById("alerts-done").addEventListener("click", close);
+    function open() { refresh(); paintTeamSwitch(); back.hidden = false; document.documentElement.classList.add("sheet-open"); document.getElementById("settings-done").focus(); }
+    function close() {
+      back.hidden = true;
+      document.documentElement.classList.remove("sheet-open");
+      gear.focus();
+      // A new My team re-draws the page in place, with the new team highlighted
+      if (teamChanged) reloadKeepingPlace();
+    }
+    gear.addEventListener("click", open);
+    document.getElementById("settings-done").addEventListener("click", close);
     back.addEventListener("click", function (e) { if (e.target === back) close(); });
     document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !back.hidden) close(); });
   })();
@@ -1183,7 +1265,7 @@ __ESPN__
         cut.append(el("span", null, "Playoff line · top " + ODDS.spots));
         box.append(cut);
       }
-      var row = el("div", "od-row");
+      var row = el("div", "od-row" + (mine(r.id) ? " mine" : ""));
       row.append(el("span", "od-rk", String(i + 1)));
       var nameCol = el("div", "od-name");
       var tn = el("div", "od-team");
@@ -1272,7 +1354,7 @@ __ESPN__
       }
       var m = r.val - med;
       var dir = m >= 0 ? "up" : "down";
-      var row = el("div", "mw-row");
+      var row = el("div", "mw-row" + (mine(r.id) ? " mine" : ""));
       row.append(el("span", "mw-rk", String(i + 1)));
       var nm = el("span", "mw-name");
       nm.append(badge(r.id, nameOf(r.id)), el("span", null, nameOf(r.id)));
@@ -1305,8 +1387,18 @@ __ESPN__
     : "No points yet. ESPN's projected totals are under each team.";
   var gbox = document.getElementById("games");
   if (!cur.length) gbox.append(el("p", "empty", "No matchups this week."));
-  cur.forEach(function (m) {
-    var card = el("article", "game");
+  var games = cur.slice();
+  if (myTeam) games.sort(function (a, b) { return (mine(b.h[0]) || mine(b.a[0]) ? 1 : 0) - (mine(a.h[0]) || mine(a.a[0]) ? 1 : 0); });
+  games.forEach(function (m) {
+    var isMine = mine(m.h[0]) || mine(m.a[0]);
+    var card = el("article", "game" + (isMine ? " mine" : ""));
+    if (isMine) {
+      var lab = el("div", "game-mine");
+      var tp = el("a", null, "Team page ›");
+      tp.href = "team.html?t=" + myTeam;
+      lab.append(el("span", null, "My game"), tp);
+      card.append(lab);
+    }
     [m.h, m.a].forEach(function (s, idx) {
       var other = idx === 0 ? m.a : m.h;
       var cls = "side";
@@ -1420,7 +1512,7 @@ __ESPN__
   (nowPR ? nowPR.list : []).forEach(function (r, i) {
     var rank = i + 1;
     var tname = prName[r.id] || nameOf(r.id);
-    var li = el("li", "pr-item");
+    var li = el("li", "pr-item" + (mine(r.id) ? " mine" : ""));
     var det = el("details");
     var sum = el("summary", "pr-sum");
     sum.append(el("span", "pr-rank", String(rank)));
@@ -1751,21 +1843,18 @@ __ESPN__
     if (themeChoice) root.setAttribute("data-theme", themeChoice); else root.removeAttribute("data-theme");
     var dark = effectiveTheme() === "dark";
     if (themeMeta) themeMeta.setAttribute("content", dark ? "#000000" : "#13294B");
-    var label = dark ? "Switch to light mode" : "Switch to dark mode";
-    var tb = document.getElementById("theme-btn");
-    tb.setAttribute("aria-label", label);
-    tb.title = label;
-    document.getElementById("theme-auto").hidden = !themeChoice;
+    Array.prototype.slice.call(document.querySelectorAll("[data-theme-pick]")).forEach(function (b) {
+      b.setAttribute("aria-pressed", String(b.getAttribute("data-theme-pick") === (themeChoice || "auto")));
+    });
   }
   function chooseTheme(t) {
     themeChoice = t;
     try { if (t) localStorage.setItem(THEME_KEY, t); else localStorage.removeItem(THEME_KEY); } catch (e) {}
     applyTheme();
   }
-  document.getElementById("theme-btn").addEventListener("click", function () {
-    chooseTheme(effectiveTheme() === "dark" ? "light" : "dark");
+  Array.prototype.slice.call(document.querySelectorAll("[data-theme-pick]")).forEach(function (b) {
+    b.addEventListener("click", function () { var v = b.getAttribute("data-theme-pick"); chooseTheme(v === "auto" ? null : v); });
   });
-  document.getElementById("theme-auto").addEventListener("click", function () { chooseTheme(null); });
   if (darkQuery) {
     if (darkQuery.addEventListener) darkQuery.addEventListener("change", applyTheme);
     else if (darkQuery.addListener) darkQuery.addListener(applyTheme);

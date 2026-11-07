@@ -29,7 +29,9 @@ this site through conversations with Claude, so:
 - **Newspaper:** sports-page tone. No trash talk, mocking or roasting; he finds it corny.
   Managers' first names are fine. Facts only from league data.
 - **Don't single out The Mouse Rats.** No highlighting, extra attention or favorable spin
-  anywhere on the site, including Median Watch.
+  anywhere on the site, including Median Watch. (The per-viewer "My team" highlight is
+  different: each person picks their own team in Settings, and nothing is picked by
+  default. Never pre-set it.)
 - **No tall, condensed display fonts** beyond the ones listed under Design. He disliked a
   tall-lettered font early on and asked that it not appear anywhere.
 - **Never ask for the ESPN codes in chat.** They live only in GitHub secrets.
@@ -153,8 +155,20 @@ in Nov 2026 so one bottom-bar button covers both.
   - `body` has bottom padding so the footer clears the bar.
 - **Record Book pill:** a labeled "Record Book ›" pill in the masthead's lower right
   corner, level with "Through Week N", opens the Record Book. It was first an icon beside
-  the light/dark button, but Bryar felt it didn't belong with the settings buttons (bell,
-  light/dark), and chose the pill alone, without a link card under Standings (Nov 2026).
+  the light/dark button, but Bryar felt it didn't belong with the settings buttons, and
+  chose the pill alone, without a link card under Standings (Nov 2026).
+- **Settings** (Nov 2026): the masthead's only corner button is a gear that opens a
+  Settings sheet from the bottom. Bryar wanted personal options in one place rather than
+  separate bell and light/dark buttons. Sections:
+  - **My team:** a team picker, saved on that phone (`localStorage` `bbfc-my-team`).
+    Closing the sheet after a change redraws the page in place (`reloadKeepingPlace`).
+    Team pages also have a ★ "My team" button that sets the same value.
+  - **Appearance:** Match phone / Light / Dark (`localStorage` `bbfc-theme`).
+  - **Alerts:** see the Alerts section (between `<!--alerts-->` markers).
+- **My team highlight:** for that viewer only, their team's row gets a soft blue tint
+  (`--mine`) and a `--gilt` bar on the left in Standings, the playoff odds, Power Rankings
+  and Median Watch; on the Scoreboard their game comes first, outlined, labeled "My game"
+  with a "Team page ›" link. Bryar knows his own screenshots will show it if he sets it.
 - **Spacing:** sections have `padding-block` of 48px/12px, or 36px/8px on phones.
   Bryar tuned this by eye.
 - **Standings:** shows the head-to-head and median split, with a "Playoff line · Top 6
@@ -217,8 +231,7 @@ in Nov 2026 so one bottom-bar button covers both.
     midday Eastern on the trade date.
 - **Podcast:** "BBFC Presents: The Poddy" from SoundCloud. The newest episode is clearly
   featured; in dark mode it sits on a navy card so it stands out.
-- **Footer:** the club name, the ESPN updated time, a "Match my phone's light/dark
-  setting" link (shown only after a manual theme choice), and the easter egg.
+- **Footer:** the club name, the ESPN updated time, and the easter egg.
 
 ### Design
 
@@ -233,8 +246,8 @@ in Nov 2026 so one bottom-bar button covers both.
 - **Dark mode:** modeled on the ESPN Fantasy app. `--bg #101112`, `--surface #1D1E1E`,
   `--muted #A1A2A3`, `--accent #FF5A68`, `--gilt #658EEF`, `--band #000`, `--up #65B752`,
   `--down #EF8682`, `--feature #1B3766`.
-- **Theme:** follows the phone's setting by default. The sun/moon button at the top right
-  overrides it, saved in `localStorage` under `bbfc-theme`, and the footer link resets it.
+- **Theme:** follows the phone's setting by default. Settings › Appearance overrides it
+  (Light or Dark, saved in `localStorage` under `bbfc-theme`; Match phone clears it).
 - **Color meaning:** green means above the median or winning, and red means below or
   losing. Don't use either as decoration.
 - **Phones first:** everyone in the league is on iPhone, and many add the site to their
@@ -247,12 +260,14 @@ in `data/league.json` as `onesignalAppId`; the App API Key is the `ONESIGNAL_API
 which Bryar added himself; never ask for it in chat). OneSignal's site URL is
 `https://airbryar.github.io`, Custom Code setup.
 
-- **On the page:** a bell beside the light/dark button (only built in when `onesignalAppId` is
-  set; between `<!--bell-->` markers) opens the Alerts sheet. It shows Home Screen steps in
+- **On the page:** the Alerts part of the Settings sheet (only built in when
+  `onesignalAppId` is set; between `<!--alerts-->` markers). It shows Home Screen steps in
   Safari on iPhone (alerts only work from the Home Screen icon, iOS 16.4+), a "Turn on
   alerts" button (iPhone asks permission only from a tap), then switches saved as OneSignal
   tags: `trades`, `news`, `poddy` (all on when someone first turns alerts on), `final`, and
-  `team` = their team id for "My team". Also blocked and not-available states.
+  "My team's result" = `team` set to their My team id (on by default if they've picked a
+  team; disabled until they do). The page keeps `team` in step with My team, which can
+  also change from a team page. Also blocked and not-available states.
 - **Home-screen app:** `_site/manifest.webmanifest` (built by `build.mjs`; keep its `id`),
   icons `icon-192.png` / `icon-512.png` (made by `make-brand.mjs` like the 180px icon), and
   `OneSignalSDKWorker.js` at the site root, registered with scope `/bbfc/`. The icon now

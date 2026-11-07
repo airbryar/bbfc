@@ -64,12 +64,8 @@ if (brand.custom && brand.logo) {
   html = html.slice(0, start) + img + html.slice(end + "<!--/crest-->".length);
 }
 
-// The bell (alerts) only appears once OneSignal is set up (onesignalAppId in data/league.json).
-if (!league.onesignalAppId) {
-  const start = html.indexOf("<!--bell-->");
-  const end = html.indexOf("<!--/bell-->");
-  if (start >= 0 && end > start) html = html.slice(0, start) + html.slice(end + "<!--/bell-->".length);
-}
+// The Alerts part of Settings only appears once OneSignal is set up (onesignalAppId in data/league.json).
+if (!league.onesignalAppId) html = html.replace(/<!--alerts-->[\s\S]*?<!--\/alerts-->/g, "");
 
 // Record Book links (masthead pill, Standings card) are left out if there's no history.
 if (!history) html = html.replace(/<!--book-->[\s\S]*?<!--\/book-->/g, "");
