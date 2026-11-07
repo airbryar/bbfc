@@ -1,0 +1,30 @@
+name: Lineups preview (temporary)
+
+# Preview only: reads this week's lineups on the lineups-preview branch and saves them
+# there, so the matchup details can be mocked up with real data. Removed before going live.
+on:
+  push:
+    branches: [lineups-preview]
+    paths: ["scripts/fetch-lineups.mjs", ".github/workflows/lineups-preview.yml"]
+
+permissions:
+  contents: write
+
+jobs:
+  lineups:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node scripts/fetch-lineups.mjs
+        env:
+          ESPN_S2: ${{ secrets.ESPN_S2 }}
+          ESPN_SWID: ${{ secrets.ESPN_SWID }}
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/lineups.json
+          git diff --cached --quiet || (git commit -m "Lineups preview data" && git push origin HEAD:lineups-preview)
