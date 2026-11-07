@@ -128,11 +128,9 @@ h2 { font-family: var(--f-display); font-weight: 800; font-size: 25px; line-heig
 .side.trail .side-score { color: var(--muted); }
 .series { margin: 8px 0 0; font-size: 14px; color: var(--muted); }
 .series b { color: var(--ink); }
-.series b.in { color: var(--up); }
-.series b.out { color: var(--down); }
-.series .say { display: block; font-weight: 700; }
-.series .say.in { color: var(--up); }
-.series .say.out { color: var(--down); }
+.series.say { font-weight: 700; }
+.series.say.in { color: var(--up); }
+.series.say.out { color: var(--down); }
 
 /* Season chart: each finished week's score above or below that week's median */
 .chart { padding: 10px 14px 12px; margin-bottom: 10px; }
@@ -557,23 +555,12 @@ __LOGOS__
         }
         wbox.append(p);
       }
-      // What it takes: playoff odds after each possible result this week
-      var RES = ODDS && ODDS.medianOn ? ["2–0", "1–1", "0–2"] : ["Win", "Loss"];
-      if (o && o.week && o.week.length === RES.length && !o.clinched && !o.eliminated) {
-        var wl = el("p", "series"), last = o.week.length - 1, say = null;
-        var shownW = o.week.map(function (v) { return typeof v === "number" ? oddsText(v) : v; });
-        var allHi = shownW.every(function (v) { return v === ">99%"; }), allLo = shownW.every(function (v) { return v === "<1%"; });
-        if (o.week[0] === "in") say = ["in", ODDS.medianOn ? (o.week[1] === "in" ? "Clinches a playoff spot with a win" : "Clinches a playoff spot with a 2–0 week") : "Clinches a playoff spot with a win"];
-        else if (o.week[last] === "out") say = ["out", ODDS.medianOn ? (o.week[1] === "out" ? "Needs a 2–0 week to stay alive" : "Eliminated with an 0–2 week") : "Eliminated with a loss"];
-        if (say) wl.append(el("span", "say " + say[0], say[1]));
-        if (allHi || allLo) wl.append("Playoff odds stay " + (allHi ? "above 99%" : "under 1%") + " whatever happens this week.");
-        else wl.append("Playoff odds after ");
-        if (!allHi && !allLo) o.week.forEach(function (v, i) {
-          if (i) wl.append(" · ");
-          wl.append(RES[i] + " ");
-          wl.append(v === "in" ? el("b", "in", "In") : v === "out" ? el("b", "out", "Out") : el("b", null, v == null ? "–" : oddsText(v)));
-        });
-        wbox.append(wl);
+      // What it takes: only when one result this week would settle this team's playoff spot
+      if (o && o.week && o.week.length && !o.clinched && !o.eliminated) {
+        var med = ODDS && ODDS.medianOn, last = o.week.length - 1, say = null;
+        if (o.week[0] === "in") say = ["in", med && o.week[1] !== "in" ? "Clinches a playoff spot with a 2–0 week" : "Clinches a playoff spot with a win"];
+        else if (o.week[last] === "out") say = ["out", med ? (o.week[1] === "out" ? "Needs a 2–0 week to stay in the playoff race" : "Eliminated from the playoffs with an 0–2 week") : "Eliminated from the playoffs with a loss"];
+        if (say) wbox.append(el("p", "series say " + say[0], say[1]));
       }
     }
 

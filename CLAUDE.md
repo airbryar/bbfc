@@ -183,7 +183,14 @@ in Nov 2026 so one bottom-bar button covers both.
     view lists teams by playoff chance with projected record, first-round bye chance and a
     bar, a "Playoff line · top 6" divider and a "How the odds work" explainer. Shows
     ">99%" / "<1%" rather than 100% / 0% unless the team has mathematically clinched or
-    been eliminated, which get green "Clinched" / red "Eliminated" tags.
+    been eliminated, which get green "Clinched" / red "Eliminated" tags (on their own line
+    under the name, in both the odds view and the Table).
+  - **What it takes** (Nov 2026): when the math says one result this week would settle a
+    team's spot, a plain green/red line under it says so ("Clinches with a 2–0 week",
+    "Clinches with a win", "Needs a 2–0 week to stay alive", "Eliminated with an 0–2
+    week"); team pages show the same line under This Week. Bryar didn't want the
+    per-result percentages, so nothing shows otherwise. `odds.mjs` gives each team
+    `week` (best result first): "in" / "out" when guaranteed, else the simulated chance.
   - Odds (`scripts/odds.mjs`): each team's scores are drawn around its average so far,
     pulled 20% toward the league average, with the league's week-to-week swing; the week
     in progress uses ESPN's live projections, narrowing as games finish, so the odds move
@@ -337,7 +344,11 @@ and points, and a "‹ Home" pill.
 - This Week: the matchup with live scores and projections, plus one line with the
   managers' all-time series from the Record Book's history. (Bryar found a series line on
   every Scoreboard card too much; on the team page he was fine with it.)
-- Season: each finished week's opponent and score with W/L and median W/L chips; then
+- Season: a chart first (Nov 2026; Bryar liked it as previewed): one bar per regular-season
+  week, green above / red below that week's median (midpoint of 6th and 7th, like Median
+  Watch), one league-wide scale so teams compare fairly, best and worst weeks labeled, and
+  tapping a week shows its score, margin and opponent. Then each finished week's opponent
+  and score with W/L and median W/L chips; then
   "Still to play" with each opponent's points per game and where the remaining schedule
   ranks league-wide.
 - Top Players (points while started) come from `data/newsroom.json`, so they refresh with
