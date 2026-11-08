@@ -224,6 +224,11 @@ in Nov 2026 so one bottom-bar button covers both.
   line between 6th and 7th, and current-median and cut-line tiles.
   - The toggle reads **Current / Projected**; it was renamed from "Right now".
   - Live and final are marked, and there's an "Updated … · N min ago" line.
+  - **Tap a team** (Nov 2026; "Tap a team for its lineup." under the chart) to open the
+    lineups sheet for just that team: its score, projection and "N to play", where it sits
+    ("4th of 12", "+9.98 vs median", in the same Current/Projected view), its starters
+    (slot, player, game status, points over projection) and a folded Bench, plus a "Team
+    page ›" link. Same sheet and data as Matchup details (`openTeamLineup`).
 - **Scoreboard:** "Week N Scoreboard". Matchup cards with team pictures, projections and
   scores in the regular number font; the trailing score is muted.
   - **Matchup details** (Nov 2026): each card has a small "›" on its right edge, and the
