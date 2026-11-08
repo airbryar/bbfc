@@ -1,0 +1,30 @@
+name: Preview lineups (temporary)
+
+# Preview only: saves this moment's league data and lineups on the mw-lineup branch.
+# Removed before the preview goes live.
+on:
+  push:
+    branches: [mw-lineup]
+    paths: [".github/workflows/mw-preview.yml"]
+
+permissions:
+  contents: write
+
+jobs:
+  data:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node scripts/fetch-espn.mjs && node scripts/fetch-lineups.mjs
+        env:
+          ESPN_S2: ${{ secrets.ESPN_S2 }}
+          ESPN_SWID: ${{ secrets.ESPN_SWID }}
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f data/espn.json data/lineups.json
+          git commit -m "Preview data" && git push origin HEAD:mw-lineup
