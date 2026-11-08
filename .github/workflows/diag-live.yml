@@ -1,0 +1,39 @@
+name: Check live data (temporary)
+
+# Diagnostic only: compares what the live site is serving with what ESPN says right now.
+on:
+  push:
+    branches: [diag-live]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: What the live site serves
+        run: |
+          for i in 1 2 3; do
+            echo "== $(date -u +%H:%M:%S) =="
+            curl -s -D - "https://airbryar.github.io/bbfc/data/stamp.json?ts=$(date +%s%N)" -o stamp.json | grep -iE "^(age|cache-control|x-cache|last-modified|date):"
+            echo "stamp: $(cat stamp.json)"
+            curl -s -D hdr.txt "https://airbryar.github.io/bbfc/" -o index.html; grep -iE "^(age|cache-control|x-cache|last-modified):" hdr.txt
+            node -e '
+              const h = require("fs").readFileSync("index.html", "utf8");
+              const m = h.match(/<script type="application\/json" id="espn-data">([\s\S]*?)<\/script>/);
+              if (!m) { console.log("no espn-data block"); process.exit(0); }
+              const E = JSON.parse(m[1]);
+              console.log("page fetchedAt:", E.fetchedAt, "week", E.currentWeek);
+              console.log("current:", JSON.stringify(E.current).slice(0, 400));
+            '
+            curl -s "https://airbryar.github.io/bbfc/data/lineups.json?ts=$(date +%s%N)" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{try{const L=JSON.parse(s);console.log("lineups fetchedAt:",L.fetchedAt,"game1:",L.games[0].h.pts,L.games[0].a.pts)}catch(e){console.log("lineups:",e.message)}})'
+            sleep 70
+          done
+      - name: What ESPN says now
+        run: node scripts/fetch-espn.mjs && node -e 'const E=require("./data/espn.json");console.log("espn fetchedAt:",E.fetchedAt,"current:",JSON.stringify(E.current).slice(0,400))'
+        env:
+          ESPN_S2: ${{ secrets.ESPN_S2 }}
+          ESPN_SWID: ${{ secrets.ESPN_SWID }}
