@@ -124,6 +124,13 @@ jobs:
             "https://api.github.com/repos/${{ github.repository }}/actions/workflows/update.yml/dispatches" -d '{"ref":"main"}'
           echo "::warning::GitHub Pages didn't deploy; started a fresh run."
 
+      # Pages can also report a deploy as a success while the live site stays on an older
+      # version (Nov 8, 2026). If the live site is 5+ minutes behind, push a fresh commit.
+      - name: Make sure the live site changed
+        if: steps.deploy.outcome == 'success'
+        continue-on-error: true
+        run: node scripts/check-live.mjs
+
       # During games, start the next update right away (about once a minute).
       - name: Queue the next update during games
         if: success() && github.event_name != 'push' && steps.deploy.outcome == 'success'

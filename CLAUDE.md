@@ -90,6 +90,14 @@ retries once on its own: it pushes an empty "Republish the site (automatic)" com
 dispatches itself. If a change doesn't show up, check the latest Pages deployment.
 Pushing another empty commit has always fixed it.
 
+It can also stall silently: on Nov 8, 2026, every deploy from 9:15 AM on reported
+`success` while the live site stayed on the 8:28 AM version (same commit all morning), so
+scores froze during the London game until a fresh empty commit. `scripts/check-live.mjs`
+now runs after each deploy: if the live `data/stamp.json` is 5+ minutes behind the build,
+it pushes "Republish the site (automatic: the live site stopped changing)", at most once
+every 15 minutes. To see what the live site serves from here, curl it from a temporary
+workflow on a branch (this session's shell and WebFetch can't reach github.io).
+
 ## Making a change
 
 1. Most changes are in `site/template.html`: markup, CSS and the rendering script, all
