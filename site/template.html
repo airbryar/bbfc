@@ -660,6 +660,22 @@ tr.mine td:first-child { box-shadow: inset 3px 0 0 var(--gilt); }
 .mu-pts.yet { color: var(--muted); }
 .mu-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); margin-right: 4px; vertical-align: 1px; }
 .mu-empty .mu-n { color: var(--muted); font-weight: 400; }
+/* One team's lineup (from Median Watch) */
+.mw-row.tap { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.mw-row.tap:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+.mw-tap { margin: 6px 0 0; font-size: 13px; color: var(--muted); }
+.mt-top { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: end; margin: 6px 0 4px; }
+.mt-left { min-width: 0; }
+.mt-right { text-align: right; }
+.mt-label { font-family: var(--f-label); font-weight: 700; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.mt-rank { font-family: var(--f-num); font-weight: 700; font-size: 28px; line-height: 1.05; margin-top: 2px; font-variant-numeric: tabular-nums; }
+.mt-rank small { font-size: 14px; font-weight: 600; color: var(--muted); }
+.mt-diff { font-family: var(--f-label); font-weight: 700; font-size: 14px; margin-top: 3px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.mt-diff.up { color: var(--up); }
+.mt-diff.down { color: var(--down); }
+.mt-row { display: grid; grid-template-columns: 40px minmax(0, 1fr) 56px; align-items: center; column-gap: 10px; padding: 8px 12px; }
+.mt-row + .mt-row { border-top: 1px solid var(--line); }
+.mu-foot a { color: var(--accent); font-weight: 600; text-decoration: none; white-space: nowrap; }
 .mu-bench { margin-top: 12px; }
 .mu-bench summary { cursor: pointer; font-family: var(--f-label); font-weight: 700; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); padding: 4px 0; }
 .mu-bench summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
@@ -888,6 +904,7 @@ footer { margin-top: 40px; border-top: 1px solid var(--line); padding-block: 18p
     </div>
     <div class="mw" id="mw-chart"></div>
     <p class="mw-legend" aria-hidden="true"><span><span class="mk live"></span>Live</span><span><span class="mk final"></span>Final</span><span><span class="mk yet"></span>To play</span></p>
+    <p class="mw-tap" id="mw-tap" hidden>Tap a team for its lineup.</p>
   </section>
 
   <section id="trades" aria-labelledby="h-trades">
@@ -1479,6 +1496,7 @@ __ESPN__
     if (sides.length < 2) return blank("No matchups this week.");
     if (useLive && !started) return blank("No points yet this week. Projected shows where things stand before kickoff.");
 
+    document.getElementById("mw-tap").hidden = false;
     var rows = sides.map(function (s) { return { id: s[0], val: useLive ? s[1] : s[2], st: statusOf(s) }; })
       .sort(function (a, b) { return b.val - a.val; });
     var half = Math.floor(rows.length / 2);
@@ -1510,7 +1528,14 @@ __ESPN__
       }
       var m = r.val - med;
       var dir = m >= 0 ? "up" : "down";
-      var row = el("div", "mw-row" + (mine(r.id) ? " mine" : ""));
+      var row = el("div", "mw-row tap" + (mine(r.id) ? " mine" : ""));
+      row.setAttribute("role", "button");
+      row.setAttribute("tabindex", "0");
+      row.setAttribute("aria-label", nameOf(r.id) + ": " + pts(r.val) + ", " + (m >= 0 ? "above" : "below") + " the median by " + Math.abs(m).toFixed(2) + ". Open lineup");
+      (function (id) {
+        row.addEventListener("click", function () { openTeamLineup(id); });
+        row.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openTeamLineup(id); } });
+      })(r.id);
       row.append(el("span", "mw-rk", String(i + 1)));
       var nm = el("span", "mw-name");
       nm.append(badge(r.id, nameOf(r.id)), el("span", null, nameOf(r.id)));
@@ -1664,9 +1689,64 @@ __ESPN__
     t.append(n, el("div", "mu-big", pts(s.pts)), el("div", "mu-meta", meta));
     return t;
   }
+  // One team's lineup, opened from Median Watch: its score, where it sits against the
+  // median (same view as Median Watch: Current or Projected), its starters and its bench
+  function teamRows(list) {
+    var box = el("div", "mu-list");
+    list.forEach(function (p) {
+      var row = el("div", "mt-row");
+      row.append(el("div", "mu-slot", p.slot || ""), playerCell(p, false), ptsCell(p, true));
+      box.append(row);
+    });
+    return box;
+  }
+  function renderTeamSheet() {
+    var all = [];
+    (muData.games || []).forEach(function (g) { all.push(g.h, g.a); });
+    var s = all.filter(function (x) { return x.id === muOpen.team; })[0];
+    document.getElementById("mu-h").textContent = "Week " + muData.week;
+    if (!s) { muBody.append(el("p", "sheet-sub", "This team's lineup isn't available yet.")); return; }
+    var live = mwMode === "now" && all.some(function (x) { return x.pts > 0; });
+    var vals = all.map(function (x) { return { id: x.id, v: live ? x.pts : x.proj }; }).sort(function (a, b) { return b.v - a.v; });
+    var half = Math.floor(vals.length / 2);
+    var med = (vals[half - 1].v + vals[half].v) / 2;
+    var rank = 1 + vals.findIndex(function (x) { return x.id === s.id; });
+    var me = vals[rank - 1].v, d = me - med;
+    var top = el("div", "mt-top");
+    var left = el("div", "mt-left");
+    var n = el("div", "mu-tname");
+    n.append(badge(s.id, nameOf(s.id)), el("span", null, nameOf(s.id)));
+    var yet = s.starters.filter(function (p) { return p.g === "pre"; }).length;
+    var playing = s.starters.filter(function (p) { return p.g === "in"; }).length;
+    left.append(n, el("div", "mu-big", pts(s.pts)), el("div", "mu-meta", "Proj " + pts(s.proj) + (playing ? " · " + playing + " playing" : "") + (yet ? " · " + yet + " to play" : "")));
+    var right = el("div", "mt-right");
+    var rk = el("div", "mt-rank");
+    rk.append(ord(rank), el("small", null, " of " + vals.length));
+    right.append(
+      el("div", "mt-label", live ? "Current" : "Projected"),
+      rk,
+      el("div", "mt-diff " + (d >= 0 ? "up" : "down"), (d >= 0 ? "+" : "−") + Math.abs(d).toFixed(2) + " vs median")
+    );
+    top.append(left, right);
+    muBody.append(top);
+    muBody.append(teamRows(s.starters));
+    var bench = el("details", "mu-bench");
+    bench.append(el("summary", null, "Bench"));
+    bench.append(teamRows(s.bench));
+    muBody.append(bench);
+    var foot = el("p", "mu-foot");
+    var when = "";
+    try { when = new Date(muData.fetchedAt).toLocaleTimeString("en-US", { timeZone: "America/New_York", hour: "numeric", minute: "2-digit" }); } catch (e) {}
+    foot.append("Projections under each score. Updated " + when + " ET, about once a minute during games. ");
+    var tl = el("a", null, "Team page ›");
+    tl.href = "team.html?t=" + s.id;
+    foot.append(tl);
+    muBody.append(foot);
+  }
   function renderMatchup() {
     muBody.textContent = "";
     if (!muData) { muBody.append(el("p", "sheet-sub", "Loading lineups…")); return; }
+    if (muOpen && muOpen.team) return renderTeamSheet();
     var g = (muData.games || []).filter(function (x) { return (x.h.id === muOpen[0] && x.a.id === muOpen[1]) || (x.h.id === muOpen[1] && x.a.id === muOpen[0]); })[0];
     if (!g) { muBody.append(el("p", "sheet-sub", "Lineups for this game aren't available yet.")); return; }
     var L = g.h.id === muOpen[0] ? g.h : g.a, R = L === g.h ? g.a : g.h;
@@ -1705,8 +1785,10 @@ __ESPN__
       .then(function (d) { if (!muData || d.fetchedAt !== muData.fetchedAt) { muData = d; if (muOpen) renderMatchup(); } })
       .catch(function () { if (muOpen && !muData) { muBody.textContent = ""; muBody.append(el("p", "sheet-sub", "Lineups aren't available right now. Try again in a minute.")); } });
   }
-  function openMatchup(h, a) {
-    muOpen = [h, a];
+  function openTeamLineup(id) { openSheet({ team: id }); }
+  function openMatchup(h, a) { openSheet([h, a]); }
+  function openSheet(what) {
+    muOpen = what;
     muLast = document.activeElement;
     renderMatchup();
     muBack.hidden = false;
