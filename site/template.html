@@ -1047,8 +1047,24 @@ __PR__
 __ESPN__
 </script>
 
-<script>
+<script id="page-js">
 (function () {
+  // In-place refresh (Nov 2026): when newer data is out, the page fetches the new copy and
+  // runs this script again on it, instead of reloading, so it never scrolls. Everything this
+  // script hangs on window/document is listed in LIFE so the old run can be switched off
+  // first; GEN makes any leftover timer from an old run do nothing.
+  var GEN = window.__bbfcGen = (window.__bbfcGen || 0) + 1;
+  var LIFE = [];
+  window.__bbfcOff = function () { LIFE.forEach(function (f) { try { f(); } catch (e) {} }); LIFE = []; };
+  function on(target, type, fn, opt) {
+    target.addEventListener(type, fn, opt);
+    LIFE.push(function () { target.removeEventListener(type, fn, opt); });
+  }
+  function every(fn, ms) {
+    var t = setInterval(function () { if (GEN === window.__bbfcGen) fn(); }, ms);
+    LIFE.push(function () { clearInterval(t); });
+    return t;
+  }
   var L = JSON.parse(document.getElementById("league-data").textContent);
   var E = JSON.parse(document.getElementById("espn-data").textContent);
 
@@ -1133,7 +1149,7 @@ __ESPN__
     });
   }
   renderUpd();
-  setInterval(renderUpd, 30000);
+  every(renderUpd, 30000);
   document.getElementById("footer-line").textContent = "Boys and Bibles Football Club · ESPN data updated " + stamp;
   document.getElementById("sample-note").hidden = !L.sampleEpisodes;
 
@@ -1266,28 +1282,36 @@ __ESPN__
     }
 
     // Load OneSignal (only if the site has an App ID). Its worker lives at the top of the site.
+    // Loaded and started once per visit; an in-place refresh reuses it (window.__bbfcOS)
     if (hasAlerts && cfg.appId && !(iOS && !installed)) {
-      var base = location.pathname.replace(/[^\/]*$/, "");
-      window.OneSignalDeferred = window.OneSignalDeferred || [];
-      window.OneSignalDeferred.push(function (OneSignal) {
-        return OneSignal.init({
-          appId: cfg.appId,
-          serviceWorkerPath: base.replace(/^\//, "") + "OneSignalSDKWorker.js",
-          serviceWorkerParam: { scope: base },
-          autoResubscribe: true,
-        }).then(function () {
-          OS = OneSignal;
-          syncTeamTag();
-          try { OneSignal.User.PushSubscription.addEventListener("change", function () { if (!back.hidden) refresh(); }); } catch (e) {}
-          try { OneSignal.Notifications.addEventListener("permissionChange", function () { if (!back.hidden) refresh(); }); } catch (e) {}
-          if (!back.hidden) refresh();
-        }).catch(function () { if (!back.hidden) show("none"); });
-      });
-      var sdk = document.createElement("script");
-      sdk.src = "https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js";
-      sdk.defer = true;
-      sdk.onerror = function () { if (!back.hidden) show("none"); };
-      document.head.append(sdk);
+      if (!window.__bbfcOS) {
+        window.__bbfcOS = new Promise(function (resolve, reject) {
+          var base = location.pathname.replace(/[^\/]*$/, "");
+          window.OneSignalDeferred = window.OneSignalDeferred || [];
+          window.OneSignalDeferred.push(function (OneSignal) {
+            return OneSignal.init({
+              appId: cfg.appId,
+              serviceWorkerPath: base.replace(/^\//, "") + "OneSignalSDKWorker.js",
+              serviceWorkerParam: { scope: base },
+              autoResubscribe: true,
+            }).then(function () { resolve(OneSignal); }, reject);
+          });
+          var sdk = document.createElement("script");
+          sdk.src = "https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js";
+          sdk.defer = true;
+          sdk.onerror = function () { reject(new Error("OneSignal didn't load")); };
+          document.head.append(sdk);
+        });
+      }
+      window.__bbfcOS.then(function (OneSignal) {
+        if (GEN !== window.__bbfcGen) return;
+        OS = OneSignal;
+        syncTeamTag();
+        function onSub() { if (!back.hidden) refresh(); }
+        try { OneSignal.User.PushSubscription.addEventListener("change", onSub); LIFE.push(function () { OneSignal.User.PushSubscription.removeEventListener("change", onSub); }); } catch (e) {}
+        try { OneSignal.Notifications.addEventListener("permissionChange", onSub); LIFE.push(function () { OneSignal.Notifications.removeEventListener("permissionChange", onSub); }); } catch (e) {}
+        if (!back.hidden) refresh();
+      }).catch(function () { if (GEN === window.__bbfcGen && !back.hidden) show("none"); });
     }
 
     if (hasAlerts) {
@@ -1340,7 +1364,7 @@ __ESPN__
     gear.addEventListener("click", open);
     document.getElementById("settings-done").addEventListener("click", close);
     back.addEventListener("click", function (e) { if (e.target === back) close(); });
-    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !back.hidden) close(); });
+    on(document, "keydown", function (e) { if (e.key === "Escape" && !back.hidden) close(); });
   })();
 
   // Playoff odds: a second view of Standings (Table / Playoff odds)
@@ -1701,7 +1725,7 @@ __ESPN__
   }
   document.getElementById("mu-done").addEventListener("click", closeMatchup);
   muBack.addEventListener("click", function (e) { if (e.target === muBack) closeMatchup(); });
-  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && muOpen) closeMatchup(); });
+  on(document, "keydown", function (e) { if (e.key === "Escape" && muOpen) closeMatchup(); });
 
   // Power rankings (formula, frozen to the Tuesday snapshot)
   function computePower(P, throughWeek, W) {
@@ -2203,8 +2227,8 @@ __ESPN__
     b.addEventListener("click", function () { var v = b.getAttribute("data-theme-pick"); chooseTheme(v === "auto" ? null : v); });
   });
   if (darkQuery) {
-    if (darkQuery.addEventListener) darkQuery.addEventListener("change", applyTheme);
-    else if (darkQuery.addListener) darkQuery.addListener(applyTheme);
+    if (darkQuery.addEventListener) on(darkQuery, "change", applyTheme);
+    else if (darkQuery.addListener) { darkQuery.addListener(applyTheme); LIFE.push(function () { darkQuery.removeListener(applyTheme); }); }
   }
   applyTheme();
 
@@ -2234,10 +2258,19 @@ __ESPN__
     if (target && target.tagName === "SECTION") scrollToSection(target, smooth === true);
   }
   var KEEP = "bbfc-keep";
+  // Which fold this is, so it can be opened again after a refresh: its id, or its title
+  function foldKey(d) {
+    if (d.id) return "#" + d.id;
+    var sm = d.querySelector("summary");
+    return sm ? "s:" + sm.textContent.trim().slice(0, 60) : "";
+  }
   var kept = null;
   try { kept = JSON.parse(sessionStorage.getItem(KEEP) || "null"); sessionStorage.removeItem(KEEP); } catch (e) { kept = null; }
   if (kept && (kept.mw === "now" || kept.mw === "proj") && kept.mw !== mwMode) { mwMode = kept.mw; renderMW(); }
   if (kept && kept.sv === "odds" && document.getElementById("st-odds-btn")) showStandings("odds");
+  if (kept && Array.isArray(kept.open)) {
+    Array.prototype.slice.call(document.querySelectorAll("main details")).forEach(function (d) { if (kept.open.indexOf(foldKey(d)) >= 0) d.open = true; });
+  }
   // After an automatic refresh, land right back where the reader was, with no visible scroll.
   if (kept && typeof kept.hash === "string" && kept.hash && !location.hash) {
     try { history.replaceState(null, "", location.pathname + location.search + kept.hash); } catch (e) {}
@@ -2247,17 +2280,55 @@ __ESPN__
     else goToHash();
   }
   restorePlace();
-  window.addEventListener("load", restorePlace);
-  window.addEventListener("hashchange", function () { goToHash(true); });
+  if (document.readyState !== "complete") on(window, "load", restorePlace);
+  on(window, "hashchange", function () { goToHash(true); });
 
-  // Reload in place, keeping the scroll position and the Median Watch view.
-  // A fresh query string skips any cached copy of the page.
-  function reloadKeepingPlace(stamp) {
-    try { sessionStorage.setItem(KEEP, JSON.stringify({ y: window.scrollY, mw: mwMode, sv: stView, hash: location.hash })); } catch (e) {}
-    var v = stamp ? new Date(stamp).getTime() : Date.now();
+  // Refresh in place: fetch the new copy of the page, swap it in and run this script on it,
+  // all in one step, so nothing scrolls or flashes. Open folds, the Median Watch and
+  // Standings views and the scroll spot carry over (through KEEP). If the site's code or
+  // styles changed, or anything goes wrong, it falls back to a full reload.
+  function keepPlace() {
+    var open = Array.prototype.slice.call(document.querySelectorAll("main details[open]")).map(foldKey).filter(Boolean);
+    try { sessionStorage.setItem(KEEP, JSON.stringify({ y: window.scrollY, mw: mwMode, sv: stView, hash: location.hash, open: open })); } catch (e) {}
+  }
+  function fullReload(v) {
+    keepPlace();
     // The #section is left off the reload address so the browser doesn't jump to it first;
     // it's put back once the page has returned to the same spot.
     location.replace(location.pathname + "?v=" + v);
+  }
+  var swapping = false;
+  function reloadKeepingPlace(stamp) {
+    var v = stamp ? new Date(stamp).getTime() : Date.now();
+    if (swapping || GEN !== window.__bbfcGen) return;
+    if (!window.DOMParser || !document.getElementById("page-js")) return fullReload(v);
+    swapping = true;
+    fetch(location.pathname + "?v=" + v, { cache: "no-store" })
+      .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); })
+      .then(function (html) {
+        swapping = false;
+        if (GEN !== window.__bbfcGen) return;
+        if (document.documentElement.classList.contains("sheet-open")) return; // tried again when the sheet closes
+        var doc = new DOMParser().parseFromString(html, "text/html");
+        var code = doc.getElementById("page-js");
+        var style = doc.querySelector("head style"), myStyle = document.querySelector("head style");
+        // New site code or styles: a full reload picks them up properly
+        if (!code || !doc.body || !style || !myStyle || style.textContent !== myStyle.textContent || code.textContent !== document.getElementById("page-js").textContent) return fullReload(v);
+        keepPlace();
+        // Leave the new page's scripts inert while it's moved in, then run its page script once
+        Array.prototype.slice.call(doc.body.querySelectorAll("script")).forEach(function (sc) {
+          if (sc.type !== "application/json") sc.remove();
+        });
+        window.__bbfcOff();
+        var body = document.adoptNode(doc.body);
+        document.documentElement.replaceChild(body, document.body);
+        var run = document.createElement("script");
+        run.id = "page-js";
+        run.textContent = code.textContent;
+        body.append(run);
+        try { if (location.search) history.replaceState(null, "", location.pathname + location.hash); } catch (e) {}
+      })
+      .catch(function () { swapping = false; });
   }
   Array.prototype.slice.call(document.querySelectorAll("[data-refresh]")).forEach(function (b) {
     b.addEventListener("click", function () {
@@ -2279,8 +2350,8 @@ __ESPN__
       .catch(function () {})
       .then(function () { checking = false; });
   }
-  setInterval(checkForUpdate, 60000);
-  document.addEventListener("visibilitychange", checkForUpdate);
+  every(checkForUpdate, 60000);
+  on(document, "visibilitychange", checkForUpdate);
   // Offline copy: the site's service worker (shared with alerts) keeps the last copy of each
   // page so the app opens right away on weak signal. Registered here unless one already is
   // (OneSignal registers the same file), so the two never trade places.
@@ -2291,7 +2362,7 @@ __ESPN__
     }).catch(function () {});
   }
   // A page opened from the saved copy has older data: look for newer data right away
-  if (Date.now() - new Date(E.fetchedAt).getTime() > 3 * 60000) setTimeout(checkForUpdate, 2500);
+  if (Date.now() - new Date(E.fetchedAt).getTime() > 3 * 60000) setTimeout(function () { if (GEN === window.__bbfcGen) checkForUpdate(); }, 2500);
 
   // Highlight the bottom-bar button for the section in view
   var links = Array.prototype.slice.call(document.querySelectorAll(".bnav a"));
@@ -2317,12 +2388,12 @@ __ESPN__
     if (current) setCurrent(current.id);
   }
   var ticking = false;
-  window.addEventListener("scroll", function () {
+  on(window, "scroll", function () {
     if (ticking) return;
     ticking = true;
     requestAnimationFrame(function () { ticking = false; updateCurrent(); });
   }, { passive: true });
-  window.addEventListener("resize", updateCurrent);
+  on(window, "resize", updateCurrent);
   links.forEach(function (a) {
     a.addEventListener("click", function (e) {
       var id = a.getAttribute("href").slice(1);
@@ -2334,7 +2405,7 @@ __ESPN__
       }
       setCurrent(id);
       lockUntil = Date.now() + 900;
-      setTimeout(function () { lockUntil = 0; updateCurrent(); }, 950);
+      setTimeout(function () { if (GEN !== window.__bbfcGen) return; lockUntil = 0; updateCurrent(); }, 950);
     });
   });
   updateCurrent();

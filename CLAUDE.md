@@ -82,8 +82,17 @@ When it runs:
 - Tuesday mornings it also commits a copy of `data/espn.json`.
 
 Open pages check `data/stamp.json` every 60 seconds and whenever the tab comes back into
-view. When the data is newer, the page reloads itself and jumps back to the same scroll
-spot with no visible scroll. It also keeps the Median Watch view and restores the #hash.
+view. When the data is newer, the page refreshes **in place** (Nov 2026; full reloads made
+iPhones visibly scroll from the top back to the reader's spot every minute): it fetches the
+new copy, swaps in its `<body>` and runs the page script (`<script id="page-js">`) again,
+all in one step, so nothing scrolls or flashes. The scroll spot, the Median Watch and
+Standings views, open folds (`<details>`, by id or title) and the #hash carry over through
+`sessionStorage` `bbfc-keep`. Everything the script attaches to window/document goes
+through `on()` / `every()` so the old run is switched off first (`window.__bbfcOff`), and
+`GEN` / `window.__bbfcGen` makes leftover timers from an old run do nothing; use those for
+any new page-wide listener or timer. OneSignal starts once per visit (`window.__bbfcOS`).
+If the new copy's page script or `<style>` differs (a code change), it does a full reload
+instead.
 
 **GitHub Pages sometimes stalls** with "Deployment failed, try again later." The workflow
 retries once on its own: it pushes an empty "Republish the site (automatic)" commit and
