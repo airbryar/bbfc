@@ -11,7 +11,7 @@ console.log("Week", CUR, "review:", JSON.stringify({ veto: a.settings.tradeSetti
 const et = (ms) => ms ? new Date(ms).toLocaleString("en-US", { timeZone: "America/New_York" }) : "-";
 const ids = new Set(); const rows = [];
 for (const sp of [CUR - 1, CUR]) {
-  const d = await get(`${L}?view=mTransactions2&scoringPeriodId=${sp}`, { transactions: { filterType: { value: ["TRADE_PROPOSAL","TRADE_ACCEPT","TRADE_UPHOLD","TRADE_VETO"] }, filterStatus: { value: ["PENDING","EXECUTED","PROPOSED","ACCEPTED"] } } });
+  const d = await get(`${L}?view=mTransactions2&scoringPeriodId=${sp}`, { transactions: { filterType: { value: ["TRADE_PROPOSAL","TRADE_ACCEPT","TRADE_UPHOLD","TRADE_VETO"] } } });
   for (const x of d.transactions || []) {
     if (!String(x.type).startsWith("TRADE")) continue;
     for (const i of x.items || []) ids.add(i.playerId);
