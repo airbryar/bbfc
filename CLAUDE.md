@@ -282,6 +282,10 @@ in Nov 2026 so one bottom-bar button covers both.
     weeks only (tag "Through Week N"). A dash means no starts since.
   - Like the Scoreboard, the side ahead is in ink and the other is muted. No "won" or
     "fleeced" labels.
+  - A trade shows up once ESPN processes it, not when it's accepted: the league has a
+    24-hour review (5 veto votes), so a deal accepted Tuesday at 4:44 PM goes through about
+    the same time Wednesday, then the next hourly trade read (or a manual run with the
+    `trades` input) puts it on the site.
   - A side that got no players got FAAB in this league (Bryar confirmed), so the card says
     "FAAB" there. The trade data has no dollar amounts.
   - **Trade ticker:** for three days after a trade, a strip just under the masthead
