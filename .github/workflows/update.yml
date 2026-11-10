@@ -14,7 +14,12 @@ on:
     - cron: "3-58/5 0-5 * * 0"    # Saturday night games late in the season
     - cron: "41 * * * *"          # Hourly the rest of the week (podcast check, roster moves)
     - cron: "17 13 * * 2"         # Tuesday morning: save a weekly copy of the data
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      trades:
+        description: "Re-read trades from ESPN now (skips the hourly wait)"
+        type: boolean
+        default: false
   push:
     branches: [main]
 
@@ -62,6 +67,7 @@ jobs:
         run: node scripts/fetch-trades.mjs
         continue-on-error: true
         env:
+          FORCE_TRADES: ${{ inputs.trades && '1' || '' }}
           ESPN_S2: ${{ secrets.ESPN_S2 }}
           ESPN_SWID: ${{ secrets.ESPN_SWID }}
 

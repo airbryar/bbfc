@@ -56,7 +56,8 @@ this site through conversations with Claude, so:
    the trades, plus the Waiver Wire (`faab`: budget and each team's FAAB left; `pickups`:
    this week's and last week's waiver claims and free-agent adds with bids). It only reads
    ESPN when its newest copy (the live site's `data/trades.json` or the saved one) is 55+
-   minutes old (`FORCE_TRADES=1` skips that), and keeps that copy if ESPN fails. The step
+   minutes old (`FORCE_TRADES=1` skips that; a manual run with the `trades` input set does
+   the same: `gh api -X POST repos/airbryar/bbfc/actions/workflows/update.yml/dispatches -f ref=main -f 'inputs[trades]=true'`), and keeps that copy if ESPN fails. The step
    has `continue-on-error`, so it can't block an update.
 3. `scripts/fetch-podcast.mjs` reads The Poddy's SoundCloud RSS feed (set in
    `data/league.json`) into `data/pod.json`.
