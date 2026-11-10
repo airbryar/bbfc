@@ -77,6 +77,16 @@ async function fromEspn() {
     if (page.length < 50) break;
   }
 
+  // Trades accepted but still in the league's review period: ESPN lists them as pending
+  // until they go through (or get vetoed), so the site can break the news right away
+  let pendingRaw = [];
+  try {
+    const pv = await get(`${LEAGUE}?view=mPendingTransactions`);
+    pendingRaw = (pv.pendingTransactions || []).filter((x) => x.type === "TRADE_ACCEPT" && x.status === "PENDING" && (x.items || []).some((i) => i.type === "TRADE"));
+  } catch (err) {
+    console.log(`::warning::Couldn't read pending trades (${err.message})`);
+  }
+
   // Pickups (waiver claims and free agents), every week so far: they date the trades, and
   // this week's and last week's feed the Waiver Wire
   const windows = [];
@@ -124,6 +134,7 @@ async function fromEspn() {
   const needed = [...new Set([
     ...topics.flatMap((t) => (t.messages || []).filter((m) => m.messageTypeId === 244).map((m) => m.targetId)),
     ...moves.flatMap((x) => (x.items || []).map((i) => i.playerId)),
+    ...pendingRaw.flatMap((x) => (x.items || []).map((i) => i.playerId)),
   ])].filter((id) => !playerName[id]);
   for (let i = 0; i < needed.length; i += 50) {
     const ps = await get(`${ROOT}/seasons/${SEASON}/players?view=players_wl`, { filterIds: { value: needed.slice(i, i + 50) } });
@@ -161,6 +172,27 @@ async function fromEspn() {
     .filter(Boolean)
     .sort((x, y) => y.date.localeCompare(x.date));
 
+  // Pending trades: accepted (at), and when the review ends and ESPN puts it through
+  const reviewMs = ((a.settings.tradeSettings || {}).revisionHours || 0) * 3600000;
+  const pending = pendingRaw
+    .map((x) => {
+      const items = x.items.filter((i) => i.type === "TRADE");
+      const sides = {};
+      for (const i of items) (sides[i.toTeamId] = sides[i.toTeamId] || []).push({ player: plabel(i.playerId), from: tname(i.fromTeamId) });
+      const goesThrough = x.processDate || null;
+      const at = goesThrough && reviewMs ? goesThrough - reviewMs : x.proposedDate;
+      return {
+        id: x.id,
+        at,
+        goesThrough,
+        date: day(at),
+        week: CUR,
+        teams: [...new Set(items.flatMap((i) => [i.fromTeamId, i.toTeamId]))].map(tname),
+        received: Object.entries(sides).map(([tid, players]) => ({ team: tname(Number(tid)), players })),
+      };
+    })
+    .sort((x, y) => y.at - x.at);
+
   // Waiver Wire: FAAB left for each team, and this week's and last week's pickups
   const acq = a.settings.acquisitionSettings || {};
   const budget = acq.isUsingAcquisitionBudget ? acq.acquisitionBudget || 0 : 0;
@@ -182,7 +214,7 @@ async function fromEspn() {
     .slice(0, 60);
 
   const deadline = (a.settings.tradeSettings || {}).deadlineDate;
-  return { fetchedAt: new Date().toISOString(), through: lastWeek || null, week: CUR, deadline: deadline ? day(deadline) : null, trades, faab, pickups };
+  return { fetchedAt: new Date().toISOString(), through: lastWeek || null, week: CUR, deadline: deadline ? day(deadline) : null, trades, pending, faab, pickups };
 }
 
 // The freshest copy we already have: the live site's, or the saved one
@@ -206,7 +238,7 @@ if (ageMin < REFRESH_MINUTES && !process.env.FORCE_TRADES) {
     if (!baseHeaders.Cookie) throw new Error("the ESPN_S2 / ESPN_SWID secrets aren't set");
     const data = await fromEspn();
     fs.writeFileSync(OUT, JSON.stringify(data));
-    console.log(`Trades: ${data.trades.length} from ESPN, points through week ${data.through}, saved ${data.fetchedAt}`);
+    console.log(`Trades: ${data.trades.length} from ESPN (${data.pending.length} pending review), points through week ${data.through}, saved ${data.fetchedAt}`);
   } catch (err) {
     console.log(`::warning::Couldn't read trades from ESPN (${err.message}). Keeping the last good list.`);
     if (last) fs.writeFileSync(OUT, JSON.stringify(last));

@@ -47,7 +47,7 @@ const blocks = {
   __POD__: safe(pod, true),
   __NEWS__: safe({ editions: (news.editions || []).slice(0, 6) }),
   __LOGOS__: safe(logos, true),
-  __TRADES__: safe({ through: trades.through || null, deadline: trades.deadline || null, week: trades.week || null, trades: trades.trades || [], faab: trades.faab || null, pickups: trades.pickups || [] }),
+  __TRADES__: safe({ through: trades.through || null, deadline: trades.deadline || null, week: trades.week || null, trades: trades.trades || [], pending: trades.pending || [], faab: trades.faab || null, pickups: trades.pickups || [] }),
   __ODDS__: safe(odds),
   __ALERTS__: safe({ appId: league.onesignalAppId || null }),
   __ICONV__: brand.iconVersion || "1",

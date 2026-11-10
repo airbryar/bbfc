@@ -282,10 +282,17 @@ in Nov 2026 so one bottom-bar button covers both.
     weeks only (tag "Through Week N"). A dash means no starts since.
   - Like the Scoreboard, the side ahead is in ink and the other is muted. No "won" or
     "fleeced" labels.
-  - A trade shows up once ESPN processes it, not when it's accepted: the league has a
-    24-hour review (5 veto votes), so a deal accepted Tuesday at 4:44 PM goes through about
-    the same time Wednesday, then the next hourly trade read (or a manual run with the
-    `trades` input) puts it on the site.
+  - **Pending trades** (Nov 2026, Bryar asked: "it's breaking news"): the league has a
+    24-hour review (5 veto votes), and ESPN only adds a trade to the activity feed once it
+    goes through. So `fetch-trades.mjs` also reads `view=mPendingTransactions` into
+    `pending` (accepted `at`, `goesThrough`, who gets whom). The page crawls them in the
+    ticker with a "Pending" tag, puts a blue-outlined "Pending · Tue, Nov 10 / Goes through
+    Wed 4:44 PM" card above the trades (no points), and lights the "new" dot; they don't
+    count in the trade tile. `notify.mjs` sends one alert ("… Pending league review until
+    Wed 4:44 PM.") and records it in `pending` in `data/alerts-sent.json`; when the same
+    deal goes through it's recorded without a second alert. A vetoed trade just drops off.
+    Pending trades show up on the hourly trade read, or right away with a manual run with
+    the `trades` input. Team pages don't show them.
   - A side that got no players got FAAB in this league (Bryar confirmed), so the card says
     "FAAB" there. The trade data has no dollar amounts.
   - **Trade ticker:** for three days after a trade, a strip just under the masthead
