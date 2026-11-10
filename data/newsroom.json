@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-11-07T09:46:48.955Z",
+ "fetchedAt": "2026-11-10T12:38:58.305Z",
  "notes": [
   "Each week a team plays two games: its head-to-head matchup, plus a game against the league median (the top 6 scores of the week win it). 'record' combines both; 'h2h' and 'vsMedian' split them.",
   "The top 6 seeds make the playoffs. The regular season is 14 weeks.",
@@ -9,8 +9,8 @@
   "Past-season records come from ESPN season records and include median games in seasons that had them; allTimeHeadToHead counts only head-to-head matchups."
  ],
  "season": 2026,
- "currentWeek": 9,
- "lastFinishedWeek": 8,
+ "currentWeek": 10,
+ "lastFinishedWeek": 9,
  "regularSeasonWeeks": 14,
  "playoffTeams": 6,
  "tradeDeadline": "2026-12-02",
@@ -20,36 +20,36 @@
    "name": "Lisan al Gibbs",
    "manager": "Josh",
    "seed": 1,
-   "record": "14-2",
-   "w": 14,
+   "record": "16-2",
+   "w": 16,
    "l": 2,
    "t": 0,
-   "pf": 991.24,
-   "pa": 727.12,
-   "streak": "W4",
+   "pf": 1104.96,
+   "pa": 806.38,
+   "streak": "W5",
    "trades": 1,
    "pickups": 7,
    "faabSpent": 70,
-   "h2h": "7-1",
-   "vsMedian": "7-1",
+   "h2h": "8-1",
+   "vsMedian": "8-1",
    "topPlayers": [
     {
      "player": "Jahmyr Gibbs",
      "pos": "RB",
-     "ptsWhileStarted": 178.8,
-     "starts": 7
-    },
-    {
-     "player": "D'Andre Swift",
-     "pos": "RB",
-     "ptsWhileStarted": 138.7,
+     "ptsWhileStarted": 192.2,
      "starts": 8
     },
     {
      "player": "Matthew Stafford",
      "pos": "QB",
-     "ptsWhileStarted": 131.6,
-     "starts": 8
+     "ptsWhileStarted": 142.9,
+     "starts": 9
+    },
+    {
+     "player": "D'Andre Swift",
+     "pos": "RB",
+     "ptsWhileStarted": 141.8,
+     "starts": 9
     }
    ]
   },
@@ -58,35 +58,35 @@
    "name": "Illegal use of hands",
    "manager": "Jeremy",
    "seed": 2,
-   "record": "13-3",
+   "record": "13-5",
    "w": 13,
-   "l": 3,
+   "l": 5,
    "t": 0,
-   "pf": 1021.96,
-   "pa": 887.46,
-   "streak": "W6",
+   "pf": 1121.66,
+   "pa": 993.96,
+   "streak": "L1",
    "trades": 0,
    "pickups": 14,
    "faabSpent": 29,
-   "h2h": "6-2",
-   "vsMedian": "7-1",
+   "h2h": "6-3",
+   "vsMedian": "7-2",
    "topPlayers": [
     {
      "player": "Jaxon Smith-Njigba",
      "pos": "WR",
-     "ptsWhileStarted": 188,
-     "starts": 8
+     "ptsWhileStarted": 196.6,
+     "starts": 9
     },
     {
      "player": "Kyren Williams",
      "pos": "RB",
-     "ptsWhileStarted": 133.5,
-     "starts": 8
+     "ptsWhileStarted": 141.1,
+     "starts": 9
     },
     {
-     "player": "Bhayshul Tuten",
-     "pos": "RB",
-     "ptsWhileStarted": 110.8,
+     "player": "Puka Nacua",
+     "pos": "WR",
+     "ptsWhileStarted": 138.6,
      "starts": 7
     }
    ]
@@ -96,30 +96,30 @@
    "name": "The Silly Geese",
    "manager": "Michael",
    "seed": 3,
-   "record": "12-4",
+   "record": "12-6",
    "w": 12,
-   "l": 4,
+   "l": 6,
    "t": 0,
-   "pf": 919.54,
-   "pa": 840.62,
-   "streak": "W1",
+   "pf": 1016.8,
+   "pa": 964.86,
+   "streak": "L1",
    "trades": 5,
    "pickups": 31,
    "faabSpent": 75,
-   "h2h": "6-2",
-   "vsMedian": "6-2",
+   "h2h": "6-3",
+   "vsMedian": "6-3",
    "topPlayers": [
     {
      "player": "Josh Allen",
      "pos": "QB",
-     "ptsWhileStarted": 187.3,
-     "starts": 7
+     "ptsWhileStarted": 200.2,
+     "starts": 8
     },
     {
      "player": "CeeDee Lamb",
      "pos": "WR",
-     "ptsWhileStarted": 138.3,
-     "starts": 8
+     "ptsWhileStarted": 166.8,
+     "starts": 9
     },
     {
      "player": "Jaylen Warren",
@@ -134,36 +134,36 @@
    "name": "GAYleb williams",
    "manager": "Landon",
    "seed": 4,
-   "record": "9-7",
-   "w": 9,
+   "record": "11-7",
+   "w": 11,
    "l": 7,
    "t": 0,
-   "pf": 877.08,
-   "pa": 776.52,
-   "streak": "W2",
+   "pf": 988.44,
+   "pa": 859.98,
+   "streak": "W3",
    "trades": 0,
    "pickups": 8,
    "faabSpent": 32,
-   "h2h": "4-4",
-   "vsMedian": "5-3",
+   "h2h": "5-4",
+   "vsMedian": "6-3",
    "topPlayers": [
-    {
-     "player": "Amon-Ra St. Brown",
-     "pos": "WR",
-     "ptsWhileStarted": 114.5,
-     "starts": 7
-    },
     {
      "player": "Javonte Williams",
      "pos": "RB",
-     "ptsWhileStarted": 109.9,
-     "starts": 7
+     "ptsWhileStarted": 130.3,
+     "starts": 8
+    },
+    {
+     "player": "Amon-Ra St. Brown",
+     "pos": "WR",
+     "ptsWhileStarted": 127.1,
+     "starts": 8
     },
     {
      "player": "Chuba Hubbard",
      "pos": "RB",
-     "ptsWhileStarted": 99.8,
-     "starts": 6
+     "ptsWhileStarted": 111.4,
+     "starts": 7
     }
    ]
   },
@@ -172,30 +172,30 @@
    "name": "Breece's Pieces",
    "manager": "Tyler",
    "seed": 5,
-   "record": "9-7",
-   "w": 9,
+   "record": "11-7",
+   "w": 11,
    "l": 7,
    "t": 0,
-   "pf": 800.62,
-   "pa": 805.48,
-   "streak": "W2",
+   "pf": 924.86,
+   "pa": 902.74,
+   "streak": "W3",
    "trades": 1,
    "pickups": 7,
    "faabSpent": 43,
-   "h2h": "5-3",
-   "vsMedian": "4-4",
+   "h2h": "6-3",
+   "vsMedian": "5-4",
    "topPlayers": [
     {
      "player": "Bucky Irving",
      "pos": "RB",
-     "ptsWhileStarted": 121.6,
-     "starts": 8
+     "ptsWhileStarted": 148.1,
+     "starts": 9
     },
     {
      "player": "Ja'Marr Chase",
      "pos": "WR",
-     "ptsWhileStarted": 106.7,
-     "starts": 7
+     "ptsWhileStarted": 133.2,
+     "starts": 8
     },
     {
      "player": "Drake Maye",
@@ -210,30 +210,30 @@
    "name": "After Bowers",
    "manager": "Ezra",
    "seed": 6,
-   "record": "8-8",
+   "record": "8-10",
    "w": 8,
-   "l": 8,
+   "l": 10,
    "t": 0,
-   "pf": 819.64,
-   "pa": 810.96,
-   "streak": "W1",
+   "pf": 923.24,
+   "pa": 924.64,
+   "streak": "L1",
    "trades": 1,
-   "pickups": 42,
+   "pickups": 43,
    "faabSpent": 91,
-   "h2h": "3-5",
-   "vsMedian": "5-3",
+   "h2h": "3-6",
+   "vsMedian": "5-4",
    "topPlayers": [
     {
      "player": "Dak Prescott",
      "pos": "QB",
-     "ptsWhileStarted": 147.9,
-     "starts": 8
+     "ptsWhileStarted": 167.4,
+     "starts": 9
     },
     {
      "player": "Brock Bowers",
      "pos": "TE",
-     "ptsWhileStarted": 103.2,
-     "starts": 6
+     "ptsWhileStarted": 122,
+     "starts": 7
     },
     {
      "player": "Garrett Wilson",
@@ -248,74 +248,36 @@
    "name": "The Mouse Rats",
    "manager": "Bryar",
    "seed": 7,
-   "record": "8-8",
+   "record": "8-10",
    "w": 8,
-   "l": 8,
+   "l": 10,
    "t": 0,
-   "pf": 772.34,
-   "pa": 854.24,
-   "streak": "L2",
+   "pf": 855.8,
+   "pa": 965.6,
+   "streak": "L3",
    "trades": 1,
-   "pickups": 46,
+   "pickups": 48,
    "faabSpent": 76,
-   "h2h": "4-4",
-   "vsMedian": "4-4",
+   "h2h": "4-5",
+   "vsMedian": "4-5",
    "topPlayers": [
     {
      "player": "Derrick Henry",
      "pos": "RB",
-     "ptsWhileStarted": 130.7,
-     "starts": 8
+     "ptsWhileStarted": 136.3,
+     "starts": 9
     },
     {
      "player": "Ashton Jeanty",
      "pos": "RB",
-     "ptsWhileStarted": 113.8,
-     "starts": 8
+     "ptsWhileStarted": 118.3,
+     "starts": 9
     },
     {
      "player": "Tetairoa McMillan",
      "pos": "WR",
-     "ptsWhileStarted": 87.9,
-     "starts": 7
-    }
-   ]
-  },
-  {
-   "id": 3,
-   "name": "The House Cats",
-   "manager": "Luke",
-   "seed": 8,
-   "record": "6-10",
-   "w": 6,
-   "l": 10,
-   "t": 0,
-   "pf": 778.62,
-   "pa": 881.2,
-   "streak": "L1",
-   "trades": 2,
-   "pickups": 19,
-   "faabSpent": 47,
-   "h2h": "3-5",
-   "vsMedian": "3-5",
-   "topPlayers": [
-    {
-     "player": "Christian McCaffrey",
-     "pos": "RB",
-     "ptsWhileStarted": 127,
-     "starts": 7
-    },
-    {
-     "player": "Malik Nabers",
-     "pos": "WR",
-     "ptsWhileStarted": 86.6,
-     "starts": 6
-    },
-    {
-     "player": "Rhamondre Stevenson",
-     "pos": "RB",
-     "ptsWhileStarted": 82.1,
-     "starts": 7
+     "ptsWhileStarted": 101.5,
+     "starts": 8
     }
    ]
   },
@@ -323,37 +285,37 @@
    "id": 11,
    "name": "Every Inch Matters",
    "manager": "Garrett",
-   "seed": 9,
-   "record": "5-11",
-   "w": 5,
+   "seed": 8,
+   "record": "7-11",
+   "w": 7,
    "l": 11,
    "t": 0,
-   "pf": 742.78,
-   "pa": 892.22,
-   "streak": "L2",
+   "pf": 856.46,
+   "pa": 995.82,
+   "streak": "W1",
    "trades": 4,
-   "pickups": 74,
+   "pickups": 75,
    "faabSpent": 86,
-   "h2h": "3-5",
-   "vsMedian": "2-6",
+   "h2h": "4-5",
+   "vsMedian": "3-6",
    "topPlayers": [
     {
      "player": "James Cook III",
      "pos": "RB",
-     "ptsWhileStarted": 125.7,
-     "starts": 7
+     "ptsWhileStarted": 142.4,
+     "starts": 8
     },
     {
      "player": "Brock Purdy",
      "pos": "QB",
-     "ptsWhileStarted": 96.4,
-     "starts": 5
+     "ptsWhileStarted": 121.7,
+     "starts": 6
     },
     {
-     "player": "Mike Evans",
-     "pos": "WR",
-     "ptsWhileStarted": 75.5,
-     "starts": 6
+     "player": "Kenneth Walker III",
+     "pos": "RB",
+     "ptsWhileStarted": 109.7,
+     "starts": 5
     }
    ]
   },
@@ -361,37 +323,37 @@
    "id": 9,
    "name": "Real Man of Genius",
    "manager": "Micah",
-   "seed": 10,
-   "record": "5-11",
-   "w": 5,
+   "seed": 9,
+   "record": "7-11",
+   "w": 7,
    "l": 11,
    "t": 0,
-   "pf": 692.04,
-   "pa": 807.2,
-   "streak": "L2",
+   "pf": 798.54,
+   "pa": 906.9,
+   "streak": "W1",
    "trades": 2,
    "pickups": 14,
    "faabSpent": 33,
-   "h2h": "3-5",
-   "vsMedian": "2-6",
+   "h2h": "4-5",
+   "vsMedian": "3-6",
    "topPlayers": [
     {
      "player": "Chris Olave",
      "pos": "WR",
-     "ptsWhileStarted": 100.1,
-     "starts": 7
+     "ptsWhileStarted": 113.4,
+     "starts": 8
     },
     {
      "player": "Matthew Golden",
      "pos": "WR",
-     "ptsWhileStarted": 71.2,
-     "starts": 5
+     "ptsWhileStarted": 98.6,
+     "starts": 6
     },
     {
      "player": "Tyler Shough",
      "pos": "QB",
-     "ptsWhileStarted": 53.4,
-     "starts": 4
+     "ptsWhileStarted": 73.1,
+     "starts": 5
     }
    ]
   },
@@ -399,37 +361,75 @@
    "id": 6,
    "name": "Pteem Shteevenshun",
    "manager": "Caleb",
-   "seed": 11,
-   "record": "4-12",
-   "w": 4,
+   "seed": 10,
+   "record": "6-12",
+   "w": 6,
    "l": 12,
    "t": 0,
-   "pf": 821.74,
-   "pa": 869.5,
-   "streak": "L1",
+   "pf": 960.42,
+   "pa": 960.18,
+   "streak": "W1",
    "trades": 0,
    "pickups": 22,
    "faabSpent": 36,
-   "h2h": "2-6",
-   "vsMedian": "2-6",
+   "h2h": "3-6",
+   "vsMedian": "3-6",
    "topPlayers": [
     {
      "player": "Bijan Robinson",
      "pos": "RB",
-     "ptsWhileStarted": 140.8,
-     "starts": 8
+     "ptsWhileStarted": 164.5,
+     "starts": 9
     },
     {
      "player": "Jonathan Taylor",
      "pos": "RB",
-     "ptsWhileStarted": 133.7,
-     "starts": 8
+     "ptsWhileStarted": 140.6,
+     "starts": 9
     },
     {
      "player": "Drake London",
      "pos": "WR",
-     "ptsWhileStarted": 90.3,
+     "ptsWhileStarted": 99.6,
+     "starts": 9
+    }
+   ]
+  },
+  {
+   "id": 3,
+   "name": "The House Cats",
+   "manager": "Luke",
+   "seed": 11,
+   "record": "6-12",
+   "w": 6,
+   "l": 12,
+   "t": 0,
+   "pf": 869.3,
+   "pa": 1019.88,
+   "streak": "L2",
+   "trades": 2,
+   "pickups": 19,
+   "faabSpent": 47,
+   "h2h": "3-6",
+   "vsMedian": "3-6",
+   "topPlayers": [
+    {
+     "player": "Christian McCaffrey",
+     "pos": "RB",
+     "ptsWhileStarted": 148.7,
      "starts": 8
+    },
+    {
+     "player": "Rhamondre Stevenson",
+     "pos": "RB",
+     "ptsWhileStarted": 95.4,
+     "starts": 8
+    },
+    {
+     "player": "Malik Nabers",
+     "pos": "WR",
+     "ptsWhileStarted": 93.4,
+     "starts": 7
     }
    ]
   },
@@ -438,19 +438,25 @@
    "name": "I want my Nickleback",
    "manager": "Jared",
    "seed": 12,
-   "record": "3-13",
+   "record": "3-15",
    "w": 3,
-   "l": 13,
+   "l": 15,
    "t": 0,
-   "pf": 720.84,
-   "pa": 805.92,
-   "streak": "L7",
+   "pf": 800.1,
+   "pa": 919.64,
+   "streak": "L8",
    "trades": 7,
-   "pickups": 33,
+   "pickups": 34,
    "faabSpent": 95,
-   "h2h": "2-6",
-   "vsMedian": "1-7",
+   "h2h": "2-7",
+   "vsMedian": "1-8",
    "topPlayers": [
+    {
+     "player": "Jayden Daniels",
+     "pos": "QB",
+     "ptsWhileStarted": 82.8,
+     "starts": 4
+    },
     {
      "player": "Kenneth Walker III",
      "pos": "RB",
@@ -458,16 +464,10 @@
      "starts": 3
     },
     {
-     "player": "Jayden Daniels",
-     "pos": "QB",
-     "ptsWhileStarted": 68.2,
-     "starts": 3
-    },
-    {
-     "player": "Harrison Butker",
-     "pos": "K",
-     "ptsWhileStarted": 49,
-     "starts": 6
+     "player": "Saquon Barkley",
+     "pos": "RB",
+     "ptsWhileStarted": 55.2,
+     "starts": 7
     }
    ]
   }
@@ -475,159 +475,159 @@
  "powerRankings": [
   {
    "rank": 1,
-   "lastWeek": 1,
-   "team": "Illegal use of hands",
-   "score": 94.5,
-   "record": 90.9,
-   "scoring": 100,
+   "lastWeek": 2,
+   "team": "Lisan al Gibbs",
+   "score": 88.2,
+   "record": 100,
+   "scoring": 94.8,
    "form": 100,
-   "schedule": 81.7,
-   "ppg": 127.7,
-   "last3ppg": 137.5,
-   "oppPpgLeft": 98.9
+   "schedule": 33.6,
+   "ppg": 122.8,
+   "last3ppg": 122,
+   "oppPpgLeft": 104.9
   },
   {
    "rank": 2,
-   "lastWeek": 2,
-   "team": "Lisan al Gibbs",
-   "score": 83.3,
-   "record": 100,
-   "scoring": 90.7,
-   "form": 62.5,
-   "schedule": 60.6,
-   "ppg": 123.9,
-   "last3ppg": 115.7,
+   "lastWeek": 1,
+   "team": "Illegal use of hands",
+   "score": 86,
+   "record": 76.9,
+   "scoring": 100,
+   "form": 98,
+   "schedule": 55.7,
+   "ppg": 124.6,
+   "last3ppg": 121.1,
    "oppPpgLeft": 102
   },
   {
    "rank": 3,
-   "lastWeek": 3,
-   "team": "The Silly Geese",
-   "score": 61.4,
-   "record": 81.8,
-   "scoring": 69,
-   "form": 32.6,
-   "schedule": 41.5,
-   "ppg": 114.9,
-   "last3ppg": 98.3,
-   "oppPpgLeft": 104.9
+   "lastWeek": 4,
+   "team": "GAYleb williams",
+   "score": 66.8,
+   "record": 61.5,
+   "scoring": 58.8,
+   "form": 63.6,
+   "schedule": 100,
+   "ppg": 109.8,
+   "last3ppg": 104.8,
+   "oppPpgLeft": 96.4
   },
   {
    "rank": 4,
-   "lastWeek": 4,
-   "team": "GAYleb williams",
-   "score": 57.7,
-   "record": 54.5,
-   "scoring": 56.1,
-   "form": 33.8,
-   "schedule": 100,
-   "ppg": 109.6,
-   "last3ppg": 99,
-   "oppPpgLeft": 96.2
+   "lastWeek": 3,
+   "team": "The Silly Geese",
+   "score": 58,
+   "record": 69.2,
+   "scoring": 67.5,
+   "form": 57.8,
+   "schedule": 13.3,
+   "ppg": 113,
+   "last3ppg": 102,
+   "oppPpgLeft": 107.4
   },
   {
    "rank": 5,
    "lastWeek": 6,
-   "team": "After Bowers",
-   "score": 47,
-   "record": 45.5,
-   "scoring": 38.7,
-   "form": 29,
-   "schedule": 93.4,
-   "ppg": 102.5,
-   "last3ppg": 96.2,
-   "oppPpgLeft": 97.2
+   "team": "Breece's Pieces",
+   "score": 50.3,
+   "record": 61.5,
+   "scoring": 39.1,
+   "form": 84.5,
+   "schedule": 8.7,
+   "ppg": 102.8,
+   "last3ppg": 114.7,
+   "oppPpgLeft": 108
   },
   {
    "rank": 6,
-   "lastWeek": 9,
-   "team": "Breece's Pieces",
-   "score": 35.9,
-   "record": 54.5,
-   "scoring": 32.9,
-   "form": 30.9,
-   "schedule": 12,
-   "ppg": 100.1,
-   "last3ppg": 97.3,
-   "oppPpgLeft": 109.3
+   "lastWeek": 5,
+   "team": "After Bowers",
+   "score": 49.7,
+   "record": 38.5,
+   "scoring": 38.6,
+   "form": 61.3,
+   "schedule": 82.6,
+   "ppg": 102.6,
+   "last3ppg": 103.7,
+   "oppPpgLeft": 98.6
   },
   {
    "rank": 7,
-   "lastWeek": 7,
-   "team": "The House Cats",
-   "score": 35.3,
-   "record": 27.3,
-   "scoring": 26.2,
-   "form": 44.5,
-   "schedule": 60.3,
-   "ppg": 97.3,
-   "last3ppg": 105.2,
-   "oppPpgLeft": 102.1
+   "lastWeek": 9,
+   "team": "Pteem Shteevenshun",
+   "score": 45.2,
+   "record": 23.1,
+   "scoring": 50.1,
+   "form": 78.5,
+   "schedule": 33.5,
+   "ppg": 106.7,
+   "last3ppg": 111.9,
+   "oppPpgLeft": 104.9
   },
   {
    "rank": 8,
-   "lastWeek": 5,
-   "team": "The Mouse Rats",
-   "score": 32.9,
-   "record": 45.5,
-   "scoring": 24.3,
-   "form": 0,
-   "schedule": 71.7,
-   "ppg": 96.5,
-   "last3ppg": 79.4,
-   "oppPpgLeft": 100.4
+   "lastWeek": 7,
+   "team": "The House Cats",
+   "score": 33.9,
+   "record": 23.1,
+   "scoring": 21.9,
+   "form": 50.4,
+   "schedule": 61.7,
+   "ppg": 96.6,
+   "last3ppg": 98.6,
+   "oppPpgLeft": 101.3
   },
   {
    "rank": 9,
    "lastWeek": 8,
-   "team": "Pteem Shteevenshun",
-   "score": 29.2,
-   "record": 9.1,
-   "scoring": 39.3,
-   "form": 30.2,
-   "schedule": 44.3,
-   "ppg": 102.7,
-   "last3ppg": 96.9,
-   "oppPpgLeft": 104.5
+   "team": "The Mouse Rats",
+   "score": 29.1,
+   "record": 38.5,
+   "scoring": 17.7,
+   "form": 0,
+   "schedule": 75.5,
+   "ppg": 95.1,
+   "last3ppg": 74.7,
+   "oppPpgLeft": 99.5
   },
   {
    "rank": 10,
    "lastWeek": 10,
    "team": "Every Inch Matters",
-   "score": 14,
-   "record": 18.2,
-   "scoring": 15.4,
-   "form": 4.8,
-   "schedule": 15,
-   "ppg": 92.8,
-   "last3ppg": 82.2,
-   "oppPpgLeft": 108.8
+   "score": 19.7,
+   "record": 30.8,
+   "scoring": 17.9,
+   "form": 21,
+   "schedule": 0,
+   "ppg": 95.2,
+   "last3ppg": 84.7,
+   "oppPpgLeft": 109.1
   },
   {
    "rank": 11,
-   "lastWeek": 12,
+   "lastWeek": 11,
    "team": "Real Man of Genius",
-   "score": 8.4,
-   "record": 18.2,
+   "score": 16.3,
+   "record": 30.8,
    "scoring": 0,
-   "form": 14.8,
-   "schedule": 0,
-   "ppg": 86.5,
-   "last3ppg": 87.9,
-   "oppPpgLeft": 111
+   "form": 28.7,
+   "schedule": 8.7,
+   "ppg": 88.7,
+   "last3ppg": 88.3,
+   "oppPpgLeft": 108
   },
   {
    "rank": 12,
-   "lastWeek": 11,
+   "lastWeek": 12,
    "team": "I want my Nickleback",
-   "score": 7.6,
+   "score": 8.3,
    "record": 0,
-   "scoring": 8.7,
-   "form": 15.9,
-   "schedule": 9.4,
-   "ppg": 90.1,
-   "last3ppg": 88.6,
-   "oppPpgLeft": 109.6
+   "scoring": 0.5,
+   "form": 25.5,
+   "schedule": 20.1,
+   "ppg": 88.9,
+   "last3ppg": 86.8,
+   "oppPpgLeft": 106.6
   }
  ],
  "weeks": [
@@ -1174,9 +1174,296 @@
      "awayAboveMedian": true
     }
    ]
+  },
+  {
+   "week": 9,
+   "median": 105.05,
+   "high": {
+    "team": "Pteem Shteevenshun",
+    "pts": 138.68
+   },
+   "low": {
+    "team": "I want my Nickleback",
+    "pts": 79.26
+   },
+   "games": [
+    {
+     "home": "Real Man of Genius",
+     "away": "Illegal use of hands",
+     "score": "106.5-99.7",
+     "winner": "Real Man of Genius",
+     "margin": 6.8,
+     "homeAboveMedian": true,
+     "awayAboveMedian": false
+    },
+    {
+     "home": "GAYleb williams",
+     "away": "The Mouse Rats",
+     "score": "111.36-83.46",
+     "winner": "GAYleb williams",
+     "margin": 27.9,
+     "homeAboveMedian": true,
+     "awayAboveMedian": false
+    },
+    {
+     "home": "Breece's Pieces",
+     "away": "The Silly Geese",
+     "score": "124.24-97.26",
+     "winner": "Breece's Pieces",
+     "margin": 26.98,
+     "homeAboveMedian": true,
+     "awayAboveMedian": false
+    },
+    {
+     "home": "Every Inch Matters",
+     "away": "After Bowers",
+     "score": "113.68-103.6",
+     "winner": "Every Inch Matters",
+     "margin": 10.08,
+     "homeAboveMedian": true,
+     "awayAboveMedian": false
+    },
+    {
+     "home": "I want my Nickleback",
+     "away": "Lisan al Gibbs",
+     "score": "79.26-113.72",
+     "winner": "Lisan al Gibbs",
+     "margin": 34.46,
+     "homeAboveMedian": false,
+     "awayAboveMedian": true
+    },
+    {
+     "home": "The House Cats",
+     "away": "Pteem Shteevenshun",
+     "score": "90.68-138.68",
+     "winner": "Pteem Shteevenshun",
+     "margin": 48,
+     "homeAboveMedian": false,
+     "awayAboveMedian": true
+    }
+   ]
   }
  ],
  "recentWeeks": [
+  {
+   "week": 9,
+   "topPerformances": [
+    {
+     "team": "Pteem Shteevenshun",
+     "player": "Jordan Love",
+     "pos": "QB",
+     "pts": 36.18
+    },
+    {
+     "team": "Every Inch Matters",
+     "player": "Kenneth Walker III",
+     "pos": "RB",
+     "pts": 34.3
+    },
+    {
+     "team": "Breece's Pieces",
+     "player": "Joe Burrow",
+     "pos": "QB",
+     "pts": 29.54
+    },
+    {
+     "team": "The Silly Geese",
+     "player": "CeeDee Lamb",
+     "pos": "WR",
+     "pts": 28.5
+    },
+    {
+     "team": "Illegal use of hands",
+     "player": "Puka Nacua",
+     "pos": "WR",
+     "pts": 28
+    },
+    {
+     "team": "Real Man of Genius",
+     "player": "Matthew Golden",
+     "pos": "WR",
+     "pts": 27.4
+    },
+    {
+     "team": "Lisan al Gibbs",
+     "player": "Christian Watson",
+     "pos": "WR",
+     "pts": 26.6
+    },
+    {
+     "team": "Breece's Pieces",
+     "player": "Ja'Marr Chase",
+     "pos": "WR",
+     "pts": 26.5
+    }
+   ],
+   "duds": [
+    {
+     "team": "Every Inch Matters",
+     "player": "Adonai Mitchell",
+     "pos": "WR",
+     "pts": 0
+    },
+    {
+     "team": "I want my Nickleback",
+     "player": "Josh Jacobs",
+     "pos": "RB",
+     "pts": 0.5
+    },
+    {
+     "team": "Every Inch Matters",
+     "player": "Tucker Kraft",
+     "pos": "TE",
+     "pts": 1.4
+    },
+    {
+     "team": "Pteem Shteevenshun",
+     "player": "Mason Taylor",
+     "pos": "TE",
+     "pts": 1.6
+    },
+    {
+     "team": "Lisan al Gibbs",
+     "player": "D'Andre Swift",
+     "pos": "RB",
+     "pts": 3.1
+    }
+   ],
+   "teams": [
+    {
+     "team": "The Silly Geese",
+     "starterPts": 97.26,
+     "benchPts": 55.36,
+     "topStarter": [
+      "CeeDee Lamb (WR) 28.5",
+      "Bears D/ST (D/ST) 13"
+     ],
+     "bestBench": "C.J. Stroud (QB) 35.36",
+     "lowestFlexStarter": "Devin Singletary (RB) 4.9"
+    },
+    {
+     "team": "The Mouse Rats",
+     "starterPts": 83.46,
+     "benchPts": 42.8,
+     "topStarter": [
+      "Patrick Mahomes (QB) 16.48",
+      "Tetairoa McMillan (WR) 13.6"
+     ],
+     "bestBench": "Audric Estime (RB) 14.2",
+     "lowestFlexStarter": "Jordan Addison (WR) 3.8"
+    },
+    {
+     "team": "The House Cats",
+     "starterPts": 90.68,
+     "benchPts": 32.8,
+     "topStarter": [
+      "Christian McCaffrey (RB) 21.7",
+      "Rhamondre Stevenson (RB) 13.3"
+     ],
+     "bestBench": "Jadarian Price (RB) 9.8",
+     "lowestFlexStarter": "T.J. Hockenson (TE) 5.3"
+    },
+    {
+     "team": "Illegal use of hands",
+     "starterPts": 99.7,
+     "benchPts": 52.08,
+     "topStarter": [
+      "Puka Nacua (WR) 28",
+      "Dominic Zvada (K) 17"
+     ],
+     "bestBench": "Tank Dell (WR) 18.5",
+     "lowestFlexStarter": "Jameson Williams (WR) 4.5"
+    },
+    {
+     "team": "Breece's Pieces",
+     "starterPts": 124.24,
+     "benchPts": 54.96,
+     "topStarter": [
+      "Joe Burrow (QB) 29.54",
+      "Ja'Marr Chase (WR) 26.5"
+     ],
+     "bestBench": "Drake Maye (QB) 18.26",
+     "lowestFlexStarter": "Sam LaPorta (TE) 5.2"
+    },
+    {
+     "team": "Pteem Shteevenshun",
+     "starterPts": 138.68,
+     "benchPts": 39.82,
+     "topStarter": [
+      "Jordan Love (QB) 36.18",
+      "Bijan Robinson (RB) 23.7"
+     ],
+     "bestBench": "Buccaneers D/ST (D/ST) 11",
+     "lowestFlexStarter": "Mason Taylor (TE) 1.6"
+    },
+    {
+     "team": "After Bowers",
+     "starterPts": 103.6,
+     "benchPts": 33.4,
+     "topStarter": [
+      "Dak Prescott (QB) 19.5",
+      "Brock Bowers (TE) 18.8"
+     ],
+     "bestBench": "Seth McGowan (RB) 10.7",
+     "lowestFlexStarter": "DJ Moore (WR) 5.1"
+    },
+    {
+     "team": "Lisan al Gibbs",
+     "starterPts": 113.72,
+     "benchPts": 44.38,
+     "topStarter": [
+      "Christian Watson (WR) 26.6",
+      "Tee Higgins (WR) 17.7"
+     ],
+     "bestBench": "Bo Nix (QB) 15.68",
+     "lowestFlexStarter": "D'Andre Swift (RB) 3.1"
+    },
+    {
+     "team": "Real Man of Genius",
+     "starterPts": 106.5,
+     "benchPts": 35.14,
+     "topStarter": [
+      "Matthew Golden (WR) 27.4",
+      "Tyler Shough (QB) 19.7"
+     ],
+     "bestBench": "Justice Hill (RB) 16.7",
+     "lowestFlexStarter": "Tyler Allgeier (RB) 5.6"
+    },
+    {
+     "team": "GAYleb williams",
+     "starterPts": 111.36,
+     "benchPts": 24.94,
+     "topStarter": [
+      "Javonte Williams (RB) 20.4",
+      "Jake Bates (K) 15"
+     ],
+     "bestBench": "Bryce Young (QB) 20.34",
+     "lowestFlexStarter": "Quinshon Judkins (RB) 5"
+    },
+    {
+     "team": "Every Inch Matters",
+     "starterPts": 113.68,
+     "benchPts": 28.1,
+     "topStarter": [
+      "Kenneth Walker III (RB) 34.3",
+      "Brock Purdy (QB) 25.28"
+     ],
+     "bestBench": "Mack Hollins (WR) 11.1",
+     "lowestFlexStarter": "Adonai Mitchell (WR) 0"
+    },
+    {
+     "team": "I want my Nickleback",
+     "starterPts": 79.26,
+     "benchPts": 15.7,
+     "topStarter": [
+      "Bills D/ST (D/ST) 15",
+      "Jayden Daniels (QB) 14.56"
+     ],
+     "bestBench": "Dallas Goedert (TE) 7.5",
+     "lowestFlexStarter": "Josh Jacobs (RB) 0.5"
+    }
+   ]
+  },
   {
    "week": 8,
    "topPerformances": [
@@ -1614,356 +1901,100 @@
      "lowestFlexStarter": "Jalen Coker (WR) 1.4"
     }
    ]
-  },
-  {
-   "week": 6,
-   "topPerformances": [
-    {
-     "team": "Illegal use of hands",
-     "player": "Trevor Lawrence",
-     "pos": "QB",
-     "pts": 27.34
-    },
-    {
-     "team": "Every Inch Matters",
-     "player": "Kenneth Walker III",
-     "pos": "RB",
-     "pts": 26.9
-    },
-    {
-     "team": "The House Cats",
-     "player": "Christian McCaffrey",
-     "pos": "RB",
-     "pts": 26.2
-    },
-    {
-     "team": "The Silly Geese",
-     "player": "Tre Tucker",
-     "pos": "WR",
-     "pts": 24.2
-    },
-    {
-     "team": "Breece's Pieces",
-     "player": "Drake Maye",
-     "pos": "QB",
-     "pts": 23.8
-    },
-    {
-     "team": "Every Inch Matters",
-     "player": "James Cook III",
-     "pos": "RB",
-     "pts": 22.8
-    },
-    {
-     "team": "Illegal use of hands",
-     "player": "Bhayshul Tuten",
-     "pos": "RB",
-     "pts": 22.7
-    },
-    {
-     "team": "The House Cats",
-     "player": "Malik Nabers",
-     "pos": "WR",
-     "pts": 22.5
-    }
-   ],
-   "duds": [
-    {
-     "team": "The Silly Geese",
-     "player": "Cam Skattebo",
-     "pos": "RB",
-     "pts": 0
-    },
-    {
-     "team": "The Silly Geese",
-     "player": "Darren Waller",
-     "pos": "TE",
-     "pts": 0
-    },
-    {
-     "team": "I want my Nickleback",
-     "player": "Juwan Johnson",
-     "pos": "TE",
-     "pts": 0
-    },
-    {
-     "team": "After Bowers",
-     "player": "MarShawn Lloyd",
-     "pos": "RB",
-     "pts": 1
-    },
-    {
-     "team": "GAYleb williams",
-     "player": "Harold Fannin Jr.",
-     "pos": "TE",
-     "pts": 1.4
-    }
-   ],
-   "teams": [
-    {
-     "team": "The Silly Geese",
-     "starterPts": 86,
-     "benchPts": 32.3,
-     "topStarter": [
-      "Tre Tucker (WR) 24.2",
-      "Josh Allen (QB) 18.3"
-     ],
-     "bestBench": "Romeo Doubs (WR) 10.7",
-     "lowestFlexStarter": "Cam Skattebo (RB) 0"
-    },
-    {
-     "team": "The Mouse Rats",
-     "starterPts": 97.48,
-     "benchPts": 34,
-     "topStarter": [
-      "Germie Bernard (WR) 20.2",
-      "Colston Loveland (TE) 15.5"
-     ],
-     "bestBench": "Browns D/ST (D/ST) 10",
-     "lowestFlexStarter": "Derrick Henry (RB) 4.5"
-    },
-    {
-     "team": "The House Cats",
-     "starterPts": 110.68,
-     "benchPts": 31.6,
-     "topStarter": [
-      "Christian McCaffrey (RB) 26.2",
-      "Malik Nabers (WR) 22.5"
-     ],
-     "bestBench": "RJ Harvey (RB) 13.1",
-     "lowestFlexStarter": "Rhamondre Stevenson (RB) 3.6"
-    },
-    {
-     "team": "Illegal use of hands",
-     "starterPts": 148.94,
-     "benchPts": 23.8,
-     "topStarter": [
-      "Trevor Lawrence (QB) 27.34",
-      "Bhayshul Tuten (RB) 22.7"
-     ],
-     "bestBench": "Isaiah Likely (TE) 20.9",
-     "lowestFlexStarter": "Kyren Williams (RB) 8.2"
-    },
-    {
-     "team": "Breece's Pieces",
-     "starterPts": 72.2,
-     "benchPts": 27.5,
-     "topStarter": [
-      "Drake Maye (QB) 23.8",
-      "Braelon Allen (RB) 11.4"
-     ],
-     "bestBench": "Blake Corum (RB) 13",
-     "lowestFlexStarter": "Pat Freiermuth (TE) 2.1"
-    },
-    {
-     "team": "Pteem Shteevenshun",
-     "starterPts": 93.84,
-     "benchPts": 21.2,
-     "topStarter": [
-      "Jordan Love (QB) 20.24",
-      "Jonathan Taylor (RB) 20.1"
-     ],
-     "bestBench": "Josh Downs (WR) 6.7",
-     "lowestFlexStarter": "Emanuel Wilson (RB) 5.2"
-    },
-    {
-     "team": "After Bowers",
-     "starterPts": 81.02,
-     "benchPts": 18.6,
-     "topStarter": [
-      "Alvin Kamara (RB) 13.9",
-      "Stefon Diggs (WR) 13.4"
-     ],
-     "bestBench": "Keenan Allen (WR) 12.2",
-     "lowestFlexStarter": "MarShawn Lloyd (RB) 1"
-    },
-    {
-     "team": "Lisan al Gibbs",
-     "starterPts": 94.68,
-     "benchPts": 30.7,
-     "topStarter": [
-      "D'Andre Swift (RB) 21",
-      "Matthew Stafford (QB) 16.88"
-     ],
-     "bestBench": "Khalil Shakir (WR) 11.4",
-     "lowestFlexStarter": "Tony Pollard (RB) 7.6"
-    },
-    {
-     "team": "Real Man of Genius",
-     "starterPts": 105.52,
-     "benchPts": 45.16,
-     "topStarter": [
-      "Matthew Golden (WR) 19.4",
-      "Kirk Cousins (QB) 18.52"
-     ],
-     "bestBench": "Tyler Shough (QB) 26.96",
-     "lowestFlexStarter": "Tyler Allgeier (RB) 5.3"
-    },
-    {
-     "team": "GAYleb williams",
-     "starterPts": 93.9,
-     "benchPts": 44.44,
-     "topStarter": [
-      "Chuba Hubbard (RB) 18.6",
-      "DeVonta Smith (WR) 17"
-     ],
-     "bestBench": "Bryce Young (QB) 19.84",
-     "lowestFlexStarter": "Harold Fannin Jr. (TE) 1.4"
-    },
-    {
-     "team": "Every Inch Matters",
-     "starterPts": 106.26,
-     "benchPts": 11.3,
-     "topStarter": [
-      "Kenneth Walker III (RB) 26.9",
-      "James Cook III (RB) 22.8"
-     ],
-     "bestBench": "Mike Washington Jr. (RB) 5.5",
-     "lowestFlexStarter": "Michael Wilson (WR) 5.2"
-    },
-    {
-     "team": "I want my Nickleback",
-     "starterPts": 84.8,
-     "benchPts": 22.7,
-     "topStarter": [
-      "Jayden Daniels (QB) 21",
-      "Jalen Coker (WR) 12.7"
-     ],
-     "bestBench": "Dallas Goedert (TE) 9.1",
-     "lowestFlexStarter": "Juwan Johnson (TE) 0"
-    }
-   ]
   }
  ],
  "thisWeek": {
-  "week": 9,
-  "matchups": [
-   {
-    "home": "Real Man of Genius",
-    "away": "Illegal use of hands",
-    "livePoints": "0-8.9",
-    "projected": "95.4-123.92",
-    "allTimeHeadToHead": "Micah 2-2 vs Jeremy",
-    "homeRecord": "5-11",
-    "awayRecord": "13-3"
-   },
-   {
-    "home": "GAYleb williams",
-    "away": "The Mouse Rats",
-    "livePoints": "0-18.68",
-    "projected": "117.07-96.15",
-    "allTimeHeadToHead": "Landon 2-2 vs Bryar",
-    "homeRecord": "9-7",
-    "awayRecord": "8-8"
-   },
-   {
-    "home": "Breece's Pieces",
-    "away": "The Silly Geese",
-    "livePoints": "0-0",
-    "projected": "109.1-104.41",
-    "allTimeHeadToHead": "Tyler 3-5 vs Michael",
-    "homeRecord": "9-7",
-    "awayRecord": "12-4"
-   },
-   {
-    "home": "Every Inch Matters",
-    "away": "After Bowers",
-    "livePoints": "0-10.2",
-    "projected": "114.63-103.75",
-    "allTimeHeadToHead": "Garrett 2-4 vs Ezra",
-    "homeRecord": "5-11",
-    "awayRecord": "8-8"
-   },
-   {
-    "home": "I want my Nickleback",
-    "away": "Lisan al Gibbs",
-    "livePoints": "0-20.8",
-    "projected": "107.02-122.62",
-    "allTimeHeadToHead": "Jared 2-1 vs Josh",
-    "homeRecord": "3-13",
-    "awayRecord": "14-2"
-   },
-   {
-    "home": "The House Cats",
-    "away": "Pteem Shteevenshun",
-    "livePoints": "12-0",
-    "projected": "120.07-114.67",
-    "allTimeHeadToHead": "Luke 2-2 vs Caleb",
-    "homeRecord": "6-10",
-    "awayRecord": "4-12"
-   }
-  ],
-  "alreadyPlayedStandouts": [
-   {
-    "team": "Lisan al Gibbs",
-    "player": "Cam Little",
-    "pos": "K",
-    "pts": 17
-   },
-   {
-    "team": "The Mouse Rats",
-    "player": "Parker Washington",
-    "pos": "WR",
-    "pts": 13.1
-   },
-   {
-    "team": "The House Cats",
-    "player": "Jaguars D/ST",
-    "pos": "D/ST",
-    "pts": 12
-   },
-   {
-    "team": "After Bowers",
-    "player": "Chris Rodriguez Jr.",
-    "pos": "RB",
-    "pts": 10.2
-   },
-   {
-    "team": "Illegal use of hands",
-    "player": "Bhayshul Tuten",
-    "pos": "RB",
-    "pts": 8.9
-   },
-   {
-    "team": "The Mouse Rats",
-    "player": "Derrick Henry",
-    "pos": "RB",
-    "pts": 5.58
-   }
-  ]
- },
- "nextWeek": {
   "week": 10,
   "matchups": [
    {
     "home": "Breece's Pieces",
     "away": "The Mouse Rats",
-    "allTimeHeadToHead": "Tyler 0-3 vs Bryar"
+    "livePoints": "0-0",
+    "projected": "92.72-96.06",
+    "allTimeHeadToHead": "Tyler 0-3 vs Bryar",
+    "homeRecord": "11-7",
+    "awayRecord": "8-10"
    },
    {
     "home": "I want my Nickleback",
     "away": "Pteem Shteevenshun",
-    "allTimeHeadToHead": "Jared 4-3 vs Caleb"
+    "livePoints": "0-0",
+    "projected": "86.89-101.91",
+    "allTimeHeadToHead": "Jared 4-3 vs Caleb",
+    "homeRecord": "3-15",
+    "awayRecord": "6-12"
    },
    {
     "home": "Every Inch Matters",
     "away": "Real Man of Genius",
-    "allTimeHeadToHead": "Garrett 6-4 vs Micah"
+    "livePoints": "0-0",
+    "projected": "105.49-85.95",
+    "allTimeHeadToHead": "Garrett 6-4 vs Micah",
+    "homeRecord": "7-11",
+    "awayRecord": "7-11"
    },
    {
     "home": "Illegal use of hands",
     "away": "The House Cats",
-    "allTimeHeadToHead": "Jeremy 3-1 vs Luke"
+    "livePoints": "0-0",
+    "projected": "108.16-95.83",
+    "allTimeHeadToHead": "Jeremy 3-1 vs Luke",
+    "homeRecord": "13-5",
+    "awayRecord": "6-12"
    },
    {
     "home": "Lisan al Gibbs",
     "away": "The Silly Geese",
-    "allTimeHeadToHead": "Josh 3-3 vs Michael"
+    "livePoints": "0-0",
+    "projected": "116.91-95.34",
+    "allTimeHeadToHead": "Josh 3-3 vs Michael",
+    "homeRecord": "16-2",
+    "awayRecord": "12-6"
    },
    {
     "home": "GAYleb williams",
     "away": "After Bowers",
-    "allTimeHeadToHead": "Landon 1-3 vs Ezra"
+    "livePoints": "0-0",
+    "projected": "112.11-94.89",
+    "allTimeHeadToHead": "Landon 1-3 vs Ezra",
+    "homeRecord": "11-7",
+    "awayRecord": "8-10"
+   }
+  ],
+  "alreadyPlayedStandouts": []
+ },
+ "nextWeek": {
+  "week": 11,
+  "matchups": [
+   {
+    "home": "I want my Nickleback",
+    "away": "Illegal use of hands",
+    "allTimeHeadToHead": "Jared 3-0 vs Jeremy"
+   },
+   {
+    "home": "The Mouse Rats",
+    "away": "After Bowers",
+    "allTimeHeadToHead": "Bryar 4-0 vs Ezra"
+   },
+   {
+    "home": "Breece's Pieces",
+    "away": "Lisan al Gibbs",
+    "allTimeHeadToHead": "Tyler 3-3 vs Josh"
+   },
+   {
+    "home": "Real Man of Genius",
+    "away": "GAYleb williams",
+    "allTimeHeadToHead": "Micah 1-1 vs Landon"
+   },
+   {
+    "home": "The Silly Geese",
+    "away": "Pteem Shteevenshun",
+    "allTimeHeadToHead": "Michael 2-1 vs Caleb"
+   },
+   {
+    "home": "The House Cats",
+    "away": "Every Inch Matters",
+    "allTimeHeadToHead": "Luke 1-2 vs Garrett"
    }
   ]
  },
@@ -2007,8 +2038,8 @@
       {
        "player": "Tee Higgins (WR)",
        "from": "I want my Nickleback",
-       "ptsForNewTeamSince": 32.5,
-       "startsSince": 1,
+       "ptsForNewTeamSince": 50.2,
+       "startsSince": 2,
        "ptsForOldTeamBefore": 48.2
       }
      ]
@@ -2020,8 +2051,8 @@
       {
        "player": "Ollie Gordon II (RB)",
        "from": "Lisan al Gibbs",
-       "ptsForNewTeamSince": 6.9,
-       "startsSince": 1,
+       "ptsForNewTeamSince": 13.8,
+       "startsSince": 2,
        "ptsForOldTeamBefore": 0
       },
       {
@@ -2178,8 +2209,8 @@
       {
        "player": "Patrick Mahomes (QB)",
        "from": "The Silly Geese",
-       "ptsForNewTeamSince": 16.5,
-       "startsSince": 2,
+       "ptsForNewTeamSince": 33,
+       "startsSince": 3,
        "ptsForOldTeamBefore": 0
       },
       {
@@ -2208,8 +2239,8 @@
       {
        "player": "Tyler Allgeier (RB)",
        "from": "The Silly Geese",
-       "ptsForNewTeamSince": 11.7,
-       "startsSince": 2,
+       "ptsForNewTeamSince": 17.3,
+       "startsSince": 3,
        "ptsForOldTeamBefore": 0
       }
      ]
@@ -2316,8 +2347,8 @@
       {
        "player": "Michael Wilson (WR)",
        "from": "The Silly Geese",
-       "ptsForNewTeamSince": 54.9,
-       "startsSince": 5,
+       "ptsForNewTeamSince": 63.9,
+       "startsSince": 6,
        "ptsForOldTeamBefore": 20.4
       },
       {
@@ -2346,8 +2377,8 @@
       {
        "player": "Joe Burrow (QB)",
        "from": "Real Man of Genius",
-       "ptsForNewTeamSince": 48.3,
-       "startsSince": 2,
+       "ptsForNewTeamSince": 77.9,
+       "startsSince": 3,
        "ptsForOldTeamBefore": 30.3
       },
       {
@@ -2366,8 +2397,8 @@
       {
        "player": "Travis Kelce (TE)",
        "from": "Breece's Pieces",
-       "ptsForNewTeamSince": 25.4,
-       "startsSince": 4,
+       "ptsForNewTeamSince": 40.7,
+       "startsSince": 5,
        "ptsForOldTeamBefore": 0
       },
       {
@@ -2403,15 +2434,15 @@
       {
        "player": "Alvin Kamara (RB)",
        "from": "I want my Nickleback",
-       "ptsForNewTeamSince": 35.8,
-       "startsSince": 3,
+       "ptsForNewTeamSince": 42.2,
+       "startsSince": 4,
        "ptsForOldTeamBefore": 0
       },
       {
        "player": "DJ Moore (WR)",
        "from": "I want my Nickleback",
-       "ptsForNewTeamSince": 16.8,
-       "startsSince": 2,
+       "ptsForNewTeamSince": 21.9,
+       "startsSince": 3,
        "ptsForOldTeamBefore": 18.4
       }
      ]
@@ -2444,8 +2475,8 @@
       {
        "player": "Jalen Coker (WR)",
        "from": "After Bowers",
-       "ptsForNewTeamSince": 22.7,
-       "startsSince": 3,
+       "ptsForNewTeamSince": 27.3,
+       "startsSince": 4,
        "ptsForOldTeamBefore": 0
       }
      ]
@@ -2467,8 +2498,8 @@
       {
        "player": "Kenneth Walker III (RB)",
        "from": "I want my Nickleback",
-       "ptsForNewTeamSince": 75.4,
-       "startsSince": 4,
+       "ptsForNewTeamSince": 109.7,
+       "startsSince": 5,
        "ptsForOldTeamBefore": 53.4
       }
      ]
@@ -2480,8 +2511,8 @@
       {
        "player": "Jayden Daniels (QB)",
        "from": "Every Inch Matters",
-       "ptsForNewTeamSince": 68.2,
-       "startsSince": 3,
+       "ptsForNewTeamSince": 82.8,
+       "startsSince": 4,
        "ptsForOldTeamBefore": 32.4
       },
       {
@@ -2504,6 +2535,56 @@
   }
  ],
  "recentPickups": [
+  {
+   "date": "2026-11-08",
+   "week": 9,
+   "type": "free agent",
+   "team": "The Mouse Rats",
+   "bid": 0,
+   "added": [
+    "Audric Estime (RB)"
+   ],
+   "dropped": [
+    "Malachi Fields (WR)"
+   ]
+  },
+  {
+   "date": "2026-11-08",
+   "week": 9,
+   "type": "free agent",
+   "team": "I want my Nickleback",
+   "bid": 0,
+   "added": [
+    "Kimani Vidal (RB)"
+   ],
+   "dropped": [
+    "J.K. Dobbins (RB)"
+   ]
+  },
+  {
+   "date": "2026-11-08",
+   "week": 9,
+   "type": "free agent",
+   "team": "Every Inch Matters",
+   "bid": 0,
+   "added": [
+    "Mack Hollins (WR)"
+   ],
+   "dropped": []
+  },
+  {
+   "date": "2026-11-08",
+   "week": 9,
+   "type": "free agent",
+   "team": "The Mouse Rats",
+   "bid": 0,
+   "added": [
+    "Malachi Fields (WR)"
+   ],
+   "dropped": [
+    "Xavier Worthy (WR)"
+   ]
+  },
   {
    "date": "2026-11-07",
    "week": 9,
@@ -2528,6 +2609,19 @@
    ],
    "dropped": [
     "MarShawn Lloyd (RB)"
+   ]
+  },
+  {
+   "date": "2026-11-07",
+   "week": 9,
+   "type": "free agent",
+   "team": "After Bowers",
+   "bid": 0,
+   "added": [
+    "Kenyon Sadiq (TE)"
+   ],
+   "dropped": [
+    "Chris Bell (WR)"
    ]
   },
   {
@@ -2816,67 +2910,6 @@
    "dropped": [
     "Evan McPherson (K)"
    ]
-  },
-  {
-   "date": "2026-11-04",
-   "week": 9,
-   "type": "waiver claim",
-   "team": "Every Inch Matters",
-   "bid": 0,
-   "added": [
-    "Ravens D/ST (D/ST)"
-   ],
-   "dropped": []
-  },
-  {
-   "date": "2026-11-04",
-   "week": 9,
-   "type": "free agent",
-   "team": "The House Cats",
-   "bid": 0,
-   "added": [
-    "Brandon Aiyuk (WR)"
-   ],
-   "dropped": [
-    "Kyle Pitts Sr. (TE)"
-   ]
-  },
-  {
-   "date": "2026-11-04",
-   "week": 9,
-   "type": "free agent",
-   "team": "Every Inch Matters",
-   "bid": 0,
-   "added": [
-    "Saints D/ST (D/ST)"
-   ],
-   "dropped": [
-    "Hunter Henry (TE)"
-   ]
-  },
-  {
-   "date": "2026-11-04",
-   "week": 9,
-   "type": "free agent",
-   "team": "The Mouse Rats",
-   "bid": 0,
-   "added": [
-    "Elijah Mitchell (RB)"
-   ],
-   "dropped": []
-  },
-  {
-   "date": "2026-11-01",
-   "week": 8,
-   "type": "waiver claim",
-   "team": "I want my Nickleback",
-   "bid": 2,
-   "added": [
-    "DeMario Douglas (WR)"
-   ],
-   "dropped": [
-    "Kendrick Bourne (WR)"
-   ]
   }
  ],
  "biggestFaabBids": [
@@ -2983,6 +3016,38 @@
  ],
  "pickupsThatPaidOff": [
   {
+   "player": "Jordan Love (QB)",
+   "team": "Pteem Shteevenshun",
+   "date": "2026-09-23",
+   "bid": 0,
+   "ptsSinceAsStarter": 94.9,
+   "starts": 4
+  },
+  {
+   "player": "Jordan Love (QB)",
+   "team": "Pteem Shteevenshun",
+   "date": "2026-10-14",
+   "bid": 23,
+   "ptsSinceAsStarter": 94.9,
+   "starts": 4
+  },
+  {
+   "player": "Spencer Shrader (K)",
+   "team": "Pteem Shteevenshun",
+   "date": "2026-09-23",
+   "bid": 0,
+   "ptsSinceAsStarter": 83,
+   "starts": 7
+  },
+  {
+   "player": "Jared Goff (QB)",
+   "team": "Illegal use of hands",
+   "date": "2026-09-23",
+   "bid": 5,
+   "ptsSinceAsStarter": 71.6,
+   "starts": 4
+  },
+  {
    "player": "Chris Boswell (K)",
    "team": "Illegal use of hands",
    "date": "2026-09-17",
@@ -2991,36 +3056,12 @@
    "starts": 7
   },
   {
-   "player": "Spencer Shrader (K)",
-   "team": "Pteem Shteevenshun",
-   "date": "2026-09-23",
+   "player": "Will Reichard (K)",
+   "team": "The Mouse Rats",
+   "date": "2026-10-01",
    "bid": 0,
-   "ptsSinceAsStarter": 67,
-   "starts": 6
-  },
-  {
-   "player": "Jared Goff (QB)",
-   "team": "Illegal use of hands",
-   "date": "2026-09-23",
-   "bid": 5,
-   "ptsSinceAsStarter": 66.3,
-   "starts": 3
-  },
-  {
-   "player": "Jordan Love (QB)",
-   "team": "Pteem Shteevenshun",
-   "date": "2026-09-23",
-   "bid": 0,
-   "ptsSinceAsStarter": 58.7,
-   "starts": 3
-  },
-  {
-   "player": "Jordan Love (QB)",
-   "team": "Pteem Shteevenshun",
-   "date": "2026-10-14",
-   "bid": 23,
-   "ptsSinceAsStarter": 58.7,
-   "starts": 3
+   "ptsSinceAsStarter": 56,
+   "starts": 5
   },
   {
    "player": "Vikings D/ST (D/ST)",
@@ -3031,20 +3072,12 @@
    "starts": 4
   },
   {
-   "player": "Sam Darnold (QB)",
-   "team": "Pteem Shteevenshun",
-   "date": "2026-09-25",
+   "player": "Jason Myers (K)",
+   "team": "Breece's Pieces",
+   "date": "2026-09-30",
    "bid": 0,
-   "ptsSinceAsStarter": 49.3,
-   "starts": 3
-  },
-  {
-   "player": "Will Reichard (K)",
-   "team": "The Mouse Rats",
-   "date": "2026-10-01",
-   "bid": 0,
-   "ptsSinceAsStarter": 47,
-   "starts": 4
+   "ptsSinceAsStarter": 52,
+   "starts": 6
   }
  ],
  "history": {
