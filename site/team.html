@@ -520,7 +520,7 @@ __LOGOS__
     var wbox = clear("week-box");
     var m = (E.current || []).filter(function (c) { return c.h[0] === id || c.a[0] === id; })[0];
     var started = (E.current || []).some(function (c) { return c.h[1] > 0 || c.a[1] > 0; });
-    document.getElementById("week-tag").textContent = E.currentWeek > reg ? "Playoffs" : "Week " + E.currentWeek + " · " + (started ? "Live" : "Not started");
+    document.getElementById("week-tag").textContent = E.currentWeek > reg ? "Playoffs" : "Week " + E.currentWeek + " · " + (E.held ? "Final" : started ? "Live" : "Not started");
     if (!m) wbox.append(el("p", "empty card", "No game this week."));
     else {
       var card = el("div", "card game");
@@ -529,7 +529,7 @@ __LOGOS__
         var row = el("div", "side" + (started && s[1] < other[1] ? " trail" : ""));
         var info = el("div");
         var nm = el("div", "side-name"); nm.append(who(s[0]));
-        info.append(nm, el("div", "side-proj", "Proj " + pts(s[2])));
+        info.append(nm, el("div", "side-proj", E.held ? "Final" : "Proj " + pts(s[2])));
         row.append(info, el("div", "side-score", pts(s[1])));
         card.append(row);
       });

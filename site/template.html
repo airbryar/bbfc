@@ -1475,7 +1475,9 @@ __ESPN__
   var ST_TEXT = { yet: "To play", live: "Live", final: "Final" };
 
   // Median Watch
-  document.getElementById("mw-tag").textContent = isPlayoffs ? "Playoffs" : "Week " + wk + " · " + (started ? "Live" : "Not started");
+  // E.held: it's Tuesday and the site is still showing last week's finals (scripts/show-week.mjs)
+  var held = E.held || null;
+  document.getElementById("mw-tag").textContent = isPlayoffs ? "Playoffs" : "Week " + wk + " · " + (held ? "Final" : started ? "Live" : "Not started");
   var btnNow = document.getElementById("mw-now");
   var btnProj = document.getElementById("mw-proj");
   var scoredCount = sides.filter(function (s) { return s[1] > 0; }).length;
@@ -1562,8 +1564,10 @@ __ESPN__
 
   // This week: matchups
   document.getElementById("h-week").textContent = isPlayoffs ? "Playoffs" : "Week " + wk + " Scoreboard";
-  document.getElementById("week-tag").textContent = started ? "Live" : "Not started";
-  document.getElementById("week-lede").textContent = started
+  document.getElementById("week-tag").textContent = held ? "Final" : started ? "Live" : "Not started";
+  document.getElementById("week-lede").textContent = held
+    ? "Final scores. Week " + held.next + " goes up Wednesday."
+    : started
     ? "Live scores update every minute. Tap a game for lineups."
     : "No points yet, just projections. Tap a game for lineups.";
   var gbox = document.getElementById("games");
@@ -1589,7 +1593,7 @@ __ESPN__
       var sn = el("div", "side-name");
       sn.append(badge(s[0], nameOf(s[0])), teamLink(s[0], nameOf(s[0])));
       info.append(sn);
-      info.append(el("div", "side-proj", "Proj " + pts(s[2])));
+      info.append(el("div", "side-proj", held ? "Final" : "Proj " + pts(s[2])));
       row.append(info);
       row.append(el("div", "side-score", pts(s[1])));
       card.append(row);

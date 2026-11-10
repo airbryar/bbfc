@@ -81,6 +81,14 @@ When it runs:
 - Every push to `main` triggers a run, which is how code changes go live.
 - Tuesday mornings it also commits a copy of `data/espn.json`.
 
+**New week on Wednesdays** (Nov 2026, Bryar asked): ESPN starts the new week early Tuesday
+(Nov 10: between 2:48 and 4:27 AM ET), but on Tuesdays (Eastern) the pages and the lineups
+sheet keep showing the week that just finished, marked "Final" ("Final scores. Week N goes
+up Wednesday."), as long as the new week has no points. `scripts/show-week.mjs`
+(`shownWeek` in `build.mjs`, `holdingLastWeek` in `fetch-lineups.mjs`). The playoff odds,
+alerts and Newspaper use ESPN's real week. `"newWeekOnWednesday": false` in
+`data/league.json` turns it off.
+
 Open pages check `data/stamp.json` every 60 seconds and whenever the tab comes back into
 view. When the data is newer, the page refreshes **in place** (Nov 2026; full reloads made
 iPhones visibly scroll from the top back to the reader's spot every minute): it fetches the
@@ -137,6 +145,8 @@ Tooling notes from past sessions:
 | `scripts/build.mjs` | Builds `_site/` from the template and data |
 | `scripts/fetch-espn.mjs` | ESPN reader for the site |
 | `scripts/next-run.mjs` | Game-window pacing |
+| `scripts/show-week.mjs` | Keeps last week's finals up on Tuesdays (new week on Wednesday) |
+| `scripts/check-live.mjs` | After each deploy, republishes if the live site stopped changing |
 | `scripts/fetch-trades.mjs` | Trades and Waiver Wire reader (about hourly); same trade logic as the newsroom script |
 | `site/sw-offline.js` | The offline copy, added to the service worker by `build.mjs` |
 | `scripts/fetch-lineups.mjs` | This week's lineups for the matchup details sheet (every update) |

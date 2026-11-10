@@ -8,6 +8,7 @@
 // estimated from kickoff times. If the fantasy data can't be read, the live site's last
 // good copy is kept.
 import fs from "node:fs";
+import { holdingLastWeek } from "./show-week.mjs";
 
 const OUT = "data/lineups.json";
 const cfg = JSON.parse(fs.readFileSync("data/league.json", "utf8"));
@@ -47,8 +48,16 @@ const IR = 21;
 async function build() {
   if (!baseHeaders.Cookie) throw new Error("the ESPN_S2 / ESPN_SWID secrets aren't set");
   const st = await get(`${LEAGUE}?view=mStatus&view=mSettings`);
-  const week = st.status.currentMatchupPeriod;
-  const sp = st.status.currentScoringPeriod || st.status.latestScoringPeriod || week;
+  let week = st.status.currentMatchupPeriod;
+  let sp = st.status.currentScoringPeriod || st.status.latestScoringPeriod || week;
+  // On Tuesdays the site still shows the week that just finished (scripts/show-week.mjs)
+  if (holdingLastWeek() && week > 1) {
+    const periods = ((st.settings || {}).scheduleSettings || {}).matchupPeriods || {};
+    const spans = periods[week - 1] || periods[String(week - 1)] || [week - 1];
+    week = week - 1;
+    sp = spans[spans.length - 1];
+    console.log(`Lineups: showing week ${week} until Wednesday`);
+  }
 
   // Lineups for this matchup period
   const box = await get(`${LEAGUE}?view=mMatchupScore&view=mBoxscore&view=mScoreboard&scoringPeriodId=${sp}`, { schedule: { filterMatchupPeriodIds: { value: [week] } } });

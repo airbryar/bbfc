@@ -3,6 +3,7 @@
 import fs from "node:fs";
 import { computeOdds } from "./odds.mjs";
 import { computePower } from "./power.mjs";
+import { shownWeek } from "./show-week.mjs";
 
 const read = (p) => fs.readFileSync(p, "utf8");
 const espn = JSON.parse(read("data/espn.json"));
@@ -18,6 +19,9 @@ const trades = fs.existsSync("data/trades.json") ? JSON.parse(read("data/trades.
 
 // Playoff odds for the rest of the regular season (null once the playoffs start)
 const odds = computeOdds(espn);
+// On Tuesdays the pages keep showing the week that just finished (scripts/show-week.mjs)
+const shown = shownWeek(espn);
+if (shown !== espn) console.log(`Showing week ${shown.currentWeek} final scores until Wednesday (ESPN is on week ${espn.currentWeek})`);
 
 // Team pages: power ranking (the same formula as the main page) and top players (from the
 // Newspaper's data, refreshed Tuesday, Thursday and Saturday)
@@ -37,7 +41,7 @@ for (const row of (newsroom && newsroom.standings) || []) {
 const safe = (obj, pretty) => JSON.stringify(obj, null, pretty ? 1 : 0).replace(/</g, "\\u003c");
 
 const blocks = {
-  __ESPN__: safe(espn),
+  __ESPN__: safe(shown),
   __PR__: safe(espn), // Power rankings use finished weeks only, so they change when a week goes final.
   __LEAGUE__: safe({ weights: league.weights, takes: league.takes || {}, offline: league.offlineCopy !== false }, true),
   __POD__: safe(pod, true),
@@ -115,7 +119,7 @@ fs.writeFileSync("_site/manifest.webmanifest", JSON.stringify({
 if (fs.existsSync("site/team.html")) {
   let page = read("site/team.html");
   const teamBlocks = {
-    __ESPN__: safe(espn), __ODDS__: safe(odds), __TEAMX__: safe(teamx), __LOGOS__: safe(logos, true), __ICONV__: brand.iconVersion || "1",
+    __ESPN__: safe(shown), __ODDS__: safe(odds), __TEAMX__: safe(teamx), __LOGOS__: safe(logos, true), __ICONV__: brand.iconVersion || "1",
     __TRADES__: safe({ trades: trades.trades || [], faab: trades.faab || null, pickups: trades.pickups || [] }), __HISTORY__: safe(history),
   };
   for (const [key, value] of Object.entries(teamBlocks)) {
