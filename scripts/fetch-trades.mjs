@@ -92,7 +92,7 @@ async function fromEspn() {
   // this week's and last week's feed the Waiver Wire
   const windows = [];
   const moves = [];
-  const accepts = []; // processed trade acceptances: when each trade was actually agreed
+  const accepts = []; // when each trade was accepted (ESPN keeps only the time, not the players)
   const lastPeriod = Math.min(Math.max(CUR, lastWeek), REG + 4);
   for (let sp = 1; sp <= lastPeriod; sp++) {
     if (!topics.length && sp < CUR - 1) continue; // no trades to date: only the Waiver Wire's weeks
@@ -105,7 +105,7 @@ async function fromEspn() {
     if (!topics.length) continue;
     const acc = await get(`${LEAGUE}?view=mTransactions2&scoringPeriodId=${sp}`, { transactions: { filterType: { value: ["TRADE_ACCEPT"] } } });
     for (const x of acc.transactions || []) {
-      if (x.type === "TRADE_ACCEPT" && x.status === "EXECUTED") accepts.push(x);
+      if (x.type === "TRADE_ACCEPT" && x.proposedDate) accepts.push(x.proposedDate);
     }
   }
   windows.sort((x, y) => x[0] - y[0]);
@@ -158,28 +158,32 @@ async function fromEspn() {
     return { pts: r1(pts), starts };
   }
 
-  // When a trade was accepted: the feed dates it when it went through (after the review), so
-  // match it to its acceptance (same players to the same teams, processed by then)
+  // When each trade was accepted. The feed dates a trade when it went through: exactly one
+  // review period after it was accepted, or earlier if the league manager upheld it. ESPN's
+  // acceptances carry only a time, so pair each trade with the acceptance exactly one review
+  // period before it, else the latest one before it within the review period. Acceptances of
+  // trades still in review are set aside first.
   const reviewMs = ((a.settings.tradeSettings || {}).revisionHours || 0) * 3600000;
-  const acceptedAt = (x) => x.proposedDate || (x.processDate && reviewMs ? x.processDate - reviewMs : x.processDate);
-  function agreedAt(msgs, processed) {
-    const want = msgs.map((m) => `${m.targetId}>${m.to}`).sort().join(",");
-    let best = null;
-    for (const x of accepts) {
-      const got = (x.items || []).filter((i) => i.type === "TRADE").map((i) => `${i.playerId}>${i.toTeamId}`).sort().join(",");
-      const at = acceptedAt(x);
-      if (got !== want || !at || at > processed + 60000) continue;
-      if (!best || Math.abs((x.processDate || at) - processed) < Math.abs((best.processDate || acceptedAt(best)) - processed)) best = x;
-    }
-    if (process.env.DEBUG_TRADES) console.log(`agreed ${want} feed ${new Date(processed).toISOString()} accept ${best ? new Date(acceptedAt(best)).toISOString() + " (proposed " + best.proposedDate + ", processed " + best.processDate + ")" : "none"}`);
-    return best ? acceptedAt(best) : processed;
+  const MIN = 60000;
+  const used = new Set();
+  for (const x of pendingRaw) {
+    const own = accepts.find((t) => !used.has(t) && Math.abs(t - x.proposedDate) < 2 * MIN);
+    if (own) used.add(own);
+  }
+  const agreed = new Map();
+  for (const t of [...topics].sort((x, y) => x.date - y.date)) {
+    const P = t.date;
+    let pick = reviewMs ? accepts.find((A) => !used.has(A) && Math.abs(P - A - reviewMs) < 2 * MIN) : null;
+    if (!pick) pick = accepts.filter((A) => !used.has(A) && A <= P + MIN && P - A <= reviewMs + 10 * MIN).sort((x, y) => y - x)[0];
+    if (pick) { used.add(pick); agreed.set(t, pick); }
+    if (process.env.DEBUG_TRADES) console.log(`agreed feed ${new Date(P).toISOString()} accepted ${pick ? new Date(pick).toISOString() : "?"}`);
   }
 
   const trades = topics
     .map((t) => {
       const msgs = (t.messages || []).filter((m) => m.messageTypeId === 244);
       if (!msgs.length) return null;
-      const at = agreedAt(msgs, t.date);
+      const at = Math.min(agreed.get(t) || t.date, t.date);
       const week = periodAt(at);
       const sides = {};
       for (const m of msgs) {
@@ -202,7 +206,7 @@ async function fromEspn() {
   for (const x of pendingRaw) {
     const items = x.items.filter((i) => i.type === "TRADE");
     if (inFeed.has(dealOf(items.map((i) => [i.playerId, i.toTeamId])))) continue;
-    const at = acceptedAt(x);
+    const at = x.proposedDate;
     const week = periodAt(at);
     const sides = {};
     for (const i of items) {
