@@ -72,11 +72,15 @@ const news = read("data/news.json", { editions: [] });
 const pod = read("data/pod.json", { episodes: [] });
 
 const tradeKey = (t) => t.date + "|" + (t.received || []).map((r) => r.team + ":" + r.players.map((p) => p.player).join(",")).join("|");
+// Who got whom, without the date: matches a pending trade to the same deal once it goes through
+const dealKey = (t) => (t.received || []).map((r) => r.team + ":" + r.players.map((p) => p.player).sort().join(",")).sort().join("|");
+const pendingTrades = tradesFile.pending || [];
 const latestEdition = (news.editions || [])[0] || null;
 const latestEpisode = (pod.episodes || []).slice().sort((a, b) => String(b.date).localeCompare(String(a.date)))[0] || null;
 const lastFinal = (espn.games || []).reduce((m, g) => Math.max(m, g.p), 0);
 const now = {
   trades: (tradesFile.trades || []).map(tradeKey),
+  pending: pendingTrades.map(dealKey),
   news: latestEdition ? latestEdition.id : null,
   poddy: latestEpisode ? latestEpisode.url : null,
   final: lastFinal,
@@ -107,8 +111,19 @@ async function attempt(label, fn) {
 }
 
 // Trades (same wording as the site's ticker)
+function tradeText(t) {
+  const got = (t.received || []).filter((r) => r.players && r.players.length);
+  let text = got.map((r) => `${names(r.players.map(playerName))} to ${r.team}`).join(" · ");
+  if (got.length === 1 && (t.teams || []).length > 1) text += " for FAAB";
+  return text;
+}
 const known = new Set(sent.trades || []);
-const fresh = (tradesFile.trades || []).filter((t) => !known.has(tradeKey(t)));
+const announced = new Set(sent.pending || []); // deals already alerted while pending review
+let fresh = (tradesFile.trades || []).filter((t) => !known.has(tradeKey(t)));
+// A deal that was announced while pending doesn't get a second alert when it goes through
+const quiet = fresh.filter((t) => announced.has(dealKey(t)));
+if (quiet.length) { quiet.forEach((t) => known.add(tradeKey(t))); sent.trades = [...known]; changed = true; }
+fresh = fresh.filter((t) => !announced.has(dealKey(t)));
 if (fresh.length > 3) {
   // A big batch (say, the list was rebuilt) gets one summary instead of a flood
   if (await attempt("trades", () => send({ heading: "Trade alert", text: `${fresh.length} new trades. See them in the Trade Center.`, path: "#trades", tag: "trades" }))) {
@@ -116,13 +131,24 @@ if (fresh.length > 3) {
   }
 } else {
   for (const t of fresh) {
-    const got = (t.received || []).filter((r) => r.players && r.players.length);
-    let text = got.map((r) => `${names(r.players.map(playerName))} to ${r.team}`).join(" · ");
-    if (got.length === 1 && (t.teams || []).length > 1) text += " for FAAB";
+    const text = tradeText(t);
     if (await attempt("a trade", () => send({ heading: "Trade alert", text, path: "#trades", tag: "trades" }))) known.add(tradeKey(t));
   }
 }
 if (fresh.length) { sent.trades = [...known]; changed = true; }
+
+// Trades accepted but still in the league's review period: breaking news, sent once
+const goesThrough = (ms) => new Date(ms).toLocaleString("en-US", { timeZone: "America/New_York", weekday: "short", hour: "numeric", minute: "2-digit" }).replace(",", "");
+for (const t of pendingTrades) {
+  const key = dealKey(t);
+  if (announced.has(key) || known.has(tradeKey(t))) continue;
+  const text = tradeText(t) + (t.goesThrough ? `. Pending league review until ${goesThrough(t.goesThrough)}.` : ". Pending league review.");
+  if (await attempt("a pending trade", () => send({ heading: "Trade alert", text, path: "#trades", tag: "trades" }))) {
+    announced.add(key);
+    sent.pending = [...announced];
+    changed = true;
+  }
+}
 
 // Newspaper
 if (now.news && now.news !== sent.news && latestEdition) {
