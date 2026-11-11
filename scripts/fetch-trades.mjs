@@ -43,7 +43,7 @@ const r1 = (n) => Math.round((n || 0) * 10) / 10;
 const POS = { 1: "QB", 2: "RB", 3: "WR", 4: "TE", 5: "K", 16: "D/ST" };
 const BENCH = 20;
 const IR = 21;
-const day = (ms) => new Date(ms).toISOString().slice(0, 10);
+const day = (ms) => new Date(ms).toLocaleDateString("en-CA", { timeZone: "America/New_York" }); // YYYY-MM-DD, Eastern
 const started = (p) => p.slot !== BENCH && p.slot !== IR;
 
 async function fromEspn() {

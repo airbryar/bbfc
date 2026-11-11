@@ -45,7 +45,7 @@ const PRO = {
 const BENCH = 20;
 const IR = 21;
 const cap = (s) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
-const day = (ms) => new Date(ms).toISOString().slice(0, 10);
+const day = (ms) => new Date(ms).toLocaleDateString("en-CA", { timeZone: "America/New_York" }); // YYYY-MM-DD, Eastern
 
 // ---------- This season ----------
 const a = await get(`${leagueUrl(SEASON)}?view=mTeam&view=mStandings&view=mMatchupScore&view=mSettings&view=mStatus`);

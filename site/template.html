@@ -499,6 +499,7 @@ button.refresh { cursor: pointer; }
 .tr-meta b { color: var(--ink); font-weight: 700; }
 .tr-meta .tr-pend { color: var(--gilt); }
 .trade.pending { border-color: var(--gilt); }
+.trade.pending .tr-meta > span { white-space: nowrap; }
 .tr-side { padding-block: 10px 8px; }
 .tr-side + .tr-side { border-top: 1px solid var(--line); }
 .tr-team { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; }
@@ -1986,7 +1987,7 @@ __ESPN__
         item.append(names(r.players.map(function (p) { return String(p.player).replace(/ \([A-Z\/]+\)$/, ""); })));
         item.append(el("i", null, " to "), el("b", null, r.team));
       });
-      if (got.length === 1 && (t.teams || []).length > 1) item.append(el("i", null, " for "), "FAAB");
+      if (got.length === 1 && (t.teams || []).length > 1) item.append(el("i", null, " for "), t.faab ? "$" + t.faab + " FAAB" : "FAAB");
       return item;
     }
     function tickerSep() { var s = el("span", "tk-sep", "◆"); s.setAttribute("aria-hidden", "true"); return s; }
@@ -2087,7 +2088,7 @@ __ESPN__
         side.append(top);
         var ul = el("ul", "tr-players");
         // A side that got no players got FAAB budget instead
-        if (!has) { var faab = el("li"); faab.append(el("span", null, "FAAB")); ul.append(faab); }
+        if (!has) { var faab = el("li"); faab.append(el("span", null, t.faab ? "$" + t.faab + " FAAB" : "FAAB")); ul.append(faab); }
         s.players.forEach(function (p) {
           var m = /^(.*) \(([A-Z\/]+)\)$/.exec(p.player || "");
           var li = el("li");
@@ -2115,7 +2116,7 @@ __ESPN__
       var art = el("article", "trade pending");
       var meta = el("div", "tr-meta");
       var w = el("span");
-      w.append(el("b", "tr-pend", "Pending"), " · " + shortDay(t.date, true));
+      w.append(el("b", "tr-pend", "Pending"));
       meta.append(w, el("span", null, goesLabel(t.goesThrough)));
       art.append(meta);
       (t.teams || []).forEach(function (name) {
@@ -2128,7 +2129,7 @@ __ESPN__
         top.append(nm);
         side.append(top);
         var ul = el("ul", "tr-players");
-        if (!players.length) { var faab = el("li"); faab.append(el("span", null, "FAAB")); ul.append(faab); }
+        if (!players.length) { var faab = el("li"); faab.append(el("span", null, t.faab ? "$" + t.faab + " FAAB" : "FAAB")); ul.append(faab); }
         players.forEach(function (p) {
           var m = /^(.*) \(([A-Z\/]+)\)$/.exec(p.player || "");
           var li = el("li");

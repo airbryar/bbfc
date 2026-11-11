@@ -12,6 +12,7 @@
 //
 // `node scripts/notify.mjs --test` sends one test alert to everyone who has alerts on.
 import fs from "node:fs";
+import { addFaab, faabLabel } from "./trade-faab.mjs";
 
 const LEDGER = "data/alerts-sent.json";
 const SITE = "https://airbryar.github.io/bbfc/";
@@ -67,7 +68,7 @@ if (process.argv.includes("--test")) {
 
 // What's in the data right now
 const espn = read("data/espn.json", { teams: [], games: [] });
-const tradesFile = read("data/trades.json", { trades: [] });
+const tradesFile = addFaab(read("data/trades.json", { trades: [] }), league);
 const news = read("data/news.json", { editions: [] });
 const pod = read("data/pod.json", { episodes: [] });
 
@@ -114,12 +115,15 @@ async function attempt(label, fn) {
 function tradeText(t) {
   const got = (t.received || []).filter((r) => r.players && r.players.length);
   let text = got.map((r) => `${names(r.players.map(playerName))} to ${r.team}`).join(" · ");
-  if (got.length === 1 && (t.teams || []).length > 1) text += " for FAAB";
+  if (got.length === 1 && (t.teams || []).length > 1) text += " for " + faabLabel(t);
   return text;
 }
 const known = new Set(sent.trades || []);
 const announced = new Set(sent.pending || []); // deals already alerted while pending review
-let fresh = (tradesFile.trades || []).filter((t) => !known.has(tradeKey(t)));
+// Trade dates switched from UTC to Eastern (Nov 2026); older ledger entries carry the UTC date
+const utcKey = (t) => { const k = tradeKey(t); return t.at ? new Date(t.at).toISOString().slice(0, 10) + k.slice(k.indexOf("|")) : k; };
+const isKnown = (t) => known.has(tradeKey(t)) || known.has(utcKey(t));
+let fresh = (tradesFile.trades || []).filter((t) => !isKnown(t));
 // A deal that was announced while pending doesn't get a second alert when it goes through
 const quiet = fresh.filter((t) => announced.has(dealKey(t)));
 if (quiet.length) { quiet.forEach((t) => known.add(tradeKey(t))); sent.trades = [...known]; changed = true; }
@@ -141,7 +145,7 @@ if (fresh.length) { sent.trades = [...known]; changed = true; }
 const goesThrough = (ms) => new Date(ms).toLocaleString("en-US", { timeZone: "America/New_York", weekday: "short", hour: "numeric", minute: "2-digit" }).replace(",", "");
 for (const t of pendingTrades) {
   const key = dealKey(t);
-  if (announced.has(key) || known.has(tradeKey(t))) continue;
+  if (announced.has(key) || isKnown(t)) continue;
   const text = tradeText(t) + (t.goesThrough ? `. Pending league review until ${goesThrough(t.goesThrough)}.` : ". Pending league review.");
   if (await attempt("a pending trade", () => send({ heading: "Trade alert", text, path: "#trades", tag: "trades" }))) {
     announced.add(key);

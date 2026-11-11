@@ -286,15 +286,24 @@ in Nov 2026 so one bottom-bar button covers both.
     24-hour review (5 veto votes), and ESPN only adds a trade to the activity feed once it
     goes through. So `fetch-trades.mjs` also reads `view=mPendingTransactions` into
     `pending` (accepted `at`, `goesThrough`, who gets whom). The page crawls them in the
-    ticker with a "Pending" tag, puts a blue-outlined "Pending · Tue, Nov 10 / Goes through
-    Wed 4:44 PM" card above the trades (no points), and lights the "new" dot; they don't
+    ticker with a "Pending" tag, puts a blue-outlined "Pending / Goes through Thu 9:10 AM"
+    card above the trades (no points; the top line stays on one line, so no date), and
+    lights the "new" dot; they don't
     count in the trade tile. `notify.mjs` sends one alert ("… Pending league review until
     Wed 4:44 PM.") and records it in `pending` in `data/alerts-sent.json`; when the same
     deal goes through it's recorded without a second alert. A vetoed trade just drops off.
+    The league manager can uphold a trade early (Stroud/Charbonnet was upheld 5 hours in),
+    and it moves to the regular list on the next trade read.
     Pending trades show up on the hourly trade read, or right away with a manual run with
     the `trades` input. Team pages don't show them.
   - A side that got no players got FAAB in this league (Bryar confirmed), so the card says
-    "FAAB" there. The trade data has no dollar amounts.
+    "FAAB" there. ESPN doesn't record the dollars, so when Bryar gives an amount ("$3 for
+    Tre Tucker"), add it to `tradeFaab` in `data/league.json`
+    (`{ "player": "Tre Tucker", "from": "The House Cats", "amount": 3 }`: the team that sent
+    the player got the money). `scripts/trade-faab.mjs` marks the trade (or pending trade)
+    with `faab`, and the card, ticker, team pages and alerts say "$3 FAAB".
+  - Trade and pickup dates are Eastern (they were UTC until Nov 2026, so evening deals
+    showed the next day). `notify.mjs` still matches the older UTC-dated ledger entries.
   - **Trade ticker:** for three days after a trade, a strip just under the masthead
     shows a red "TRADE" tag and crawls every recent trade, ESPN-style
     ("Rico Dowdle to The House Cats for FAAB"; two-sided deals join with " · ", trades
