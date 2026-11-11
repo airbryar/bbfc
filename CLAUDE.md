@@ -282,29 +282,25 @@ in Nov 2026 so one bottom-bar button covers both.
     weeks only (tag "Through Week N"). A dash means no starts since.
   - Like the Scoreboard, the side ahead is in ink and the other is muted. No "won" or
     "fleeced" labels.
-  - **Pending trades** (Nov 2026, Bryar asked: "it's breaking news"): the league has a
-    24-hour review (5 veto votes), and ESPN only adds a trade to the activity feed once it
-    goes through. So `fetch-trades.mjs` also reads `view=mPendingTransactions` into
-    `pending` (accepted `at`, `goesThrough`, who gets whom). The page crawls them in the
-    ticker with a "Pending" tag, puts a blue-outlined "Pending / Goes through Thu 9:10 AM"
-    card above the trades (no points; the top line stays on one line, so no date), and
-    lights the "new" dot; they don't
-    count in the trade tile. `notify.mjs` sends one alert ("… Pending league review until
-    Wed 4:44 PM.") and records it in `pending` in `data/alerts-sent.json`; when the same
-    deal goes through it's recorded without a second alert. A vetoed trade just drops off.
-    The league manager can uphold a trade early (Stroud/Charbonnet was upheld 5 hours in),
-    and it moves to the regular list on the next trade read.
-    Pending trades show up on the hourly trade read, or right away with a manual run with
-    the `trades` input. Team pages don't show them.
+  - **Trades count from the moment they're accepted** (Nov 2026, Bryar: in this league an
+    accepted trade is never disallowed, so report it right away, with no "pending" label).
+    The league has a 24-hour review, and ESPN's activity feed only lists a trade once it
+    goes through, so `fetch-trades.mjs` also reads `view=mPendingTransactions` and adds
+    those trades to the list like any other (same card, ticker and alert). Every trade is
+    dated by its acceptance: ESPN's `TRADE_ACCEPT` entries carry only a time, so each feed
+    trade is paired with the acceptance exactly 24 hours before it went through, or else the
+    latest one before it (the league manager often upholds early). Checked against every
+    trade this season. `notify.mjs` recognizes a deal already sent by who got whom, so a
+    trade's date changing (or the Nov 10-11 "pending" alerts) never sends a second alert.
   - A side that got no players got FAAB in this league (Bryar confirmed), so the card says
     "FAAB" there. ESPN doesn't record the dollars, so when Bryar gives an amount ("$3 for
     Tre Tucker"), add it to `tradeFaab` in `data/league.json`
     (`{ "player": "Tre Tucker", "from": "The House Cats", "amount": 3 }`: the team that sent
-    the player got the money). `scripts/trade-faab.mjs` marks the trade (or pending trade)
-    with `faab`, and the card, ticker, team pages and alerts say "$3 FAAB".
+    the player got the money). `scripts/trade-faab.mjs` marks the trade with `faab`, and the card, ticker, team pages and alerts say "$3 FAAB".
   - Trade and pickup dates are Eastern (they were UTC until Nov 2026, so evening deals
     showed the next day). `notify.mjs` still matches the older UTC-dated ledger entries.
-  - **Trade ticker:** for three days after a trade, a strip just under the masthead
+  - **Trade ticker:** for 24 hours after a trade is accepted (Bryar, Nov 2026; it was three
+    days), a strip just under the masthead
     shows a red "TRADE" tag and crawls every recent trade, ESPN-style
     ("Rico Dowdle to The House Cats for FAAB"; two-sided deals join with " · ", trades
     are separated by a small red diamond). Verb-free on purpose, since team names don't

@@ -77,8 +77,9 @@ async function fromEspn() {
     if (page.length < 50) break;
   }
 
-  // Trades accepted but still in the league's review period: ESPN lists them as pending
-  // until they go through (or get vetoed), so the site can break the news right away
+  // Trades accepted but still in the league's review period. In this league an accepted trade
+  // always goes through (Bryar, Nov 2026), so these count as trades from the moment they're
+  // accepted; ESPN only adds them to the activity feed once the review ends.
   let pendingRaw = [];
   try {
     const pv = await get(`${LEAGUE}?view=mPendingTransactions`);
@@ -91,6 +92,7 @@ async function fromEspn() {
   // this week's and last week's feed the Waiver Wire
   const windows = [];
   const moves = [];
+  const accepts = []; // when each trade was accepted (ESPN keeps only the time, not the players)
   const lastPeriod = Math.min(Math.max(CUR, lastWeek), REG + 4);
   for (let sp = 1; sp <= lastPeriod; sp++) {
     if (!topics.length && sp < CUR - 1) continue; // no trades to date: only the Waiver Wire's weeks
@@ -99,6 +101,11 @@ async function fromEspn() {
       if (x.status !== "EXECUTED") continue;
       windows.push([x.proposedDate, sp]);
       if (sp >= CUR - 1) moves.push({ ...x, sp });
+    }
+    if (!topics.length) continue;
+    const acc = await get(`${LEAGUE}?view=mTransactions2&scoringPeriodId=${sp}`, { transactions: { filterType: { value: ["TRADE_ACCEPT"] } } });
+    for (const x of acc.transactions || []) {
+      if (x.type === "TRADE_ACCEPT" && x.proposedDate) accepts.push(x.proposedDate);
     }
   }
   windows.sort((x, y) => x[0] - y[0]);
@@ -151,47 +158,71 @@ async function fromEspn() {
     return { pts: r1(pts), starts };
   }
 
+  // When each trade was accepted. The feed dates a trade when it went through: exactly one
+  // review period after it was accepted, or earlier if the league manager upheld it. ESPN's
+  // acceptances carry only a time, so pair each trade with the acceptance exactly one review
+  // period before it, else the latest one before it within the review period. Acceptances of
+  // trades still in review are set aside first.
+  const reviewMs = ((a.settings.tradeSettings || {}).revisionHours || 0) * 3600000;
+  const MIN = 60000;
+  const used = new Set();
+  for (const x of pendingRaw) {
+    const own = accepts.find((t) => !used.has(t) && Math.abs(t - x.proposedDate) < 2 * MIN);
+    if (own) used.add(own);
+  }
+  const agreed = new Map();
+  for (const t of [...topics].sort((x, y) => x.date - y.date)) {
+    const P = t.date;
+    let pick = reviewMs ? accepts.find((A) => !used.has(A) && Math.abs(P - A - reviewMs) < 2 * MIN) : null;
+    if (!pick) pick = accepts.filter((A) => !used.has(A) && A <= P + MIN && P - A <= reviewMs + 10 * MIN).sort((x, y) => y - x)[0];
+    if (pick) { used.add(pick); agreed.set(t, pick); }
+    if (process.env.DEBUG_TRADES) console.log(`agreed feed ${new Date(P).toISOString()} accepted ${pick ? new Date(pick).toISOString() : "?"}`);
+  }
+
   const trades = topics
     .map((t) => {
       const msgs = (t.messages || []).filter((m) => m.messageTypeId === 244);
       if (!msgs.length) return null;
-      const week = periodAt(t.date);
+      const at = Math.min(agreed.get(t) || t.date, t.date);
+      const week = periodAt(at);
       const sides = {};
       for (const m of msgs) {
         const since = startedPts(m.targetId, m.to, week);
         (sides[m.to] = sides[m.to] || []).push({ player: plabel(m.targetId), from: tname(m.from), ptsForNewTeamSince: since.pts, startsSince: since.starts });
       }
       return {
-        date: day(t.date),
-        at: t.date, // exact time, for the ticker and the tab's "new" dot
+        date: day(at),
+        at, // when it was accepted: for the ticker and the tab's "new" dot
         week,
         teams: [...new Set(msgs.flatMap((m) => [m.from, m.to]))].map(tname),
         received: Object.entries(sides).map(([tid, players]) => ({ team: tname(Number(tid)), players })),
       };
     })
-    .filter(Boolean)
-    .sort((x, y) => y.date.localeCompare(x.date));
+    .filter(Boolean);
 
-  // Pending trades: accepted (at), and when the review ends and ESPN puts it through
-  const reviewMs = ((a.settings.tradeSettings || {}).revisionHours || 0) * 3600000;
-  const pending = pendingRaw
-    .map((x) => {
-      const items = x.items.filter((i) => i.type === "TRADE");
-      const sides = {};
-      for (const i of items) (sides[i.toTeamId] = sides[i.toTeamId] || []).push({ player: plabel(i.playerId), from: tname(i.fromTeamId) });
-      const goesThrough = x.processDate || null;
-      const at = goesThrough && reviewMs ? goesThrough - reviewMs : x.proposedDate;
-      return {
-        id: x.id,
-        at,
-        goesThrough,
-        date: day(at),
-        week: CUR,
-        teams: [...new Set(items.flatMap((i) => [i.fromTeamId, i.toTeamId]))].map(tname),
-        received: Object.entries(sides).map(([tid, players]) => ({ team: tname(Number(tid)), players })),
-      };
-    })
-    .sort((x, y) => y.at - x.at);
+  // Accepted trades still in review join the list as they are (no "pending" label)
+  const dealOf = (pairs) => pairs.map(([pid, to]) => `${pid}>${to}`).sort().join(",");
+  const inFeed = new Set(topics.map((t) => dealOf((t.messages || []).filter((m) => m.messageTypeId === 244).map((m) => [m.targetId, m.to]))));
+  for (const x of pendingRaw) {
+    const items = x.items.filter((i) => i.type === "TRADE");
+    if (inFeed.has(dealOf(items.map((i) => [i.playerId, i.toTeamId])))) continue;
+    const at = x.proposedDate;
+    const week = periodAt(at);
+    const sides = {};
+    for (const i of items) {
+      const since = startedPts(i.playerId, i.toTeamId, week);
+      (sides[i.toTeamId] = sides[i.toTeamId] || []).push({ player: plabel(i.playerId), from: tname(i.fromTeamId), ptsForNewTeamSince: since.pts, startsSince: since.starts });
+    }
+    if (process.env.DEBUG_TRADES) console.log(`in review ${dealOf(items.map((i) => [i.playerId, i.toTeamId]))} proposed ${x.proposedDate} processes ${x.processDate}`);
+    trades.push({
+      date: day(at),
+      at,
+      week,
+      teams: [...new Set(items.flatMap((i) => [i.fromTeamId, i.toTeamId]))].map(tname),
+      received: Object.entries(sides).map(([tid, players]) => ({ team: tname(Number(tid)), players })),
+    });
+  }
+  trades.sort((x, y) => y.at - x.at);
 
   // Waiver Wire: FAAB left for each team, and this week's and last week's pickups
   const acq = a.settings.acquisitionSettings || {};
@@ -214,7 +245,7 @@ async function fromEspn() {
     .slice(0, 60);
 
   const deadline = (a.settings.tradeSettings || {}).deadlineDate;
-  return { fetchedAt: new Date().toISOString(), through: lastWeek || null, week: CUR, deadline: deadline ? day(deadline) : null, trades, pending, faab, pickups };
+  return { fetchedAt: new Date().toISOString(), through: lastWeek || null, week: CUR, deadline: deadline ? day(deadline) : null, trades, faab, pickups };
 }
 
 // The freshest copy we already have: the live site's, or the saved one
@@ -227,8 +258,9 @@ try {
   // The live site doesn't have a copy yet: the saved one is used.
 }
 
-// The Waiver Wire arrived after the trades did: a copy without it is refreshed right away
-if (last && !("pickups" in last)) last.fetchedAt = "1970-01-01T00:00:00Z";
+// The Waiver Wire arrived after the trades did: a copy without it is refreshed right away.
+// Same for a copy that still keeps trades in review apart under "pending" (before Nov 11, 2026).
+if (last && (!("pickups" in last) || "pending" in last)) last.fetchedAt = "1970-01-01T00:00:00Z";
 const ageMin = last ? (Date.now() - Date.parse(last.fetchedAt)) / 60000 : Infinity;
 if (ageMin < REFRESH_MINUTES && !process.env.FORCE_TRADES) {
   fs.writeFileSync(OUT, JSON.stringify(last));
@@ -238,7 +270,7 @@ if (ageMin < REFRESH_MINUTES && !process.env.FORCE_TRADES) {
     if (!baseHeaders.Cookie) throw new Error("the ESPN_S2 / ESPN_SWID secrets aren't set");
     const data = await fromEspn();
     fs.writeFileSync(OUT, JSON.stringify(data));
-    console.log(`Trades: ${data.trades.length} from ESPN (${data.pending.length} pending review), points through week ${data.through}, saved ${data.fetchedAt}`);
+    console.log(`Trades: ${data.trades.length} from ESPN, points through week ${data.through}, saved ${data.fetchedAt}`);
   } catch (err) {
     console.log(`::warning::Couldn't read trades from ESPN (${err.message}). Keeping the last good list.`);
     if (last) fs.writeFileSync(OUT, JSON.stringify(last));

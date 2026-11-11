@@ -73,15 +73,13 @@ const news = read("data/news.json", { editions: [] });
 const pod = read("data/pod.json", { episodes: [] });
 
 const tradeKey = (t) => t.date + "|" + (t.received || []).map((r) => r.team + ":" + r.players.map((p) => p.player).join(",")).join("|");
-// Who got whom, without the date: matches a pending trade to the same deal once it goes through
+// Who got whom, without the date
 const dealKey = (t) => (t.received || []).map((r) => r.team + ":" + r.players.map((p) => p.player).sort().join(",")).sort().join("|");
-const pendingTrades = tradesFile.pending || [];
 const latestEdition = (news.editions || [])[0] || null;
 const latestEpisode = (pod.episodes || []).slice().sort((a, b) => String(b.date).localeCompare(String(a.date)))[0] || null;
 const lastFinal = (espn.games || []).reduce((m, g) => Math.max(m, g.p), 0);
 const now = {
   trades: (tradesFile.trades || []).map(tradeKey),
-  pending: pendingTrades.map(dealKey),
   news: latestEdition ? latestEdition.id : null,
   poddy: latestEpisode ? latestEpisode.url : null,
   final: lastFinal,
@@ -119,15 +117,17 @@ function tradeText(t) {
   return text;
 }
 const known = new Set(sent.trades || []);
-const announced = new Set(sent.pending || []); // deals already alerted while pending review
-// Trade dates switched from UTC to Eastern (Nov 2026); older ledger entries carry the UTC date
-const utcKey = (t) => { const k = tradeKey(t); return t.at ? new Date(t.at).toISOString().slice(0, 10) + k.slice(k.indexOf("|")) : k; };
-const isKnown = (t) => known.has(tradeKey(t)) || known.has(utcKey(t));
-let fresh = (tradesFile.trades || []).filter((t) => !isKnown(t));
-// A deal that was announced while pending doesn't get a second alert when it goes through
-const quiet = fresh.filter((t) => announced.has(dealKey(t)));
+// A trade's date can change (UTC to Eastern in Nov 2026; then dated by acceptance, not when it
+// went through), so a deal already sent is recognized by who got whom, whatever its date.
+// Deals alerted while they were still "pending" (Nov 10-11, 2026) count too.
+const dealOfKey = (k) => k.slice(k.indexOf("|") + 1).split("|").map((seg) => { const i = seg.indexOf(":"); return seg.slice(0, i) + ":" + seg.slice(i + 1).split(",").sort().join(","); }).sort().join("|");
+const knownDeals = new Set([...[...known].map(dealOfKey), ...(sent.pending || [])]);
+const isKnown = (t) => known.has(tradeKey(t)) || knownDeals.has(dealKey(t));
+let fresh = (tradesFile.trades || []).filter((t) => !known.has(tradeKey(t)));
+// Already sent under another date: just record the new key, no second alert
+const quiet = fresh.filter(isKnown);
 if (quiet.length) { quiet.forEach((t) => known.add(tradeKey(t))); sent.trades = [...known]; changed = true; }
-fresh = fresh.filter((t) => !announced.has(dealKey(t)));
+fresh = fresh.filter((t) => !isKnown(t));
 if (fresh.length > 3) {
   // A big batch (say, the list was rebuilt) gets one summary instead of a flood
   if (await attempt("trades", () => send({ heading: "Trade alert", text: `${fresh.length} new trades. See them in the Trade Center.`, path: "#trades", tag: "trades" }))) {
@@ -140,19 +140,6 @@ if (fresh.length > 3) {
   }
 }
 if (fresh.length) { sent.trades = [...known]; changed = true; }
-
-// Trades accepted but still in the league's review period: breaking news, sent once
-const goesThrough = (ms) => new Date(ms).toLocaleString("en-US", { timeZone: "America/New_York", weekday: "short", hour: "numeric", minute: "2-digit" }).replace(",", "");
-for (const t of pendingTrades) {
-  const key = dealKey(t);
-  if (announced.has(key) || isKnown(t)) continue;
-  const text = tradeText(t) + (t.goesThrough ? `. Pending league review until ${goesThrough(t.goesThrough)}.` : ". Pending league review.");
-  if (await attempt("a pending trade", () => send({ heading: "Trade alert", text, path: "#trades", tag: "trades" }))) {
-    announced.add(key);
-    sent.pending = [...announced];
-    changed = true;
-  }
-}
 
 // Newspaper
 if (now.news && now.news !== sent.news && latestEdition) {
