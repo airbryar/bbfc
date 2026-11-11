@@ -497,6 +497,9 @@ button.refresh { cursor: pointer; }
   font-family: var(--f-label); font-weight: 600; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
 }
 .tr-meta b { color: var(--ink); font-weight: 700; }
+.tr-meta .tr-pend { color: var(--gilt); }
+.trade.pending { border-color: var(--gilt); }
+.trade.pending .tr-meta > span { white-space: nowrap; }
 .tr-side { padding-block: 10px 8px; }
 .tr-side + .tr-side { border-top: 1px solid var(--line); }
 .tr-team { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; }
@@ -536,6 +539,10 @@ button.refresh { cursor: pointer; }
 }
 .tk-item b { font-weight: 700; }
 .tk-item i { font-style: normal; color: var(--band-gilt); font-weight: 500; }
+.tk-pend {
+  display: inline-block; margin-right: 8px; padding: 1px 5px 0; border: 1px solid currentColor; border-radius: 3px;
+  font-size: 11px; letter-spacing: 0.12em; line-height: 15px; vertical-align: 1px; color: var(--band-gilt);
+}
 .tk-sep { padding: 1px 0 0 14px; color: var(--ribbon); font-size: 8px; display: inline-flex; align-items: center; }
 @keyframes tk-crawl { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 .ticker:hover .tk-track { animation-play-state: paused; }
@@ -1964,20 +1971,23 @@ __ESPN__
     // When a trade went through: the exact time when ESPN gave it, otherwise midday Eastern
     function when(t) { return typeof t.at === "number" ? t.at : Date.parse(t.date + "T17:00:00Z"); }
     var list = (T.trades || []).slice().sort(function (a, b) { return when(b) - when(a); });
+    // Accepted trades still in the league's review period (they move to the list once ESPN puts them through)
+    var pend = (T.pending || []).slice().sort(function (a, b) { return when(b) - when(a); });
 
     // Ticker: every trade from the last three days, crawling under the masthead
     var DAY = 86400000, now = Date.now();
-    var recent = list.filter(function (t) { var age = now - when(t); return age >= 0 && age < 3 * DAY; });
+    var recent = pend.concat(list.filter(function (t) { var age = now - when(t); return age >= 0 && age < 3 * DAY; }));
     function names(arr) { return arr.length < 2 ? arr.join("") : arr.slice(0, -1).join(", ") + " and " + arr[arr.length - 1]; }
     function tickerItem(t) {
       var item = el("span", "tk-item");
+      if (pend.indexOf(t) >= 0) item.append(el("span", "tk-pend", "Pending"));
       var got = (t.received || []).filter(function (r) { return r.players && r.players.length; });
       got.forEach(function (r, i) {
         if (i) item.append(el("i", null, " · "));
         item.append(names(r.players.map(function (p) { return String(p.player).replace(/ \([A-Z\/]+\)$/, ""); })));
         item.append(el("i", null, " to "), el("b", null, r.team));
       });
-      if (got.length === 1 && (t.teams || []).length > 1) item.append(el("i", null, " for "), "FAAB");
+      if (got.length === 1 && (t.teams || []).length > 1) item.append(el("i", null, " for "), t.faab ? "$" + t.faab + " FAAB" : "FAAB");
       return item;
     }
     function tickerSep() { var s = el("span", "tk-sep", "◆"); s.setAttribute("aria-hidden", "true"); return s; }
@@ -2008,7 +2018,7 @@ __ESPN__
 
     // "New" dot on the Trades tab: two days after the latest trade, or until you've looked
     var SEEN = "bbfc-trades-seen";
-    var newest = list.length ? when(list[0]) : 0;
+    var newest = Math.max(list.length ? when(list[0]) : 0, pend.length ? when(pend[0]) : 0);
     var seen = 0;
     try { seen = Number(localStorage.getItem(SEEN)) || 0; } catch (e) {}
     if (newest && now - newest >= 0 && now - newest < 2 * DAY && seen < newest) {
@@ -2040,7 +2050,7 @@ __ESPN__
 
     if (T.through) document.getElementById("trades-tag").textContent = "Through Week " + T.through;
     fill("tr-count", String(list.length));
-    if (list.length) fill("tr-count-note", "Latest on " + shortDay(list[0].date));
+    if (list.length || pend.length) fill("tr-count-note", (list.length ? "Latest on " + shortDay(list[0].date) : "") + (list.length && pend.length ? " · " : "") + (pend.length ? pend.length + " pending" : ""));
 
     if (T.deadline) {
       var today = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" });
@@ -2078,7 +2088,7 @@ __ESPN__
         side.append(top);
         var ul = el("ul", "tr-players");
         // A side that got no players got FAAB budget instead
-        if (!has) { var faab = el("li"); faab.append(el("span", null, "FAAB")); ul.append(faab); }
+        if (!has) { var faab = el("li"); faab.append(el("span", null, t.faab ? "$" + t.faab + " FAAB" : "FAAB")); ul.append(faab); }
         s.players.forEach(function (p) {
           var m = /^(.*) \(([A-Z\/]+)\)$/.exec(p.player || "");
           var li = el("li");
@@ -2086,6 +2096,47 @@ __ESPN__
           who.append(m ? m[1] : p.player);
           if (m) who.append(el("span", "tr-pos", m[2]));
           li.append(who, el("span", "tr-pp", p.startsSince ? one(p.ptsForNewTeamSince) : "–"));
+          ul.append(li);
+        });
+        side.append(ul);
+        art.append(side);
+      });
+      return art;
+    }
+
+    // A trade waiting out the review: who gets whom, and when it goes through
+    function goesLabel(ms) {
+      if (!ms) return "Pending review";
+      if (ms <= Date.now()) return "Going through";
+      try {
+        return "Goes through " + new Date(ms).toLocaleString("en-US", { timeZone: "America/New_York", weekday: "short", hour: "numeric", minute: "2-digit" }).replace(",", "");
+      } catch (e) { return "Pending review"; }
+    }
+    function pendingCard(t) {
+      var art = el("article", "trade pending");
+      var meta = el("div", "tr-meta");
+      var w = el("span");
+      w.append(el("b", "tr-pend", "Pending"));
+      meta.append(w, el("span", null, goesLabel(t.goesThrough)));
+      art.append(meta);
+      (t.teams || []).forEach(function (name) {
+        var got = (t.received || []).filter(function (r) { return r.team === name; })[0];
+        var players = got ? got.players : [];
+        var side = el("div", "tr-side");
+        var top = el("div", "tr-team");
+        var nm = el("div", "tr-name");
+        nm.append(badge(idByName[name], name), el("span", null, name));
+        top.append(nm);
+        side.append(top);
+        var ul = el("ul", "tr-players");
+        if (!players.length) { var faab = el("li"); faab.append(el("span", null, t.faab ? "$" + t.faab + " FAAB" : "FAAB")); ul.append(faab); }
+        players.forEach(function (p) {
+          var m = /^(.*) \(([A-Z\/]+)\)$/.exec(p.player || "");
+          var li = el("li");
+          var who = el("span");
+          who.append(m ? m[1] : p.player);
+          if (m) who.append(el("span", "tr-pos", m[2]));
+          li.append(who);
           ul.append(li);
         });
         side.append(ul);
@@ -2155,7 +2206,8 @@ __ESPN__
     })();
 
     var box = document.getElementById("trades-list");
-    if (!list.length) { box.append(el("p", "empty", "No trades yet this season.")); return; }
+    pend.forEach(function (t) { box.append(pendingCard(t)); });
+    if (!list.length) { if (!pend.length) box.append(el("p", "empty", "No trades yet this season.")); return; }
     var SHOW = 3;
     list.slice(0, SHOW).forEach(function (t) { box.append(card(t)); });
     if (list.length > SHOW) {

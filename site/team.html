@@ -660,8 +660,8 @@ __LOGOS__
       var when = "";
       try { when = new Date(d.date + "T12:00:00Z").toLocaleDateString("en-US", { timeZone: "UTC", month: "short", day: "numeric" }); } catch (e) { when = d.date; }
       row.append(el("div", "twhen", when + " · with " + (other || "another team")));
-      var l1 = el("div", "tline"); l1.append(el("i", null, "Got "), got && got.players.length ? plist(got.players) : "FAAB");
-      var l2 = el("div", "tline"); l2.append(el("i", null, "Sent "), gave.length && gave[0].players.length ? plist(gave[0].players) : "FAAB");
+      var l1 = el("div", "tline"); l1.append(el("i", null, "Got "), got && got.players.length ? plist(got.players) : (d.faab ? "$" + d.faab + " FAAB" : "FAAB"));
+      var l2 = el("div", "tline"); l2.append(el("i", null, "Sent "), gave.length && gave[0].players.length ? plist(gave[0].players) : (d.faab ? "$" + d.faab + " FAAB" : "FAAB"));
       row.append(l1, l2);
       tbox.append(row);
     });

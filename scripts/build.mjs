@@ -4,6 +4,7 @@ import fs from "node:fs";
 import { computeOdds } from "./odds.mjs";
 import { computePower } from "./power.mjs";
 import { shownWeek } from "./show-week.mjs";
+import { addFaab } from "./trade-faab.mjs";
 
 const read = (p) => fs.readFileSync(p, "utf8");
 const espn = JSON.parse(read("data/espn.json"));
@@ -16,6 +17,7 @@ const brand = fs.existsSync("data/brand.json") ? JSON.parse(read("data/brand.jso
 const history = fs.existsSync("data/history.json") ? JSON.parse(read("data/history.json")) : null;
 // Trades come from scripts/fetch-trades.mjs; an empty list just shows "No trades yet".
 const trades = fs.existsSync("data/trades.json") ? JSON.parse(read("data/trades.json")) : { through: null, deadline: null, trades: [] };
+addFaab(trades, league); // FAAB amounts Bryar gave (tradeFaab in data/league.json)
 
 // Playoff odds for the rest of the regular season (null once the playoffs start)
 const odds = computeOdds(espn);
