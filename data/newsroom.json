@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-11-12T09:49:32.289Z",
+ "fetchedAt": "2026-11-14T09:48:47.843Z",
  "notes": [
   "Each week a team plays two games: its head-to-head matchup, plus a game against the league median (the top 6 scores of the week win it). 'record' combines both; 'h2h' and 'vsMedian' split them.",
   "The top 6 seeds make the playoffs. The regular season is 14 weeks.",
@@ -180,7 +180,7 @@
    "pa": 902.74,
    "streak": "W3",
    "trades": 1,
-   "pickups": 8,
+   "pickups": 9,
    "faabSpent": 43,
    "h2h": "6-3",
    "vsMedian": "5-4",
@@ -294,7 +294,7 @@
    "pa": 995.82,
    "streak": "W1",
    "trades": 4,
-   "pickups": 77,
+   "pickups": 80,
    "faabSpent": 86,
    "h2h": "4-5",
    "vsMedian": "3-6",
@@ -409,7 +409,7 @@
    "streak": "L2",
    "trades": 3,
    "pickups": 20,
-   "faabSpent": 47,
+   "faabSpent": 44,
    "h2h": "3-6",
    "vsMedian": "3-6",
    "topPlayers": [
@@ -447,7 +447,7 @@
    "streak": "L8",
    "trades": 8,
    "pickups": 37,
-   "faabSpent": 97,
+   "faabSpent": 100,
    "h2h": "2-7",
    "vsMedian": "1-8",
    "topPlayers": [
@@ -1910,7 +1910,7 @@
     "home": "Breece's Pieces",
     "away": "The Mouse Rats",
     "livePoints": "0-0",
-    "projected": "106.23-103.3",
+    "projected": "101.99-97.46",
     "allTimeHeadToHead": "Tyler 0-3 vs Bryar",
     "homeRecord": "11-7",
     "awayRecord": "8-10"
@@ -1918,8 +1918,8 @@
    {
     "home": "I want my Nickleback",
     "away": "Pteem Shteevenshun",
-    "livePoints": "0-0",
-    "projected": "93.4-102.57",
+    "livePoints": "20.76-7.2",
+    "projected": "93.31-101.84",
     "allTimeHeadToHead": "Jared 4-3 vs Caleb",
     "homeRecord": "3-15",
     "awayRecord": "6-12"
@@ -1927,8 +1927,8 @@
    {
     "home": "Every Inch Matters",
     "away": "Real Man of Genius",
-    "livePoints": "0-0",
-    "projected": "114.57-87.96",
+    "livePoints": "0-9.7",
+    "projected": "110.39-91.38",
     "allTimeHeadToHead": "Garrett 6-4 vs Micah",
     "homeRecord": "7-11",
     "awayRecord": "7-11"
@@ -1936,8 +1936,8 @@
    {
     "home": "Illegal use of hands",
     "away": "The House Cats",
-    "livePoints": "0-0",
-    "projected": "118.61-108.09",
+    "livePoints": "0-22.02",
+    "projected": "120.09-87.33",
     "allTimeHeadToHead": "Jeremy 3-1 vs Luke",
     "homeRecord": "13-5",
     "awayRecord": "6-12"
@@ -1945,8 +1945,8 @@
    {
     "home": "Lisan al Gibbs",
     "away": "The Silly Geese",
-    "livePoints": "0-0",
-    "projected": "117.8-105.54",
+    "livePoints": "0-25.7",
+    "projected": "117.44-131.61",
     "allTimeHeadToHead": "Josh 3-3 vs Michael",
     "homeRecord": "16-2",
     "awayRecord": "12-6"
@@ -1955,13 +1955,50 @@
     "home": "GAYleb williams",
     "away": "After Bowers",
     "livePoints": "0-0",
-    "projected": "113.41-95.72",
+    "projected": "113.21-92.54",
     "allTimeHeadToHead": "Landon 1-3 vs Ezra",
     "homeRecord": "11-7",
     "awayRecord": "8-10"
    }
   ],
-  "alreadyPlayedStandouts": []
+  "alreadyPlayedStandouts": [
+   {
+    "team": "The Silly Geese",
+    "player": "Cam Skattebo",
+    "pos": "RB",
+    "pts": 25.7
+   },
+   {
+    "team": "I want my Nickleback",
+    "player": "Jayden Daniels",
+    "pos": "QB",
+    "pts": 20.76
+   },
+   {
+    "team": "The House Cats",
+    "player": "J.J. McCarthy",
+    "pos": "QB",
+    "pts": 17.12
+   },
+   {
+    "team": "Pteem Shteevenshun",
+    "player": "Austin Ekeler",
+    "pos": "RB",
+    "pts": 7.2
+   },
+   {
+    "team": "Real Man of Genius",
+    "player": "Rachaad White",
+    "pos": "RB",
+    "pts": 5.7
+   },
+   {
+    "team": "The House Cats",
+    "player": "Malik Nabers",
+    "pos": "WR",
+    "pts": 4.9
+   }
+  ]
  },
  "nextWeek": {
   "week": 11,
@@ -1999,6 +2036,30 @@
   ]
  },
  "trades": [
+  {
+   "date": "2026-11-12",
+   "week": 10,
+   "teams": [
+    "The House Cats",
+    "I want my Nickleback"
+   ],
+   "received": [
+    {
+     "team": "I want my Nickleback",
+     "manager": "Jared",
+     "players": [
+      {
+       "player": "Tre Tucker (WR)",
+       "from": "The House Cats",
+       "ptsForNewTeamSince": 0,
+       "startsSince": 0,
+       "ptsForOldTeamBefore": 0
+      }
+     ]
+    }
+   ],
+   "note": "Only one side received players in this trade."
+  },
   {
    "date": "2026-11-10",
    "week": 9,
@@ -2572,6 +2633,58 @@
  ],
  "recentPickups": [
   {
+   "date": "2026-11-13",
+   "week": 10,
+   "type": "free agent",
+   "team": "Breece's Pieces",
+   "bid": 0,
+   "added": [
+    "CJ Daniels (WR)"
+   ],
+   "dropped": [
+    "Panthers D/ST (D/ST)"
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "week": 10,
+   "type": "free agent",
+   "team": "Every Inch Matters",
+   "bid": 0,
+   "added": [
+    "Brandon McManus (K)"
+   ],
+   "dropped": [
+    "Jason Sanders (K)"
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "week": 10,
+   "type": "free agent",
+   "team": "Every Inch Matters",
+   "bid": 0,
+   "added": [
+    "Darren Waller (TE)"
+   ],
+   "dropped": [
+    "Mack Hollins (WR)"
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "week": 10,
+   "type": "free agent",
+   "team": "Every Inch Matters",
+   "bid": 0,
+   "added": [
+    "Bears D/ST (D/ST)"
+   ],
+   "dropped": [
+    "Giants D/ST (D/ST)"
+   ]
+  },
+  {
    "date": "2026-11-11",
    "week": 10,
    "type": "waiver claim",
@@ -2647,10 +2760,10 @@
    "date": "2026-11-11",
    "week": 10,
    "type": "waiver claim",
-   "team": "Illegal use of hands",
+   "team": "The Mouse Rats",
    "bid": 1,
    "added": [
-    "49ers D/ST (D/ST)"
+    "Eli Raridon (TE)"
    ],
    "dropped": []
   },
@@ -2658,10 +2771,10 @@
    "date": "2026-11-11",
    "week": 10,
    "type": "waiver claim",
-   "team": "The Mouse Rats",
+   "team": "Illegal use of hands",
    "bid": 1,
    "added": [
-    "Eli Raridon (TE)"
+    "49ers D/ST (D/ST)"
    ],
    "dropped": []
   },
@@ -2715,45 +2828,6 @@
    ],
    "dropped": [
     "Eli Raridon (TE)"
-   ]
-  },
-  {
-   "date": "2026-11-11",
-   "week": 10,
-   "type": "free agent",
-   "team": "The House Cats",
-   "bid": 0,
-   "added": [
-    "Fernando Mendoza (QB)"
-   ],
-   "dropped": [
-    "Brandon Aiyuk (WR)"
-   ]
-  },
-  {
-   "date": "2026-11-11",
-   "week": 10,
-   "type": "waiver claim",
-   "team": "The Silly Geese",
-   "bid": 0,
-   "added": [
-    "Evan McPherson (K)"
-   ],
-   "dropped": [
-    "Drew Stevens (K)"
-   ]
-  },
-  {
-   "date": "2026-11-11",
-   "week": 10,
-   "type": "free agent",
-   "team": "The Mouse Rats",
-   "bid": 0,
-   "added": [
-    "Tyler Higbee (TE)"
-   ],
-   "dropped": [
-    "Darren Waller (TE)"
    ]
   },
   {
@@ -2819,6 +2893,45 @@
    ],
    "dropped": [
     "Browns D/ST (D/ST)"
+   ]
+  },
+  {
+   "date": "2026-11-11",
+   "week": 10,
+   "type": "free agent",
+   "team": "The House Cats",
+   "bid": 0,
+   "added": [
+    "Fernando Mendoza (QB)"
+   ],
+   "dropped": [
+    "Brandon Aiyuk (WR)"
+   ]
+  },
+  {
+   "date": "2026-11-11",
+   "week": 10,
+   "type": "waiver claim",
+   "team": "The Silly Geese",
+   "bid": 0,
+   "added": [
+    "Evan McPherson (K)"
+   ],
+   "dropped": [
+    "Drew Stevens (K)"
+   ]
+  },
+  {
+   "date": "2026-11-11",
+   "week": 10,
+   "type": "free agent",
+   "team": "The Mouse Rats",
+   "bid": 0,
+   "added": [
+    "Tyler Higbee (TE)"
+   ],
+   "dropped": [
+    "Darren Waller (TE)"
    ]
   },
   {
@@ -2895,56 +3008,6 @@
    ],
    "dropped": [
     "Chris Bell (WR)"
-   ]
-  },
-  {
-   "date": "2026-11-06",
-   "week": 9,
-   "type": "waiver claim",
-   "team": "I want my Nickleback",
-   "bid": 5,
-   "added": [
-    "Kyle Pitts Sr. (TE)"
-   ],
-   "dropped": [
-    "Juwan Johnson (TE)"
-   ]
-  },
-  {
-   "date": "2026-11-06",
-   "week": 9,
-   "type": "free agent",
-   "team": "Every Inch Matters",
-   "bid": 0,
-   "added": [
-    "Demarcus Robinson (WR)"
-   ],
-   "dropped": [
-    "MarShawn Lloyd (RB)"
-   ]
-  },
-  {
-   "date": "2026-11-06",
-   "week": 9,
-   "type": "free agent",
-   "team": "Pteem Shteevenshun",
-   "bid": 0,
-   "added": [
-    "Hunter Henry (TE)"
-   ],
-   "dropped": []
-  },
-  {
-   "date": "2026-11-06",
-   "week": 9,
-   "type": "free agent",
-   "team": "Pteem Shteevenshun",
-   "bid": 0,
-   "added": [
-    "Buccaneers D/ST (D/ST)"
-   ],
-   "dropped": [
-    "Treylon Burks (WR)"
    ]
   }
  ],
