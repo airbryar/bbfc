@@ -1,0 +1,25 @@
+name: Temporary roster check
+on:
+  push:
+    branches: [tmp-roster-check]
+permissions:
+  contents: write
+jobs:
+  read:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node tmp/roster.mjs
+        env:
+          ESPN_S2: ${{ secrets.ESPN_S2 }}
+          ESPN_SWID: ${{ secrets.ESPN_SWID }}
+      - run: |
+          git config user.name "airbryar"
+          git config user.email "airbryar@users.noreply.github.com"
+          git add tmp/roster.json
+          git commit -m "Roster check output"
+          git push
