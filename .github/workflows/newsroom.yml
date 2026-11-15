@@ -24,6 +24,14 @@ jobs:
         with:
           node-version: 20
 
+      # This week's lineups (who's still to play), for the Monday edition. Never blocks the rest.
+      - name: Get this week's lineups
+        run: node scripts/fetch-lineups.mjs
+        continue-on-error: true
+        env:
+          ESPN_S2: ${{ secrets.ESPN_S2 }}
+          ESPN_SWID: ${{ secrets.ESPN_SWID }}
+
       - name: Gather league details from ESPN
         run: node scripts/fetch-newsroom.mjs
         env:

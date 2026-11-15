@@ -441,6 +441,54 @@ const thisWeek = (live.schedule || [])
     };
   });
 const thisWeekPlayed = CUR > lastWeek && box[CUR] ? weekDetail(CUR).topPerformances.filter((p) => p.pts > 0).slice(0, 6) : [];
+
+// Where the week stands and who's still to play (for the Monday edition): from data/lineups.json,
+// which the newsroom workflow writes just before this script. Left out if it's missing or stale.
+let liveStatus = null;
+try {
+  const L = JSON.parse(fs.readFileSync("data/lineups.json", "utf8"));
+  if (L && L.week === CUR && Array.isArray(L.games) && L.games.length) {
+    const sides = L.games.flatMap((g) => [g.h, g.a]);
+    const medianOf = (vals) => {
+      const s = vals.slice().sort((x, y) => y - x);
+      const h = Math.floor(s.length / 2);
+      return r1((s[h - 1] + s[h]) / 2);
+    };
+    const curMed = medianOf(sides.map((s) => s.pts));
+    const projMed = medianOf(sides.map((s) => s.proj));
+    const kick = (ms) => (ms ? new Date(ms).toLocaleString("en-US", { timeZone: "America/New_York", weekday: "short", hour: "numeric", minute: "2-digit" }) : null);
+    const left = (p) => p.g === "pre" || p.g === "in";
+    const opponentOf = {};
+    for (const g of L.games) { opponentOf[g.h.id] = g.a.id; opponentOf[g.a.id] = g.h.id; }
+    liveStatus = {
+      asOf: L.fetchedAt,
+      currentMedian: curMed,
+      projectedMedian: projMed,
+      teams: sides
+        .map((s) => ({
+          team: tname(s.id),
+          opponent: tname(opponentOf[s.id]),
+          pts: r1(s.pts),
+          proj: r1(s.proj),
+          vsCurrentMedian: r1(s.pts - curMed),
+          vsProjectedMedian: r1(s.proj - projMed),
+          startersFinished: s.starters.filter((p) => !left(p)).length,
+          startersLeft: s.starters.filter(left).map((p) => ({
+            player: p.n,
+            pos: p.p,
+            nfl: p.t,
+            game: [p.o, kick(p.k)].filter(Boolean).join(", "),
+            status: p.g === "in" ? "playing now" : "not started",
+            ptsSoFar: r1(p.pts),
+            proj: p.pr == null ? null : r1(p.pr),
+          })),
+        }))
+        .sort((x, y) => y.proj - x.proj),
+    };
+  }
+} catch {
+  // No lineups this run: the Newspaper falls back to the matchup scores
+}
 const nextWeek = a.schedule
   .filter((m) => m.matchupPeriodId === CUR + 1 && m.away && m.matchupPeriodId <= REG)
   .map((m) => ({ home: tname(m.home.teamId), away: tname(m.away.teamId), allTimeHeadToHead: rivalry(teamById[m.home.teamId].managerId, teamById[m.away.teamId].managerId) }));
@@ -456,6 +504,7 @@ const out = {
     "Managers are listed by first name. Past seasons list managers, not team names.",
     "allTimeHeadToHead covers every past season plus this one, playoffs included.",
     "Past-season records come from ESPN season records and include median games in seasons that had them; allTimeHeadToHead counts only head-to-head matchups.",
+    "thisWeek.liveStatus (when present) is the week in progress as of 'asOf': each team's points so far and projection, how far it sits from the current and projected median (the midpoint of the 6th and 7th scores), and its starters still to play with their NFL games (times Eastern). Nothing in it is final.",
   ],
   season: SEASON,
   currentWeek: CUR,
@@ -470,7 +519,7 @@ const out = {
   powerRankings,
   weeks,
   recentWeeks,
-  thisWeek: { week: CUR, matchups: thisWeek, alreadyPlayedStandouts: thisWeekPlayed },
+  thisWeek: { week: CUR, matchups: thisWeek, alreadyPlayedStandouts: thisWeekPlayed, liveStatus },
   nextWeek: { week: CUR + 1, matchups: nextWeek },
   trades: tradeList,
   recentPickups,

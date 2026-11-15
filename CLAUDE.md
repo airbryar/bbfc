@@ -171,7 +171,7 @@ Tooling notes from past sessions:
 | `team-pictures/`, `league-logo/` | Where Bryar uploads images on github.com, with READMEs |
 | `.github/workflows/update.yml` | Updates and deploys the site |
 | `.github/workflows/pictures.yml` | Runs on uploads to `team-pictures/` or `league-logo/` |
-| `.github/workflows/newsroom.yml` | Refreshes `data/newsroom.json`; manual or dispatched only |
+| `.github/workflows/newsroom.yml` | Refreshes `data/newsroom.json`; manual or dispatched only. Runs `fetch-lineups.mjs` first so the newsroom data has who's still to play (`thisWeek.liveStatus`) |
 | `.github/workflows/history.yml` | Refreshes `data/history.json`; monthly (3rd) or dispatched |
 
 ## The page
@@ -441,7 +441,7 @@ and points, and a "‹ Home" pill.
   "Still to play" with each opponent's points per game and where the remaining schedule
   ranks league-wide.
 - Top Players (points while started) come from `data/newsroom.json`, so they refresh with
-  the Newspaper's data (Tuesday, Thursday, Saturday).
+  the Newspaper's data (Monday, Tuesday, Thursday, Saturday).
 - Transactions: "FAAB left: $N of $100 · Nth most", trades (got and sent, FAAB where no
   players went one way), and the team's four latest pickups; then the manager's career
   (seasons, record, titles, playoff trips) with links to Transactions and the Record Book.
@@ -451,8 +451,10 @@ and points, and a "‹ Home" pill.
 The Newspaper is two scheduled tasks with the same prompt. They run in the cloud,
 without Bryar's Mac:
 
-- **BBFC Newspaper** (`trig_01MHdDzVwGDM43saxpx6efob`): Thursday and Saturday at
-  4:46 AM Eastern, so editions are up by about 5. Bryar asked for 5 AM (Nov 2026).
+- **BBFC Newspaper** (`trig_01MHdDzVwGDM43saxpx6efob`): Monday, Thursday and Saturday at
+  4:46 AM Eastern, so editions are up by about 5. Bryar asked for 5 AM (Nov 2026), and
+  added the Monday edition on Nov 15, 2026 (a Friday one was considered and skipped: it
+  would mostly repeat Thursday and Saturday).
   ESPN's API answered normally during its 4-7 AM ET maintenance window when checked.
 - **BBFC Newspaper (Tuesday)** (`trig_01RPiymJqjQpM2JbV9WrH81q`): Tuesday at 7:37 AM
   Eastern. Kept later because the recap needs last week to be final on ESPN; move it to
@@ -463,6 +465,8 @@ Each run:
 
 1. Dispatches `newsroom.yml` to refresh `data/newsroom.json`.
 2. Writes three stories from that data. The focus depends on the day:
+   - Monday: where the week stands going into Monday night: close matchups, the median
+     race and who still has players left (`thisWeek.liveStatus` in `newsroom.json`)
    - Tuesday: a recap of the week that just finished
    - Thursday: trades, waivers, trends and history
    - Saturday: a preview of the weekend

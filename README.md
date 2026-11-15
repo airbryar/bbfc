@@ -18,7 +18,7 @@ A GitHub Action (`.github/workflows/update.yml`) runs every 5 minutes during gam
 
 Open pages check for new data once a minute and refresh themselves, keeping your place on the page.
 
-The Newspaper is written by a Claude scheduled task on Tuesday, Thursday and Saturday mornings. It
+The Newspaper is written by a Claude scheduled task on Monday, Tuesday, Thursday and Saturday mornings. It
 refreshes `data/newsroom.json` (`.github/workflows/newsroom.yml`) and adds an edition to `data/news.json`.
 
 ## ESPN sign-in
