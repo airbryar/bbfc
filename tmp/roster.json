@@ -1,0 +1,1738 @@
+{
+ "at": "2026-11-15T20:00:28.547Z",
+ "week": 10,
+ "byes": {
+  "5": [
+   "KC",
+   "CAR"
+  ],
+  "6": [
+   "CIN",
+   "DET",
+   "MIA",
+   "MIN"
+  ],
+  "7": [
+   "BUF",
+   "LAC",
+   "WSH",
+   "JAX"
+  ],
+  "8": [
+   "NO",
+   "NYG",
+   "SF",
+   "HOU"
+  ],
+  "9": [
+   "TEN",
+   "PIT"
+  ],
+  "10": [
+   "CHI",
+   "DEN",
+   "PHI",
+   "TB"
+  ],
+  "11": [
+   "ATL",
+   "CLE",
+   "GB",
+   "LAR",
+   "NE",
+   "SEA"
+  ],
+  "13": [
+   "IND",
+   "LV",
+   "NYJ",
+   "BAL"
+  ],
+  "14": [
+   "DAL",
+   "ARI"
+  ]
+ },
+ "teams": [
+  {
+   "id": 1,
+   "name": "The Silly Geese",
+   "players": [
+    {
+     "n": "CeeDee Lamb",
+     "pos": "WR",
+     "slot": "WR",
+     "nfl": "DAL",
+     "bye": 14,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Justin Jefferson",
+     "pos": "WR",
+     "slot": "WR",
+     "nfl": "MIN",
+     "bye": 6,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Josh Allen",
+     "pos": "QB",
+     "slot": "QB",
+     "nfl": "BUF",
+     "bye": 7,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Jaylen Warren",
+     "pos": "RB",
+     "slot": "RB",
+     "nfl": "PIT",
+     "bye": 9,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Tyler Warren",
+     "pos": "TE",
+     "slot": "TE",
+     "nfl": "IND",
+     "bye": 13,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "A.J. Brown",
+     "pos": "WR",
+     "slot": "BE",
+     "nfl": "NE",
+     "bye": 11,
+     "inj": "QUESTIONABLE"
+    },
+    {
+     "n": "KC Concepcion",
+     "pos": "WR",
+     "slot": "BE",
+     "nfl": "CLE",
+     "bye": 11,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Cam Skattebo",
+     "pos": "RB",
+     "slot": "RB",
+     "nfl": "NYG",
+     "bye": 8,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "RJ Harvey",
+     "pos": "RB",
+     "slot": "IR",
+     "nfl": "DEN",
+     "bye": 10,
+     "inj": "INJURY_RESERVE"
+    },
+    {
+     "n": "Brenton Strange",
+     "pos": "TE",
+     "slot": "BE",
+     "nfl": "JAX",
+     "bye": 7,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Caleb Douglas",
+     "pos": "WR",
+     "slot": "BE",
+     "nfl": "MIA",
+     "bye": 6,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Devin Singletary",
+     "pos": "RB",
+     "slot": "BE",
+     "nfl": "NYG",
+     "bye": 8,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Dylan Sampson",
+     "pos": "RB",
+     "slot": "BE",
+     "nfl": "CLE",
+     "bye": 11,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Zach Charbonnet",
+     "pos": "RB",
+     "slot": "FLEX",
+     "nfl": "SEA",
+     "bye": 11,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Evan McPherson",
+     "pos": "K",
+     "slot": "K",
+     "nfl": "CIN",
+     "bye": 6,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Colts D/ST",
+     "pos": "D/ST",
+     "slot": "D/ST",
+     "nfl": "IND",
+     "bye": 13,
+     "inj": null
+    },
+    {
+     "n": "Chig Okonkwo",
+     "pos": "TE",
+     "slot": "BE",
+     "nfl": "WSH",
+     "bye": 7,
+     "inj": "ACTIVE"
+    }
+   ]
+  },
+  {
+   "id": 2,
+   "name": "The Mouse Rats",
+   "players": [
+    {
+     "n": "Derrick Henry",
+     "pos": "RB",
+     "slot": "RB",
+     "nfl": "BAL",
+     "bye": 13,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Ashton Jeanty",
+     "pos": "RB",
+     "slot": "RB",
+     "nfl": "LV",
+     "bye": 13,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Colston Loveland",
+     "pos": "TE",
+     "slot": "BE",
+     "nfl": "CHI",
+     "bye": 10,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Tetairoa McMillan",
+     "pos": "WR",
+     "slot": "WR",
+     "nfl": "CAR",
+     "bye": 5,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Parker Washington",
+     "pos": "WR",
+     "slot": "WR",
+     "nfl": "JAX",
+     "bye": 7,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Jordan Addison",
+     "pos": "WR",
+     "slot": "BE",
+     "nfl": "MIN",
+     "bye": 6,
+     "inj": "OUT"
+    },
+    {
+     "n": "Will Reichard",
+     "pos": "K",
+     "slot": "K",
+     "nfl": "MIN",
+     "bye": 6,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Germie Bernard",
+     "pos": "WR",
+     "slot": "FLEX",
+     "nfl": "PIT",
+     "bye": 9,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Patrick Mahomes",
+     "pos": "QB",
+     "slot": "QB",
+     "nfl": "KC",
+     "bye": 5,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Omarion Hampton",
+     "pos": "RB",
+     "slot": "BE",
+     "nfl": "LAC",
+     "bye": 7,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Terrance Ferguson",
+     "pos": "TE",
+     "slot": "IR",
+     "nfl": "LAR",
+     "bye": 11,
+     "inj": "INJURY_RESERVE"
+    },
+    {
+     "n": "Corey Kiner",
+     "pos": "RB",
+     "slot": "BE",
+     "nfl": "NE",
+     "bye": 11,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Lions D/ST",
+     "pos": "D/ST",
+     "slot": "BE",
+     "nfl": "DET",
+     "bye": 6,
+     "inj": null
+    },
+    {
+     "n": "Sione Vaki",
+     "pos": "RB",
+     "slot": "BE",
+     "nfl": "DET",
+     "bye": 6,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Audric Estime",
+     "pos": "RB",
+     "slot": "BE",
+     "nfl": "NO",
+     "bye": 8,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Bengals D/ST",
+     "pos": "D/ST",
+     "slot": "D/ST",
+     "nfl": "CIN",
+     "bye": 6,
+     "inj": null
+    },
+    {
+     "n": "Tyler Higbee",
+     "pos": "TE",
+     "slot": "TE",
+     "nfl": "LAR",
+     "bye": 11,
+     "inj": "ACTIVE"
+    }
+   ]
+  },
+  {
+   "id": 3,
+   "name": "The House Cats",
+   "players": [
+    {
+     "n": "Christian McCaffrey",
+     "pos": "RB",
+     "slot": "RB",
+     "nfl": "SF",
+     "bye": 8,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Malik Nabers",
+     "pos": "WR",
+     "slot": "WR",
+     "nfl": "NYG",
+     "bye": 8,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Rashee Rice",
+     "pos": "WR",
+     "slot": "WR",
+     "nfl": "KC",
+     "bye": 5,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Lamar Jackson",
+     "pos": "QB",
+     "slot": "IR",
+     "nfl": "BAL",
+     "bye": 13,
+     "inj": "INJURY_RESERVE"
+    },
+    {
+     "n": "Jadarian Price",
+     "pos": "RB",
+     "slot": "BE",
+     "nfl": "SEA",
+     "bye": 11,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Emeka Egbuka",
+     "pos": "WR",
+     "slot": "BE",
+     "nfl": "TB",
+     "bye": 10,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Rhamondre Stevenson",
+     "pos": "RB",
+     "slot": "FLEX",
+     "nfl": "NE",
+     "bye": 11,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Woody Marks",
+     "pos": "RB",
+     "slot": "RB",
+     "nfl": "HOU",
+     "bye": 8,
+     "inj": "QUESTIONABLE"
+    },
+    {
+     "n": "Brandon Aubrey",
+     "pos": "K",
+     "slot": "K",
+     "nfl": "DAL",
+     "bye": 14,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Malik Washington",
+     "pos": "WR",
+     "slot": "BE",
+     "nfl": "MIA",
+     "bye": 6,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "T.J. Hockenson",
+     "pos": "TE",
+     "slot": "BE",
+     "nfl": "MIN",
+     "bye": 6,
+     "inj": "OUT"
+    },
+    {
+     "n": "Kaelon Black",
+     "pos": "RB",
+     "slot": "BE",
+     "nfl": "SF",
+     "bye": 8,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Jaguars D/ST",
+     "pos": "D/ST",
+     "slot": "D/ST",
+     "nfl": "JAX",
+     "bye": 7,
+     "inj": null
+    },
+    {
+     "n": "Rico Dowdle",
+     "pos": "RB",
+     "slot": "BE",
+     "nfl": "PIT",
+     "bye": 9,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "J.J. McCarthy",
+     "pos": "QB",
+     "slot": "QB",
+     "nfl": "NYG",
+     "bye": 8,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Fernando Mendoza",
+     "pos": "QB",
+     "slot": "BE",
+     "nfl": "LV",
+     "bye": 13,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Mike Gesicki",
+     "pos": "TE",
+     "slot": "TE",
+     "nfl": "CIN",
+     "bye": 6,
+     "inj": "ACTIVE"
+    }
+   ]
+  },
+  {
+   "id": 4,
+   "name": "Illegal use of hands",
+   "players": [
+    {
+     "n": "Puka Nacua",
+     "pos": "WR",
+     "slot": "BE",
+     "nfl": "LAR",
+     "bye": 11,
+     "inj": "INJURY_RESERVE"
+    },
+    {
+     "n": "Jaxon Smith-Njigba",
+     "pos": "WR",
+     "slot": "WR",
+     "nfl": "SEA",
+     "bye": 11,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Kyren Williams",
+     "pos": "RB",
+     "slot": "RB",
+     "nfl": "LAR",
+     "bye": 11,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Bhayshul Tuten",
+     "pos": "RB",
+     "slot": "RB",
+     "nfl": "JAX",
+     "bye": 7,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Jameson Williams",
+     "pos": "WR",
+     "slot": "FLEX",
+     "nfl": "DET",
+     "bye": 6,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "George Kittle",
+     "pos": "TE",
+     "slot": "TE",
+     "nfl": "SF",
+     "bye": 8,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Trevor Lawrence",
+     "pos": "QB",
+     "slot": "QB",
+     "nfl": "JAX",
+     "bye": 7,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Kyle Monangai",
+     "pos": "RB",
+     "slot": "BE",
+     "nfl": "CHI",
+     "bye": 10,
+     "inj": "OUT"
+    },
+    {
+     "n": "Tank Dell",
+     "pos": "WR",
+     "slot": "WR",
+     "nfl": "HOU",
+     "bye": 8,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Isaiah Likely",
+     "pos": "TE",
+     "slot": "BE",
+     "nfl": "NYG",
+     "bye": 8,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Chiefs D/ST",
+     "pos": "D/ST",
+     "slot": "D/ST",
+     "nfl": "KC",
+     "bye": 5,
+     "inj": null
+    },
+    {
+     "n": "Chris Boswell",
+     "pos": "K",
+     "slot": "K",
+     "nfl": "PIT",
+     "bye": 9,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Marvin Harrison Jr.",
+     "pos": "WR",
+     "slot": "BE",
+     "nfl": "HOU",
+     "bye": 8,
+     "inj": "OUT"
+    },
+    {
+     "n": "Jared Goff",
+     "pos": "QB",
+     "slot": "BE",
+     "nfl": "DET",
+     "bye": 6,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Keon Coleman",
+     "pos": "WR",
+     "slot": "BE",
+     "nfl": "BUF",
+     "bye": 7,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Roman Wilson",
+     "pos": "WR",
+     "slot": "IR",
+     "nfl": "PIT",
+     "bye": 9,
+     "inj": "INJURY_RESERVE"
+    },
+    {
+     "n": "49ers D/ST",
+     "pos": "D/ST",
+     "slot": "BE",
+     "nfl": "SF",
+     "bye": 8,
+     "inj": null
+    }
+   ]
+  },
+  {
+   "id": 5,
+   "name": "Breece's Pieces",
+   "players": [
+    {
+     "n": "Ja'Marr Chase",
+     "pos": "WR",
+     "slot": "WR",
+     "nfl": "CIN",
+     "bye": 6,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Nico Collins",
+     "pos": "WR",
+     "slot": "WR",
+     "nfl": "HOU",
+     "bye": 8,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Breece Hall",
+     "pos": "RB",
+     "slot": "RB",
+     "nfl": "NYJ",
+     "bye": 13,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Rome Odunze",
+     "pos": "WR",
+     "slot": "BE",
+     "nfl": "CHI",
+     "bye": 10,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Sam LaPorta",
+     "pos": "TE",
+     "slot": "TE",
+     "nfl": "DET",
+     "bye": 6,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Blake Corum",
+     "pos": "RB",
+     "slot": "RB",
+     "nfl": "LAR",
+     "bye": 11,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Jakobi Meyers",
+     "pos": "WR",
+     "slot": "FLEX",
+     "nfl": "JAX",
+     "bye": 7,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Braelon Allen",
+     "pos": "RB",
+     "slot": "BE",
+     "nfl": "NYJ",
+     "bye": 13,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Drake Maye",
+     "pos": "QB",
+     "slot": "QB",
+     "nfl": "NE",
+     "bye": 11,
+     "inj": "QUESTIONABLE"
+    },
+    {
+     "n": "Bucky Irving",
+     "pos": "RB",
+     "slot": "BE",
+     "nfl": "TB",
+     "bye": 10,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Joe Burrow",
+     "pos": "QB",
+     "slot": "BE",
+     "nfl": "CIN",
+     "bye": 6,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Ladd McConkey",
+     "pos": "WR",
+     "slot": "BE",
+     "nfl": "LAC",
+     "bye": 7,
+     "inj": "OUT"
+    },
+    {
+     "n": "Jason Myers",
+     "pos": "K",
+     "slot": "K",
+     "nfl": "SEA",
+     "bye": 11,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Omar Cooper Jr.",
+     "pos": "WR",
+     "slot": "BE",
+     "nfl": "NYJ",
+     "bye": 13,
+     "inj": "OUT"
+    },
+    {
+     "n": "CJ Daniels",
+     "pos": "WR",
+     "slot": "BE",
+     "nfl": "LAR",
+     "bye": 11,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Dolphins D/ST",
+     "pos": "D/ST",
+     "slot": "D/ST",
+     "nfl": "MIA",
+     "bye": 6,
+     "inj": null
+    }
+   ]
+  },
+  {
+   "id": 6,
+   "name": "Pteem Shteevenshun",
+   "players": [
+    {
+     "n": "Bijan Robinson",
+     "pos": "RB",
+     "slot": "RB",
+     "nfl": "ATL",
+     "bye": 11,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Jonathan Taylor",
+     "pos": "RB",
+     "slot": "FLEX",
+     "nfl": "IND",
+     "bye": 13,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Drake London",
+     "pos": "WR",
+     "slot": "WR",
+     "nfl": "ATL",
+     "bye": 11,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Jaylen Waddle",
+     "pos": "WR",
+     "slot": "BE",
+     "nfl": "DEN",
+     "bye": 10,
+     "inj": "QUESTIONABLE"
+    },
+    {
+     "n": "Luther Burden III",
+     "pos": "WR",
+     "slot": "BE",
+     "nfl": "CHI",
+     "bye": 10,
+     "inj": "QUESTIONABLE"
+    },
+    {
+     "n": "Josh Downs",
+     "pos": "WR",
+     "slot": "WR",
+     "nfl": "KC",
+     "bye": 5,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Kenny Gainwell",
+     "pos": "RB",
+     "slot": "BE",
+     "nfl": "TB",
+     "bye": 10,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Dalton Kincaid",
+     "pos": "TE",
+     "slot": "BE",
+     "nfl": "BUF",
+     "bye": 7,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Jonah Coleman",
+     "pos": "RB",
+     "slot": "BE",
+     "nfl": "DEN",
+     "bye": 10,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Brian Robinson Jr.",
+     "pos": "RB",
+     "slot": "IR",
+     "nfl": "ATL",
+     "bye": 11,
+     "inj": "INJURY_RESERVE"
+    },
+    {
+     "n": "Spencer Shrader",
+     "pos": "K",
+     "slot": "K",
+     "nfl": "IND",
+     "bye": 13,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Jordan Love",
+     "pos": "QB",
+     "slot": "BE",
+     "nfl": "GB",
+     "bye": 11,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Rams D/ST",
+     "pos": "D/ST",
+     "slot": "D/ST",
+     "nfl": "LAR",
+     "bye": 11,
+     "inj": null
+    },
+    {
+     "n": "Hunter Henry",
+     "pos": "TE",
+     "slot": "TE",
+     "nfl": "NE",
+     "bye": 11,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Buccaneers D/ST",
+     "pos": "D/ST",
+     "slot": "BE",
+     "nfl": "TB",
+     "bye": 10,
+     "inj": null
+    },
+    {
+     "n": "Austin Ekeler",
+     "pos": "RB",
+     "slot": "RB",
+     "nfl": "WSH",
+     "bye": 7,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Drew Lock",
+     "pos": "QB",
+     "slot": "QB",
+     "nfl": "SEA",
+     "bye": 11,
+     "inj": "ACTIVE"
+    }
+   ]
+  },
+  {
+   "id": 7,
+   "name": "After Bowers",
+   "players": [
+    {
+     "n": "Chase Brown",
+     "pos": "RB",
+     "slot": "RB",
+     "nfl": "CIN",
+     "bye": 6,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Brock Bowers",
+     "pos": "TE",
+     "slot": "TE",
+     "nfl": "LV",
+     "bye": 13,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "George Pickens",
+     "pos": "WR",
+     "slot": "WR",
+     "nfl": "DAL",
+     "bye": 14,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Garrett Wilson",
+     "pos": "WR",
+     "slot": "FLEX",
+     "nfl": "NYJ",
+     "bye": 13,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Jordan Mason",
+     "pos": "RB",
+     "slot": "RB",
+     "nfl": "MIN",
+     "bye": 6,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Stefon Diggs",
+     "pos": "WR",
+     "slot": "BE",
+     "nfl": "WSH",
+     "bye": 7,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Ka'imi Fairbairn",
+     "pos": "K",
+     "slot": "K",
+     "nfl": "HOU",
+     "bye": 8,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Dak Prescott",
+     "pos": "QB",
+     "slot": "QB",
+     "nfl": "DAL",
+     "bye": 14,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Vikings D/ST",
+     "pos": "D/ST",
+     "slot": "BE",
+     "nfl": "MIN",
+     "bye": 6,
+     "inj": null
+    },
+    {
+     "n": "Alvin Kamara",
+     "pos": "RB",
+     "slot": "BE",
+     "nfl": "NO",
+     "bye": 8,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "DJ Moore",
+     "pos": "WR",
+     "slot": "WR",
+     "nfl": "BUF",
+     "bye": 7,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Keenan Allen",
+     "pos": "WR",
+     "slot": "BE",
+     "nfl": "SF",
+     "bye": 8,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Seth McGowan",
+     "pos": "RB",
+     "slot": "BE",
+     "nfl": "IND",
+     "bye": 13,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Chris Rodriguez Jr.",
+     "pos": "RB",
+     "slot": "BE",
+     "nfl": "JAX",
+     "bye": 7,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Packers D/ST",
+     "pos": "D/ST",
+     "slot": "D/ST",
+     "nfl": "GB",
+     "bye": 11,
+     "inj": null
+    },
+    {
+     "n": "Tank Bigsby",
+     "pos": "RB",
+     "slot": "IR",
+     "nfl": "PHI",
+     "bye": 10,
+     "inj": "INJURY_RESERVE"
+    },
+    {
+     "n": "Kenyon Sadiq",
+     "pos": "TE",
+     "slot": "BE",
+     "nfl": "NYJ",
+     "bye": 13,
+     "inj": "ACTIVE"
+    }
+   ]
+  },
+  {
+   "id": 8,
+   "name": "Lisan al Gibbs",
+   "players": [
+    {
+     "n": "Jahmyr Gibbs",
+     "pos": "RB",
+     "slot": "RB",
+     "nfl": "DET",
+     "bye": 6,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Trey McBride",
+     "pos": "TE",
+     "slot": "TE",
+     "nfl": "ARI",
+     "bye": 14,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "D'Andre Swift",
+     "pos": "RB",
+     "slot": "BE",
+     "nfl": "CHI",
+     "bye": 10,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Zay Flowers",
+     "pos": "WR",
+     "slot": "WR",
+     "nfl": "BAL",
+     "bye": 13,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Christian Watson",
+     "pos": "WR",
+     "slot": "FLEX",
+     "nfl": "GB",
+     "bye": 11,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Tony Pollard",
+     "pos": "RB",
+     "slot": "RB",
+     "nfl": "TEN",
+     "bye": 9,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Makai Lemon",
+     "pos": "WR",
+     "slot": "BE",
+     "nfl": "PHI",
+     "bye": 10,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Matthew Stafford",
+     "pos": "QB",
+     "slot": "BE",
+     "nfl": "LAR",
+     "bye": 11,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Khalil Shakir",
+     "pos": "WR",
+     "slot": "BE",
+     "nfl": "BUF",
+     "bye": 7,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Cam Little",
+     "pos": "K",
+     "slot": "K",
+     "nfl": "JAX",
+     "bye": 7,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Devaughn Vele",
+     "pos": "WR",
+     "slot": "BE",
+     "nfl": "NO",
+     "bye": 8,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Texans D/ST",
+     "pos": "D/ST",
+     "slot": "D/ST",
+     "nfl": "HOU",
+     "bye": 8,
+     "inj": null
+    },
+    {
+     "n": "Tee Higgins",
+     "pos": "WR",
+     "slot": "WR",
+     "nfl": "CIN",
+     "bye": 6,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "C.J. Stroud",
+     "pos": "QB",
+     "slot": "QB",
+     "nfl": "HOU",
+     "bye": 8,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Tutu Atwell",
+     "pos": "WR",
+     "slot": "BE",
+     "nfl": "LAR",
+     "bye": 11,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Kaleb Johnson",
+     "pos": "RB",
+     "slot": "BE",
+     "nfl": "GB",
+     "bye": 11,
+     "inj": "ACTIVE"
+    }
+   ]
+  },
+  {
+   "id": 9,
+   "name": "Real Man of Genius",
+   "players": [
+    {
+     "n": "Chris Olave",
+     "pos": "WR",
+     "slot": "WR",
+     "nfl": "NO",
+     "bye": 8,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Jeremiyah Love",
+     "pos": "RB",
+     "slot": "IR",
+     "nfl": "ARI",
+     "bye": 14,
+     "inj": "INJURY_RESERVE"
+    },
+    {
+     "n": "Travis Etienne Jr.",
+     "pos": "RB",
+     "slot": "RB",
+     "nfl": "NO",
+     "bye": 8,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Carnell Tate",
+     "pos": "WR",
+     "slot": "BE",
+     "nfl": "TEN",
+     "bye": 9,
+     "inj": "OUT"
+    },
+    {
+     "n": "Matthew Golden",
+     "pos": "WR",
+     "slot": "WR",
+     "nfl": "GB",
+     "bye": 11,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Deebo Samuel Sr.",
+     "pos": "WR",
+     "slot": "FLEX",
+     "nfl": "SF",
+     "bye": 8,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Tyler Shough",
+     "pos": "QB",
+     "slot": "QB",
+     "nfl": "NO",
+     "bye": 8,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Ryan Flournoy",
+     "pos": "WR",
+     "slot": "BE",
+     "nfl": "DAL",
+     "bye": 14,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Justice Hill",
+     "pos": "RB",
+     "slot": "BE",
+     "nfl": "BAL",
+     "bye": 13,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Travis Kelce",
+     "pos": "TE",
+     "slot": "TE",
+     "nfl": "KC",
+     "bye": 5,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Aaron Jones Sr.",
+     "pos": "RB",
+     "slot": "BE",
+     "nfl": "MIN",
+     "bye": 6,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Kirk Cousins",
+     "pos": "QB",
+     "slot": "BE",
+     "nfl": "MIN",
+     "bye": 6,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Rachaad White",
+     "pos": "RB",
+     "slot": "RB",
+     "nfl": "WSH",
+     "bye": 7,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Matt Gay",
+     "pos": "K",
+     "slot": "K",
+     "nfl": "LV",
+     "bye": 13,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Tyler Allgeier",
+     "pos": "RB",
+     "slot": "BE",
+     "nfl": "ARI",
+     "bye": 14,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Broncos D/ST",
+     "pos": "D/ST",
+     "slot": "BE",
+     "nfl": "DEN",
+     "bye": 10,
+     "inj": null
+    },
+    {
+     "n": "Commanders D/ST",
+     "pos": "D/ST",
+     "slot": "D/ST",
+     "nfl": "WSH",
+     "bye": 7,
+     "inj": null
+    }
+   ]
+  },
+  {
+   "id": 10,
+   "name": "GAYleb williams",
+   "players": [
+    {
+     "n": "Amon-Ra St. Brown",
+     "pos": "WR",
+     "slot": "WR",
+     "nfl": "DET",
+     "bye": 6,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Javonte Williams",
+     "pos": "RB",
+     "slot": "RB",
+     "nfl": "DAL",
+     "bye": 14,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "DeVonta Smith",
+     "pos": "WR",
+     "slot": "BE",
+     "nfl": "PHI",
+     "bye": 10,
+     "inj": "OUT"
+    },
+    {
+     "n": "Davante Adams",
+     "pos": "WR",
+     "slot": "BE",
+     "nfl": "LAR",
+     "bye": 11,
+     "inj": "INJURY_RESERVE"
+    },
+    {
+     "n": "Harold Fannin Jr.",
+     "pos": "TE",
+     "slot": "TE",
+     "nfl": "CLE",
+     "bye": 11,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Caleb Williams",
+     "pos": "QB",
+     "slot": "BE",
+     "nfl": "CHI",
+     "bye": 10,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Chuba Hubbard",
+     "pos": "RB",
+     "slot": "RB",
+     "nfl": "CAR",
+     "bye": 5,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Quinshon Judkins",
+     "pos": "RB",
+     "slot": "FLEX",
+     "nfl": "CLE",
+     "bye": 11,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Denzel Boston",
+     "pos": "WR",
+     "slot": "WR",
+     "nfl": "CLE",
+     "bye": 11,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Seahawks D/ST",
+     "pos": "D/ST",
+     "slot": "D/ST",
+     "nfl": "SEA",
+     "bye": 11,
+     "inj": null
+    },
+    {
+     "n": "Steelers D/ST",
+     "pos": "D/ST",
+     "slot": "BE",
+     "nfl": "PIT",
+     "bye": 9,
+     "inj": null
+    },
+    {
+     "n": "Bryce Young",
+     "pos": "QB",
+     "slot": "QB",
+     "nfl": "CAR",
+     "bye": 5,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Jake Bates",
+     "pos": "K",
+     "slot": "K",
+     "nfl": "DET",
+     "bye": 6,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Jahan Dotson",
+     "pos": "WR",
+     "slot": "BE",
+     "nfl": "ATL",
+     "bye": 11,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Kayshon Boutte",
+     "pos": "WR",
+     "slot": "BE",
+     "nfl": "HOU",
+     "bye": 8,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Darnell Washington",
+     "pos": "TE",
+     "slot": "BE",
+     "nfl": "PIT",
+     "bye": 9,
+     "inj": "ACTIVE"
+    }
+   ]
+  },
+  {
+   "id": 11,
+   "name": "Every Inch Matters",
+   "players": [
+    {
+     "n": "James Cook III",
+     "pos": "RB",
+     "slot": "RB",
+     "nfl": "BUF",
+     "bye": 7,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Mike Evans",
+     "pos": "WR",
+     "slot": "IR",
+     "nfl": "SF",
+     "bye": 8,
+     "inj": "OUT"
+    },
+    {
+     "n": "Tucker Kraft",
+     "pos": "TE",
+     "slot": "TE",
+     "nfl": "GB",
+     "bye": 11,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Brock Purdy",
+     "pos": "QB",
+     "slot": "QB",
+     "nfl": "SF",
+     "bye": 8,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Mike Washington Jr.",
+     "pos": "RB",
+     "slot": "BE",
+     "nfl": "LV",
+     "bye": 13,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Kenneth Walker III",
+     "pos": "RB",
+     "slot": "BE",
+     "nfl": "KC",
+     "bye": 5,
+     "inj": "OUT"
+    },
+    {
+     "n": "Jordyn Tyson",
+     "pos": "WR",
+     "slot": "WR",
+     "nfl": "NO",
+     "bye": 8,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Emmett Johnson",
+     "pos": "RB",
+     "slot": "RB",
+     "nfl": "KC",
+     "bye": 5,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Michael Wilson",
+     "pos": "WR",
+     "slot": "BE",
+     "nfl": "ARI",
+     "bye": 14,
+     "inj": "INJURY_RESERVE"
+    },
+    {
+     "n": "Antonio Williams",
+     "pos": "WR",
+     "slot": "BE",
+     "nfl": "WSH",
+     "bye": 7,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Ray Davis",
+     "pos": "RB",
+     "slot": "BE",
+     "nfl": "BUF",
+     "bye": 7,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Adonai Mitchell",
+     "pos": "WR",
+     "slot": "WR",
+     "nfl": "NYJ",
+     "bye": 13,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Ravens D/ST",
+     "pos": "D/ST",
+     "slot": "D/ST",
+     "nfl": "BAL",
+     "bye": 13,
+     "inj": null
+    },
+    {
+     "n": "Jets D/ST",
+     "pos": "D/ST",
+     "slot": "BE",
+     "nfl": "NYJ",
+     "bye": 13,
+     "inj": null
+    },
+    {
+     "n": "Bears D/ST",
+     "pos": "D/ST",
+     "slot": "BE",
+     "nfl": "CHI",
+     "bye": 10,
+     "inj": null
+    },
+    {
+     "n": "Darren Waller",
+     "pos": "TE",
+     "slot": "FLEX",
+     "nfl": "CAR",
+     "bye": 5,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Charlie Smyth",
+     "pos": "K",
+     "slot": "K",
+     "nfl": "NO",
+     "bye": 8,
+     "inj": "ACTIVE"
+    }
+   ]
+  },
+  {
+   "id": 12,
+   "name": "I want my Nickleback",
+   "players": [
+    {
+     "n": "Saquon Barkley",
+     "pos": "RB",
+     "slot": "BE",
+     "nfl": "PHI",
+     "bye": 10,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Josh Jacobs",
+     "pos": "RB",
+     "slot": "BE",
+     "nfl": "GB",
+     "bye": 11,
+     "inj": "OUT"
+    },
+    {
+     "n": "Dallas Goedert",
+     "pos": "TE",
+     "slot": "BE",
+     "nfl": "PHI",
+     "bye": 10,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Jayden Daniels",
+     "pos": "QB",
+     "slot": "QB",
+     "nfl": "WSH",
+     "bye": 7,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Jalen Coker",
+     "pos": "WR",
+     "slot": "WR",
+     "nfl": "CAR",
+     "bye": 5,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "David Montgomery",
+     "pos": "RB",
+     "slot": "BE",
+     "nfl": "HOU",
+     "bye": 8,
+     "inj": "OUT"
+    },
+    {
+     "n": "James Conner",
+     "pos": "RB",
+     "slot": "IR",
+     "nfl": "ARI",
+     "bye": 14,
+     "inj": "INJURY_RESERVE"
+    },
+    {
+     "n": "Tyler Bass",
+     "pos": "K",
+     "slot": "K",
+     "nfl": "BUF",
+     "bye": 7,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "DK Metcalf",
+     "pos": "WR",
+     "slot": "WR",
+     "nfl": "PIT",
+     "bye": 9,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Ollie Gordon II",
+     "pos": "RB",
+     "slot": "RB",
+     "nfl": "MIA",
+     "bye": 6,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Jacory Croskey-Merritt",
+     "pos": "RB",
+     "slot": "BE",
+     "nfl": "WSH",
+     "bye": 7,
+     "inj": "INJURY_RESERVE"
+    },
+    {
+     "n": "DeMario Douglas",
+     "pos": "WR",
+     "slot": "FLEX",
+     "nfl": "NE",
+     "bye": 11,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Bills D/ST",
+     "pos": "D/ST",
+     "slot": "D/ST",
+     "nfl": "BUF",
+     "bye": 7,
+     "inj": null
+    },
+    {
+     "n": "Kyle Pitts Sr.",
+     "pos": "TE",
+     "slot": "TE",
+     "nfl": "ATL",
+     "bye": 11,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Pat Bryant",
+     "pos": "WR",
+     "slot": "BE",
+     "nfl": "DEN",
+     "bye": 10,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Bam Knight",
+     "pos": "RB",
+     "slot": "RB",
+     "nfl": "ARI",
+     "bye": 14,
+     "inj": "ACTIVE"
+    },
+    {
+     "n": "Tre Tucker",
+     "pos": "WR",
+     "slot": "BE",
+     "nfl": "LV",
+     "bye": 13,
+     "inj": "ACTIVE"
+    }
+   ]
+  }
+ ]
+}
