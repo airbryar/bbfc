@@ -218,11 +218,22 @@ in Nov 2026 so one bottom-bar button covers both.
     been eliminated, which get green "Clinched" / red "Eliminated" tags (on their own line
     under the name, in both the odds view and the Table).
   - **What it takes** (Nov 2026): when the math says one result this week would settle a
-    team's spot, a plain green/red line under it says so ("Clinches with a 2–0 week",
+    team's spot, a plain green/red line under it in the Playoff odds view (not the Table)
+    says so ("Clinches with a 2–0 week",
     "Clinches with a win", "Needs a 2–0 week to stay alive", "Eliminated with an 0–2
     week"); team pages show the same line under This Week. Bryar didn't want the
     per-result percentages, so nothing shows otherwise. `odds.mjs` gives each team
     `week` (best result first): "in" / "out" when guaranteed, else the simulated chance.
+  - **Clinched, Eliminated and "What it takes" count who plays whom** (Nov 2026, Bryar
+    asked): `certainty()` in `odds.mjs` solves small flow problems over the remaining
+    schedule (each head-to-head game gives one win; six median wins a week, one per team),
+    trying every group of teams that could matter. The old wins-only test missed cases
+    like Week 10's: Lisan al Gibbs clinched with a 2–0 week because After Bowers and The
+    Mouse Rats, the only teams who could catch them by winning out, play each other.
+    It leaves out one rule (the head-to-head loser can't make the median unless the winner
+    did, between two other teams), which can only make it cautious. Checked against an
+    exact integer-program solver on 120 random league states: all 7,200 answers matched.
+    Takes about a tenth of a second.
   - Odds (`scripts/odds.mjs`): each team's scores are drawn around its average so far,
     pulled 20% toward the league average, with the league's week-to-week swing; the week
     in progress uses ESPN's live projections, narrowing as games finish, so the odds move

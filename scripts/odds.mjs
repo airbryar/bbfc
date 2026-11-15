@@ -15,13 +15,16 @@
 // Seeded, so the same data gives the same odds.
 //
 // "Clinched" and "Eliminated" are only set when the math guarantees it, not from the
-// simulation: clinched if at most (spots - 1) other teams can still reach this team's win
-// total; eliminated if at least (spots) teams already have more wins than it can reach.
+// simulation, and the math counts who still plays whom (certainty(), at the bottom):
+// clinched if, even losing every game left, no (spots) other teams can all reach this
+// team's win total; eliminated if, even winning every game left, (spots) other teams
+// would still have more wins.
 //
 // "What it takes": each team's odds after each possible result this week (2-0, 1-1 or 0-2
 // with median games; a win or a loss without), from the simulations where that happened.
 // "in" / "out" replace the number when the math guarantees it, using the same tests with
-// this week's result added (and, after a head-to-head win, one less win for the opponent).
+// this week's result fixed (every way of getting it: a 1-1 week can be a head-to-head win
+// or a median win).
 
 const SIMS = 10000;
 const SHRINK = 0.8; // how much of a team's difference from the league average to trust
@@ -142,40 +145,210 @@ export function computeOdds(E) {
     });
   }
 
-  // Mathematical certainty, from wins alone (ties count against the team)
+  // Mathematical certainty (ties count against the team), using the schedule: see sure()
   const perWeek = medianOn ? 2 : 1;
   const maxGain = left * perWeek;
   const wins = (id) => team[id].w + (team[id].t || 0) / 2;
+  const sure = certainty({ ids, wins, weeks, weekList, spots, medianOn });
+  const LOSE = { h: false, m: false }, WIN = { h: true, m: !!medianOn };
+  // The ways a team can have a given result this week: [won head-to-head, won median]
+  const waysTo = (k) => !medianOn ? [{ h: k === 1, m: false }] : k === 2 ? [WIN] : k === 1 ? [{ h: true, m: false }, { h: false, m: true }] : [LOSE];
   const out = {};
   for (const id of ids) {
-    const others = ids.filter((o) => o !== id);
-    const canReach = others.filter((o) => wins(o) + maxGain >= wins(id)).length;
-    const alreadyAbove = others.filter((o) => wins(o) > wins(id) + maxGain).length;
+    const rest = (r) => weekList.slice(1).map(() => r);
+    const clinched = sure.clinched(id, weekList.map(() => LOSE));
+    const eliminated = !clinched && sure.eliminated(id, weekList.map(() => WIN));
     const games = finishedWeeks * perWeek + maxGain;
     const projW = winsSum[id] / SIMS;
-    // What it takes this week: index 0 is the best result (2-0), the last is the worst
+    // What it takes this week: index 0 is the best result (2-0), the last is the worst.
+    // A better result can only help, so once one result doesn't clinch, worse ones don't either.
     let week = null;
     if (left > 0 && weekList[0] === cur) {
-      const opp = (weeks[cur].find(([h, a]) => h === id || a === id) || []).find((x) => x !== id);
-      week = [];
-      for (let k = perWeek; k >= 0; k--) {
-        const mine = wins(id) + k;
-        const reach = (o) => wins(o) + maxGain - (o === opp && k === perWeek ? 1 : 0);
-        if (others.filter((o) => reach(o) >= mine).length <= spots - 1) { week.push("in"); continue; }
-        if (others.filter((o) => wins(o) > mine + (left - 1) * perWeek).length >= spots) { week.push("out"); continue; }
-        const nSims = wkCount[id][k];
-        week.push(nSims >= SIMS / 100 ? Math.round((wkMade[id][k] / nSims) * 1000) / 1000 : null); // too rare to say
+      const ks = []; for (let k = perWeek; k >= 0; k--) ks.push(k);
+      const isIn = {}, isOut = {};
+      let still = true;
+      for (const k of ks) {
+        still = still && (clinched || waysTo(k).every((x) => sure.clinched(id, [x, ...rest(LOSE)])));
+        isIn[k] = still;
       }
+      still = true;
+      for (const k of ks.slice().reverse()) {
+        still = still && !isIn[k] && (eliminated || waysTo(k).every((x) => sure.eliminated(id, [x, ...rest(WIN)])));
+        isOut[k] = still;
+      }
+      week = ks.map((k) => {
+        if (isIn[k]) return "in";
+        if (isOut[k]) return "out";
+        const nSims = wkCount[id][k];
+        return nSims >= SIMS / 100 ? Math.round((wkMade[id][k] / nSims) * 1000) / 1000 : null; // too rare to say
+      });
     }
     out[id] = {
       playoffs: made[id] / SIMS,
       bye: byes ? bye[id] / SIMS : null,
       projW: Math.round(projW),
       projL: games - Math.round(projW),
-      clinched: canReach <= spots - 1,
-      eliminated: alreadyAbove >= spots,
+      clinched,
+      eliminated,
       week,
     };
   }
   return { sims: SIMS, weeksLeft: left, week: cur, spots, byes, medianOn, tiebreak: rule, teams: out };
+}
+
+// ---- Clinched and eliminated, counting who still plays whom ----
+//
+// Each remaining head-to-head game gives one win to one of its two teams, and each week the
+// top half of the league wins a median game (one per team). So whether `spots` teams can all
+// pass a team, or whether enough teams can be kept behind it, is a small flow problem, tried
+// for every group of teams that could matter. This is what catches cases like two chasing
+// teams who play each other, so they can't both win out.
+//
+// Left out to keep it a flow problem: the head-to-head winner always outscored the loser,
+// so the loser can't win the median unless the winner did (between two other teams), and
+// head-to-head ties. Leaving them out can only make it more cautious: a team might show
+// Clinched or Eliminated a little later than the math allows, never too early.
+//
+// A plan gives the team's own results week by week: { h: won head-to-head, m: won median }.
+// clinched(X, plan): no `spots` other teams can all finish with at least as many wins as X.
+// eliminated(X, plan): there's no way to keep fewer than `spots` other teams above X
+//   (a tie on wins might go X's way, so ties don't count against it here).
+function certainty({ ids, wins, weeks, weekList, spots, medianOn }) {
+  const half = medianOn ? Math.floor(ids.length / 2) : 0;
+  const EPS = 1e-9, BIG = 1e9;
+
+  // Team X's situation under a plan: its final wins, the wins its results hand to opponents,
+  // the games left between other teams, and each week's open median spots.
+  function scene(X, plan) {
+    const T = wins(X) + plan.reduce((s, r) => s + (r.h ? 1 : 0) + (r.m ? 1 : 0), 0);
+    const base = {}, games = [], slots = [], barred = [];
+    weekList.forEach((p, i) => {
+      const r = plan[i];
+      let open = half - (r.m ? 1 : 0), bar = null;
+      for (const [h, a] of weeks[p]) {
+        if (h !== X && a !== X) { games.push([h, a]); continue; }
+        const o = h === X ? a : h;
+        if (!r.h) base[o] = (base[o] || 0) + 1; // X lost, so the opponent won
+        if (medianOn && r.h && !r.m) bar = o; // X won but missed the median: the opponent scored less, so it missed too
+        if (medianOn && !r.h && r.m) { base[o]++; open--; bar = o; } // X lost but made the median: the opponent made it too
+      }
+      slots.push(Math.max(0, open));
+      barred.push(bar);
+    });
+    const others = ids.filter((o) => o !== X);
+    const room = {}; // the most wins each other team can still add
+    for (const o of others) room[o] = games.filter(([h, a]) => h === o || a === o).length + slots.filter((n, i) => n > 0 && barred[i] !== o).length;
+    return { T, base, games, slots, barred, others, room };
+  }
+
+  // Can `spots` other teams all reach X's final wins?
+  function canBePassed(X, plan) {
+    const s = scene(X, plan);
+    const need = {};
+    for (const o of s.others) need[o] = Math.max(0, Math.ceil(s.T - wins(o) - (s.base[o] || 0) - EPS));
+    const already = s.others.filter((o) => need[o] === 0).length;
+    if (already >= spots) return true;
+    const cand = s.others.filter((o) => need[o] > 0 && need[o] <= s.room[o]);
+    const k = spots - already;
+    if (cand.length < k) return false;
+    for (const pick of choose(cand, k)) {
+      const G = flow(), SRC = G.node(), SNK = G.node(), node = {};
+      let total = 0;
+      for (const o of pick) { node[o] = G.node(); G.add(node[o], SNK, need[o]); total += need[o]; }
+      for (const [h, a] of s.games) {
+        if (!(h in node) && !(a in node)) continue;
+        const g = G.node(); G.add(SRC, g, 1);
+        if (h in node) G.add(g, node[h], 1);
+        if (a in node) G.add(g, node[a], 1);
+      }
+      s.slots.forEach((n, i) => {
+        if (!n) return;
+        const wk = G.node(); G.add(SRC, wk, n);
+        for (const o of pick) if (s.barred[i] !== o) G.add(wk, node[o], 1);
+      });
+      if (G.run(SRC, SNK) >= total) return true;
+    }
+    return false;
+  }
+
+  // Can enough other teams be kept at or below X's final wins? Every remaining game's win and
+  // every open median spot has to go to someone.
+  function canStayAlive(X, plan) {
+    const s = scene(X, plan);
+    const size = ids.length - spots; // how many others must stay at or below X
+    const cap = {};
+    for (const o of s.others) cap[o] = Math.floor(s.T - wins(o) - (s.base[o] || 0) + EPS);
+    const ok = s.others.filter((o) => cap[o] >= 0);
+    if (ok.length < size) return false;
+    const easy = ok.filter((o) => cap[o] >= s.room[o]); // can't pass X even winning everything
+    if (easy.length >= size) return true;
+    const hard = ok.filter((o) => cap[o] < s.room[o]);
+    const total = s.games.length + s.slots.reduce((t, n) => t + n, 0);
+    for (const pick of choose(hard, size - easy.length)) {
+      const held = new Set(pick);
+      const G = flow(), SRC = G.node(), SNK = G.node(), node = {};
+      for (const o of s.others) { node[o] = G.node(); G.add(node[o], SNK, held.has(o) ? cap[o] : BIG); }
+      for (const [h, a] of s.games) { const g = G.node(); G.add(SRC, g, 1); G.add(g, node[h], 1); G.add(g, node[a], 1); }
+      s.slots.forEach((n, i) => {
+        if (!n) return;
+        const wk = G.node(); G.add(SRC, wk, n);
+        for (const o of s.others) if (s.barred[i] !== o) G.add(wk, node[o], 1);
+      });
+      if (G.run(SRC, SNK) >= total) return true;
+    }
+    return false;
+  }
+
+  return {
+    clinched: (X, plan) => !canBePassed(X, plan),
+    eliminated: (X, plan) => !canStayAlive(X, plan),
+  };
+}
+
+function* choose(arr, k, start = 0, acc = []) {
+  if (acc.length === k) { yield acc.slice(); return; }
+  for (let i = start; i <= arr.length - (k - acc.length); i++) {
+    acc.push(arr[i]);
+    yield* choose(arr, k, i + 1, acc);
+    acc.pop();
+  }
+}
+
+// Max flow (Dinic's algorithm) on a small graph
+function flow() {
+  const head = [], to = [], cap = [], nxt = [];
+  return {
+    node() { head.push(-1); return head.length - 1; },
+    add(u, v, c) {
+      to.push(v); cap.push(c); nxt.push(head[u]); head[u] = to.length - 1;
+      to.push(u); cap.push(0); nxt.push(head[v]); head[v] = to.length - 1;
+    },
+    run(s, t) {
+      let total = 0;
+      for (;;) {
+        const level = new Array(head.length).fill(-1);
+        level[s] = 0;
+        const q = [s];
+        for (let qi = 0; qi < q.length; qi++) {
+          const u = q[qi];
+          for (let e = head[u]; e !== -1; e = nxt[e]) if (cap[e] > 0 && level[to[e]] < 0) { level[to[e]] = level[u] + 1; q.push(to[e]); }
+        }
+        if (level[t] < 0) return total;
+        const it = head.slice();
+        const push = (u, f) => {
+          if (u === t) return f;
+          for (; it[u] !== -1; it[u] = nxt[it[u]]) {
+            const e = it[u], v = to[e];
+            if (cap[e] > 0 && level[v] === level[u] + 1) {
+              const d = push(v, Math.min(f, cap[e]));
+              if (d > 0) { cap[e] -= d; cap[e ^ 1] += d; return d; }
+            }
+          }
+          return 0;
+        };
+        let f;
+        while ((f = push(s, Infinity)) > 0) total += f;
+      }
+    },
+  };
 }

@@ -1406,7 +1406,7 @@ __ESPN__
       "This week uses ESPN's live projections, so the odds move during games.",
       (ODDS.medianOn ? "Median games count, and ties" : "Ties") + " are broken " + (ODDS.tiebreak === "H2H_RECORD" ? "by head-to-head record, then points scored" : ODDS.tiebreak === "TOTAL_POINTS_SCORED" ? "by points scored" : "by points scored, close to the league's own tiebreaker") + ", like ESPN does.",
       "When one result this week would settle a team's spot, it says so under the team" + (ODDS.medianOn ? " (a 2–0 week means winning both the head-to-head and the median game)" : "") + ".",
-      "Clinched and Eliminated, and those lines, only appear when the math guarantees it.",
+      "Clinched and Eliminated, and those lines, only appear when the math guarantees it, counting who still plays whom.",
     ].forEach(function (t) { how.append(el("li", null, t)); });
     function fmt(p, sure) {
       if (sure === "in") return "100%";
