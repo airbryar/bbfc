@@ -1,6 +1,51 @@
 {
   "editions": [
     {
+      "id": "2026-11-16",
+      "date": "2026-11-16",
+      "label": "Monday Edition",
+      "week": 10,
+      "publishedAt": "2026-11-16T12:37:05.898Z",
+      "stories": [
+        {
+          "kicker": "Monday Night",
+          "headline": "Ravens-Chargers Holds the Last Open Questions of Week 10",
+          "dek": "Three BBFC starters play Monday night, and one of them will settle the week's closest matchup and its final median spot.",
+          "body": [
+            "Nine of Week 10's twelve lineups are finished, and everything left to decide runs through one NFL game. Baltimore hosts the Chargers at 8:15 p.m. Monday with three BBFC starters on the field: Derrick Henry, Zay Flowers and the Ravens D/ST. Henry is the one with the most riding on him.",
+            "Tyler's Breece's Pieces finished Sunday with 105.7 points. Bryar's The Mouse Rats sit at 100.7 with Henry still to play, a gap of 5.0 points. Henry is projected for 17.6, which would put The Mouse Rats at 118.3. Breece's Pieces came into the week on a three-game winning streak, while Tyler is 0-3 against Bryar in their all-time series.",
+            "Henry also controls the last median spot. The current median is 108.8, the midpoint between Jeremy's Illegal use of hands in sixth at 111.9 and Breece's Pieces in seventh at 105.7. Illegal use of hands is finished, so if Henry scores 11.2 points or more, The Mouse Rats move past them and take the sixth median win. On projections, the median rises to 113.5, with Illegal use of hands 1.6 points short. Breece's Pieces cannot climb back into the top six on Monday.",
+            "The other two Ravens starters are protecting leads. Josh's Lisan al Gibbs leads Michael's The Silly Geese 125.5 to 115.0, and The Silly Geese have no one left to play. Flowers is projected for 11.9, which would lift Lisan al Gibbs to 137.4. Garrett's Every Inch Matters leads Micah's Real Man of Genius 119.2 to 75.0, with the Ravens D/ST, projected for 7.8, still to go.",
+            "The standings stakes are real at both ends. Lisan al Gibbs entered the week at 16-2, three games clear of Illegal use of hands at 13-5, and Jeremy's median result now waits on a player from another team. Near the cut line, Ezra's After Bowers holds the sixth seed at 8-10, level with The Mouse Rats in seventh, and After Bowers already owns the week's top score at 145.9. Breece's Pieces, fifth at 11-7, will be watching Henry for its head-to-head result."
+          ]
+        },
+        {
+          "kicker": "Sunday Best",
+          "headline": "After Bowers Posts 145.9, Its Best Score of the Season by Nearly 25 Points",
+          "dek": "Dak Prescott and George Pickens combined for 72.4 points as Ezra's lineup built a 28.8-point lead over GAYleb williams.",
+          "body": [
+            "Ezra's After Bowers had not topped 121 points all season. On Sunday it put up 145.9, the highest score of Week 10, and its lineup is finished with a 28.8-point lead over Landon's GAYleb williams. The total beats After Bowers' previous high of 120.9, set in a Week 5 loss to The Silly Geese, by nearly 25 points.",
+            "Two players did most of the work. George Pickens scored 38.0 points and Dak Prescott added 34.4, a combined 72.4, or close to half of the team's total. Prescott has been After Bowers' most productive player all year, with 167.4 points in nine starts through Week 9. Pickens' 38.0 is the third-best individual score of the week so far, behind only Christian McCaffrey and Jahmyr Gibbs.",
+            "The number holds up against the whole season. Only three scores this year have been higher: Lisan al Gibbs' 162.6 in Week 5, The Mouse Rats' 149.1 in Week 1 and Illegal use of hands' 148.9 in Week 6. After Bowers had averaged 102.6 points per game coming in and sat sixth in the power rankings.",
+            "GAYleb williams did not have a bad day. Its 117.1 points rank fourth this week and sit 8.3 above the current median of 108.8, which puts Landon in position for a median win even with the head-to-head out of reach. Landon came in on a three-game winning streak at 11-7, the fourth seed, and trailed Ezra 1-3 in their all-time series.",
+            "The timing matters for After Bowers. Ezra entered the week holding the sixth and final playoff seed at 8-10, with a 3-6 head-to-head mark and a 5-4 record against the median. If the lead and the top-six score both hold through Monday night, After Bowers would reach 10-10 with four weeks left in the regular season."
+          ]
+        },
+        {
+          "kicker": "Standouts",
+          "headline": "McCaffrey's 44.3 Leads a Sunday of Big Individual Games",
+          "dek": "Jahmyr Gibbs, Patrick Mahomes and Emmett Johnson also cleared 30 points, though not every big day came with a lead.",
+          "body": [
+            "Christian McCaffrey turned in the best individual game of Week 10 so far, scoring 44.3 points for Luke's The House Cats. It was not quite enough. The House Cats finished at 101.4, and Jeremy's Illegal use of hands, also done for the week, sits 10.5 points ahead at 111.9 with nothing left to play on either side.",
+            "McCaffrey came into the week with 148.7 points in eight starts, the most on the House Cats roster, so Sunday alone added about 30 percent to his season total. The House Cats entered at 6-12 on a two-game losing streak, and their 101.4 sits 7.4 points below the current median. Jeremy came into the matchup with a 3-1 all-time record against Luke.",
+            "Jahmyr Gibbs had the second-best game, 40.7 points, and his team is in better shape. Josh's Lisan al Gibbs leads The Silly Geese 125.5 to 115.0. Gibbs entered the week with 192.2 points in eight starts, the top total on the league's best team, and Lisan al Gibbs has one starter, Zay Flowers, still to play Monday.",
+            "Patrick Mahomes scored 35.4 for Bryar's The Mouse Rats, more than the 33.0 he had produced in three starts for them since arriving from The Silly Geese in an October 16 trade. The Mouse Rats trail Breece's Pieces 105.7 to 100.7 with Derrick Henry still to play.",
+            "Emmett Johnson's 32.1 points may be the most surprising line of the day. Garrett's Every Inch Matters acquired him from The Silly Geese on October 2 in a deal that also brought Michael Wilson and Jordyn Tyson, and through Week 9 Johnson had not started a game for his new team. He scored 22.8 on the bench in Week 8. This time he was in the lineup, and Every Inch Matters leads Real Man of Genius 119.2 to 75.0."
+          ]
+        }
+      ]
+    },
+    {
       "id": "2026-11-14",
       "date": "2026-11-14",
       "label": "Saturday Edition",
