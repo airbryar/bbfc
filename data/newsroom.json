@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-11-17T12:38:23.716Z",
+ "fetchedAt": "2026-11-17T16:39:55.003Z",
  "notes": [
   "Each week a team plays two games: its head-to-head matchup, plus a game against the league median (the top 6 scores of the week win it). 'record' combines both; 'h2h' and 'vsMedian' split them.",
   "The top 6 seeds make the playoffs. The regular season is 14 weeks.",
@@ -66,7 +66,7 @@
    "pf": 1233.54,
    "pa": 1095.38,
    "streak": "L2",
-   "trades": 0,
+   "trades": 1,
    "pickups": 15,
    "faabSpent": 30,
    "h2h": "7-3",
@@ -446,7 +446,7 @@
    "pf": 873.86,
    "pa": 1023.84,
    "streak": "L9",
-   "trades": 8,
+   "trades": 9,
    "pickups": 37,
    "faabSpent": 100,
    "h2h": "2-8",
@@ -1979,7 +1979,7 @@
     "home": "I want my Nickleback",
     "away": "Illegal use of hands",
     "livePoints": "0-0",
-    "projected": "98.06-98.88",
+    "projected": "97.88-101.23",
     "allTimeHeadToHead": "Jared 3-0 vs Jeremy",
     "homeRecord": "3-17",
     "awayRecord": "14-6"
@@ -1988,7 +1988,7 @@
     "home": "The Mouse Rats",
     "away": "After Bowers",
     "livePoints": "0-0",
-    "projected": "94.27-106.72",
+    "projected": "104.15-106.49",
     "allTimeHeadToHead": "Bryar 4-0 vs Ezra",
     "homeRecord": "10-10",
     "awayRecord": "10-10"
@@ -1997,7 +1997,7 @@
     "home": "Breece's Pieces",
     "away": "Lisan al Gibbs",
     "livePoints": "0-0",
-    "projected": "105.36-126.33",
+    "projected": "104.62-126.28",
     "allTimeHeadToHead": "Tyler 3-3 vs Josh",
     "homeRecord": "11-9",
     "awayRecord": "18-2"
@@ -2006,7 +2006,7 @@
     "home": "Real Man of Genius",
     "away": "GAYleb williams",
     "livePoints": "0-0",
-    "projected": "88.75-107.53",
+    "projected": "88.83-110.68",
     "allTimeHeadToHead": "Micah 1-1 vs Landon",
     "homeRecord": "7-13",
     "awayRecord": "12-8"
@@ -2015,7 +2015,7 @@
     "home": "The Silly Geese",
     "away": "Pteem Shteevenshun",
     "livePoints": "0-0",
-    "projected": "111.73-84.26",
+    "projected": "113.19-84.22",
     "allTimeHeadToHead": "Michael 2-1 vs Caleb",
     "homeRecord": "13-7",
     "awayRecord": "7-13"
@@ -2024,7 +2024,7 @@
     "home": "The House Cats",
     "away": "Every Inch Matters",
     "livePoints": "0-0",
-    "projected": "78.62-111.8",
+    "projected": "78.62-110.34",
     "allTimeHeadToHead": "Luke 1-2 vs Garrett",
     "homeRecord": "6-14",
     "awayRecord": "9-11"
