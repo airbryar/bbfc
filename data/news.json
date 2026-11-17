@@ -1,6 +1,28 @@
 {
   "editions": [
     {
+      "id": "2026-11-17-trade",
+      "date": "2026-11-17",
+      "label": "Special Edition",
+      "week": 11,
+      "publishedAt": "2026-11-17T16:44:00.000Z",
+      "stories": [
+        {
+          "kicker": "Trade Extra",
+          "headline": "Jeremy Sends Kyren Williams and George Kittle to Jared for Josh Jacobs",
+          "dek": "The No. 2 seed moves two regular starters for Jacobs days before the two clubs meet in Week 11, and around the league the early verdict favors Jared.",
+          "body": [
+            "The 15th trade of the season came together Tuesday morning. Jeremy's Illegal use of hands, second in the standings at 14-6, sent running back Kyren Williams and tight end George Kittle to Jared's I want my Nickleback for running back Josh Jacobs. The deal was accepted at 11:25 a.m. It is Jeremy's first trade of the year and Jared's ninth, the most in the league. The Silly Geese are next with six.",
+            "The early reviews are in, and they lean one way. The general consensus around the league is that Jared won the trade handily.",
+            "Williams has been a fixture for Illegal use of hands. He started all 10 weeks and scored 145.3 points in the lineup, second on the team behind Jaxon Smith-Njigba's 223.7. His best day was 31.7 in Week 4. The last three weeks were quieter at 12.4, 7.6 and 4.2, each below his ESPN projection. Kittle started seven times at tight end, in Weeks 3 through 7 and again in Weeks 9 and 10, and scored 87.5 points, or 12.5 a start, with a high of 23.2 in Week 3.",
+            "Jacobs has three starts this season, all for Nickleback, in Weeks 7 through 9: 17.6, 20.2 and 0.5 points. He sat on the bench without an ESPN projection in Weeks 1 through 6 and again in Week 10, and ESPN currently lists him as out.",
+            "Illegal use of hands makes the move with its playoff place close to settled. The site's playoff odds have it above 99 percent to make the field and at 68 percent for one of the two first-round byes. Its 1,233.54 points are second in the league, 5.36 behind Lisan al Gibbs, though it has gone 1-3 over the last two weeks. Nickleback is 3-17 and 12th after nine straight losses, and the odds show it needs a 2-0 week to stay alive.",
+            "That 2-0 week would have to come against Jeremy. Nickleback hosts Illegal use of hands in Week 11, so the two sides of the deal meet right away, and Jared is 3-0 against Jeremy all time, playoffs included. Jared won the 2024 title, and Jeremy finished second to Tyler last season. The trade deadline is Dec. 2."
+          ]
+        }
+      ]
+    },
+    {
       "id": "2026-11-17",
       "date": "2026-11-17",
       "label": "Tuesday Edition",
