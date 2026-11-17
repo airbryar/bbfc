@@ -1,0 +1,17 @@
+name: Temporary trade facts
+on:
+  push:
+    branches: [tmp-trade-facts]
+jobs:
+  facts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node tmp/trade-facts.mjs
+        env:
+          ESPN_S2: ${{ secrets.ESPN_S2 }}
+          ESPN_SWID: ${{ secrets.ESPN_SWID }}
