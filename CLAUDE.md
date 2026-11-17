@@ -28,6 +28,17 @@ this site through conversations with Claude, so:
   projections in the reply.
 - **Newspaper:** sports-page tone. No trash talk, mocking or roasting; he finds it corny.
   Managers' first names are fine. Facts only from league data.
+- **Teams are "they," never "it"** (Bryar, Nov 17, 2026), like a real football squad:
+  "After Bowers held on, and they stay in the last playoff spot." Applies to the
+  Newspaper (both scheduled task prompts carry the same rule) and any other writing
+  about teams. Earlier editions were left as they are.
+- **Special editions:** when Bryar asks for a one-off story (like the Nov 17, 2026 trade
+  story), it goes in `data/news.json` as its own edition at the top with label
+  "Special Edition", a unique id such as `2026-11-17-trade` (so the day's regular
+  edition isn't replaced) and one story. `add-edition.mjs` only takes 3-story drafts,
+  so add it directly, keeping the same per-story limits. Its push sends the Newspaper
+  alert. If Bryar passes along league opinion (e.g. "the consensus is Jared won the
+  trade"), attribute it to the league rather than stating it as the paper's verdict.
 - **Don't single out The Mouse Rats.** No highlighting, extra attention or favorable spin
   anywhere on the site, including Median Watch. (The per-viewer "My team" highlight is
   different: each person picks their own team in Settings, and nothing is picked by
