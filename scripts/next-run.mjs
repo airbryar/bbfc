@@ -24,6 +24,20 @@ const day = parts.weekday; // Sun, Mon, ...
 const mins = Number(parts.hour) * 60 + Number(parts.minute);
 const at = (h, m = 0) => h * 60 + m;
 
+// Saturday NFL games only happen late in the season, so a Saturday counts as a game window
+// only when this week's lineups (data/lineups.json, written earlier in the run) have a player
+// whose game kicks off that Saturday, Eastern time. Before Nov 21, 2026 every Saturday
+// afternoon ran once a minute with no games on.
+const etDate = (ms) => new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York" }).format(new Date(ms));
+function gameOn(date) {
+  try {
+    const text = fs.readFileSync("data/lineups.json", "utf8");
+    return [...text.matchAll(/"k":(\d{12,})/g)].some((m) => etDate(Number(m[1])) === date);
+  } catch {
+    return false;
+  }
+}
+
 // Game windows in Eastern time, with a little room for late finishes.
 const live =
   (day === "Thu" && mins >= at(19, 45)) ||
@@ -31,8 +45,8 @@ const live =
   (day === "Sun" && mins >= at(9, 15)) || // includes the London morning games
   (day === "Mon" && (mins < at(1, 15) || mins >= at(19, 45))) ||
   (day === "Tue" && mins < at(1, 15)) ||
-  (day === "Sat" && mins >= at(12, 45)) ||
-  (day === "Sun" && mins < at(1, 15));
+  (day === "Sat" && mins >= at(12, 45) && gameOn(etDate(Date.now()))) ||
+  (day === "Sun" && mins < at(1, 15) && gameOn(etDate(Date.now() - 3 * 3600e3)));
 
 if (!live) {
   console.log(`Not a game window (${day} ${parts.hour}:${parts.minute} ET); back to the regular schedule`);

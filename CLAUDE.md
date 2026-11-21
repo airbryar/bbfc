@@ -89,7 +89,9 @@ When it runs:
   in UTC.
 - During game windows (Eastern time, in `scripts/next-run.mjs`), each run starts the next
   one about 50 seconds after its ESPN read. Scores refresh about once a minute.
-  `liveEveryMinute` in `data/league.json` turns this off.
+  `liveEveryMinute` in `data/league.json` turns this off. Saturdays count only when this
+  week's lineups have a game kicking off that Saturday (Nov 21, 2026; before that, every
+  Saturday afternoon ran once a minute with no games on).
 - Every push to `main` triggers a run, which is how code changes go live.
 - Tuesday mornings it also commits a copy of `data/espn.json`.
 
@@ -114,10 +116,16 @@ any new page-wide listener or timer. OneSignal starts once per visit (`window.__
 If the new copy's page script or `<style>` differs (a code change), it does a full reload
 instead.
 
-**GitHub Pages sometimes stalls** with "Deployment failed, try again later." The workflow
-retries once on its own: it pushes an empty "Republish the site (automatic)" commit and
-dispatches itself. If a change doesn't show up, check the latest Pages deployment.
-Pushing another empty commit has always fixed it.
+**GitHub Pages sometimes misses a deploy** ("Deployment failed, try again later", or, often
+in Nov 2026, "No artifacts named github-pages were found" a few seconds after the upload).
+The workflow waits 20 seconds and deploys again. If that fails too,
+`scripts/missed-deploy.mjs` pushes an empty "Republish the site (automatic)" commit and
+dispatches a fresh run (only when the live site is 5+ minutes behind, at most once every
+15 minutes) and does **not** fail the run: GitHub emails Bryar about every failed run, and
+until Nov 21, 2026 these hiccups did, sometimes several a day. The run fails (one email) only
+when the live site has gone 3+ hours without updating and the last finished run didn't
+already fail. If a change doesn't show up, check the latest Pages deployment. Pushing another
+empty commit has always fixed it.
 
 It can also stall silently: on Nov 8, 2026, every deploy from 9:15 AM on reported
 `success` while the live site stayed on the 8:28 AM version (same commit all morning), so
@@ -159,6 +167,7 @@ Tooling notes from past sessions:
 | `scripts/next-run.mjs` | Game-window pacing |
 | `scripts/show-week.mjs` | Keeps last week's finals up on Tuesdays (new week on Wednesday) |
 | `scripts/check-live.mjs` | After each deploy, republishes if the live site stopped changing |
+| `scripts/missed-deploy.mjs` | When both deploy tries fail: republishes if needed; fails the run (an email) only after 3+ hours |
 | `scripts/fetch-trades.mjs` | Trades and Waiver Wire reader (about hourly); same trade logic as the newsroom script |
 | `site/sw-offline.js` | The offline copy, added to the service worker by `build.mjs` |
 | `scripts/fetch-lineups.mjs` | This week's lineups for the matchup details sheet (every update) |

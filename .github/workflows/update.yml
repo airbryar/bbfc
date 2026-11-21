@@ -39,11 +39,11 @@ jobs:
     timeout-minutes: 10
     environment:
       name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
+      url: ${{ steps.deploy.outputs.page_url || steps.deploy2.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 20
 
@@ -99,47 +99,47 @@ jobs:
             git push || (git pull --rebase origin main && git push) || echo "::warning::Couldn't save the data copy this time"
           fi
 
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
 
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: _site
 
       - id: deploy
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
         continue-on-error: true
 
-      # GitHub Pages sometimes gets stuck on one commit and refuses to deploy it
-      # again. A fresh, empty commit gets it moving; only one try per stuck commit.
-      - name: Unstick GitHub Pages if the deploy failed
+      # A few seconds after the upload, GitHub sometimes can't find it yet ("No artifacts
+      # named github-pages were found", Nov 2026). Give it a moment and try once more.
+      - name: Wait a moment, then deploy again
         if: steps.deploy.outcome == 'failure'
+        run: sleep 20
+
+      - id: deploy2
+        if: steps.deploy.outcome == 'failure'
+        uses: actions/deploy-pages@v5
+        continue-on-error: true
+
+      # Both tries failed. The site keeps showing the last version and the next run tries
+      # again, so this doesn't fail the run (GitHub emails Bryar about failed runs) unless the
+      # live site has gone 3+ hours without updating. It also pushes a fresh commit when the
+      # live site is falling behind, since that has always gotten a stuck Pages site moving.
+      - name: Deal with a missed deploy
+        if: steps.deploy.outcome == 'failure' && steps.deploy2.outcome != 'success'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: |
-          if git log -1 --format=%s | grep -q "^Republish the site"; then
-            echo "::error::GitHub Pages didn't deploy, even after a fresh commit."
-            exit 1
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git stash push --include-untracked -q || true
-          git pull --rebase origin main
-          git commit --allow-empty -m "Republish the site (automatic)"
-          git push
-          curl -sf -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/update.yml/dispatches" -d '{"ref":"main"}'
-          echo "::warning::GitHub Pages didn't deploy; started a fresh run."
+        run: node scripts/missed-deploy.mjs
 
       # Pages can also report a deploy as a success while the live site stays on an older
       # version (Nov 8, 2026). If the live site is 5+ minutes behind, push a fresh commit.
       - name: Make sure the live site changed
-        if: steps.deploy.outcome == 'success'
+        if: steps.deploy.outcome == 'success' || steps.deploy2.outcome == 'success'
         continue-on-error: true
         run: node scripts/check-live.mjs
 
       # During games, start the next update right away (about once a minute).
       - name: Queue the next update during games
-        if: success() && github.event_name != 'push' && steps.deploy.outcome == 'success'
+        if: success() && github.event_name != 'push' && (steps.deploy.outcome == 'success' || steps.deploy2.outcome == 'success')
         env:
           GH_TOKEN: ${{ github.token }}
         run: node scripts/next-run.mjs
