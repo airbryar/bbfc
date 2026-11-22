@@ -196,13 +196,14 @@ Tooling notes from past sessions:
 
 ## The page
 
-**Section order:** News (Newspaper) → Standings → Power Rankings → Scoreboard → Median
-Watch → Transactions → Podcast, then the footer. Power Rankings moved up next to Standings
-in Nov 2026 so one bottom-bar button covers both.
+**Section order:** News (Newspaper) → Standings → Power Rankings → Median Watch →
+Scoreboard → Transactions → Podcast, then the footer. Power Rankings moved up next to
+Standings in Nov 2026 so one bottom-bar button covers both. Median Watch moved above the
+Scoreboard on Nov 22, 2026 (Bryar asked) so tapping Scores brings it straight up.
 
 - **Bottom bar** (Nov 2026; replaced the sticky top tabs, which had gotten crowded): five
   app-style buttons fixed to the bottom of the screen, icon over label: News, Standings
-  (covers Power Rankings), Scores (Scoreboard and Median Watch), Moves (Transactions;
+  (covers Power Rankings), Scores (Median Watch, then the Scoreboard; it links to `#median`, also from team pages), Moves (Transactions;
   it read "Trades" until Nov 2026), Podcast. Each
   link's `data-for` lists the sections it covers.
   - Tapping one smooth-scrolls so that section's heading sits about 14px under the top of
