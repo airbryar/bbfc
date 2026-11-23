@@ -51,6 +51,32 @@ this site through conversations with Claude, so:
 - **Easter egg:** the footer's small "Darren Waller is a BUM!" (Bryar's wording, Nov 2026) is a league running joke
   Bryar asked for. Leave it.
 
+### When Bryar says a trade went through
+
+Bryar expects one message ("Trade just went thru") to be enough, with no back and forth (Nov 20,
+2026, after an evening of it). He wants trades pushed through when he says so, not watched for
+(he turned down a 10-minute trade watch on Nov 23, 2026). Push it through, make sure every part
+worked, and report once:
+
+1. Attach this repo with write access first (`add_repo` with `access: "push"`), then work in it.
+   If write access is refused, say so in one sentence and ask him to approve it. Don't try other
+   routes such as a browser.
+2. Dispatch an update with a fresh trade read
+   (`gh api -X POST repos/airbryar/bbfc/actions/workflows/update.yml/dispatches -f ref=main -f 'inputs[trades]=true'`)
+   and wait for that run and any run it starts (a failed deploy starts one with a fresh trade
+   read). `deploy-pages` is `continue-on-error`, so a green run doesn't mean it deployed: read
+   the log. Check all of these: `Trades: N from ESPN` (N went up, or the hourly run already had
+   it), `Live site is current`, and `Alerts: sent "Trade alert"` (or `Alerts: quiet hours`,
+   10 PM-7 AM Eastern, when it waits until 7 AM; or nothing new if an earlier run already sent it).
+3. `git pull` and confirm the deal is in `data/alerts-sent.json`. It's recorded there only after
+   the live site was confirmed to show the build and the alert went out (in quiet hours it isn't
+   there until the 7 AM send). If anything is missing, fix it and check again before replying.
+4. Reply in one or two sentences: the trade (ticker wording), that it's on the live site, and when
+   the alert went out. OneSignal accepting an alert means Apple took it, not that it reached a
+   phone, so never say he got it. If one side got no players, ask how much FAAB went with it
+   (see Transactions).
+5. Don't report anything as done before you've checked it.
+
 ## How the site updates
 
 `.github/workflows/update.yml`, "Update the BBFC site", does everything:
@@ -81,7 +107,12 @@ this site through conversations with Claude, so:
    It also builds `_site/record-book.html` from `site/record-book.html` (`__HISTORY__`,
    `__ESPN__`, `__LOGOS__`, `__ICONV__`); without `data/history.json` it skips the Record
    Book and removes its links (between `<!--book-->` markers).
-5. The workflow then deploys `_site/` to GitHub Pages.
+5. The workflow then deploys `_site/` to GitHub Pages, and `scripts/check-live.mjs` waits up
+   to 2 minutes for the live `data/stamp.json` to match the build (step output `current=true`).
+6. Only then does `scripts/notify.mjs` send alerts and save `data/alerts-sent.json` (Nov 20,
+   2026: alerts used to go out before the deploy, and that night a failed deploy left the
+   alert pointing at a site without the trade). If the live site can't be confirmed, nothing
+   is recorded as sent and the next run sends it.
 
 When it runs:
 
@@ -120,8 +151,9 @@ instead.
 in Nov 2026, "No artifacts named github-pages were found" a few seconds after the upload).
 The workflow waits 20 seconds and deploys again. If that fails too,
 `scripts/missed-deploy.mjs` pushes an empty "Republish the site (automatic)" commit and
-dispatches a fresh run (only when the live site is 5+ minutes behind, at most once every
-15 minutes) and does **not** fail the run: GitHub emails Bryar about every failed run, and
+dispatches a fresh run with `trades=true` (only when the live site is 5+ minutes behind, at
+most once every 15 minutes; the input matters: on Nov 20 a retry without it kept the live
+site's older trade list, and a trade that had just been read dropped back off the site) and does **not** fail the run: GitHub emails Bryar about every failed run, and
 until Nov 21, 2026 these hiccups did, sometimes several a day. The run fails (one email) only
 when the live site has gone 3+ hours without updating and the last finished run didn't
 already fail. If a change doesn't show up, check the latest Pages deployment. Pushing another
@@ -132,7 +164,8 @@ It can also stall silently: on Nov 8, 2026, every deploy from 9:15 AM on reporte
 scores froze during the London game until a fresh empty commit. `scripts/check-live.mjs`
 now runs after each deploy: if the live `data/stamp.json` is 5+ minutes behind the build,
 it pushes "Republish the site (automatic: the live site stopped changing)", at most once
-every 15 minutes. To see what the live site serves from here, curl it from a temporary
+every 15 minutes, and dispatches a fresh run (a push made with the workflow's own token
+doesn't start one). To see what the live site serves from here, curl it from a temporary
 workflow on a branch (this session's shell and WebFetch can't reach github.io).
 
 ## Making a change
@@ -395,9 +428,13 @@ which Bryar added himself; never ask for it in chat). OneSignal's site URL is
   site's one service worker: `build.mjs` writes it from `site/OneSignalSDKWorker.js`
   (OneSignal) plus `site/sw-offline.js` (the offline copy, below). The icon now
   opens the site as a full-screen app; people who added it before may need to re-add it.
-- **Sending:** `scripts/notify.mjs` runs in "Update the BBFC site" after the build
-  (`continue-on-error`). It compares the data with `data/alerts-sent.json` (saved by the
-  workflow) and sends: each new trade (ticker wording; one summary if more than 3 at once),
+- **Sending:** `scripts/notify.mjs` runs in "Update the BBFC site" after the deploy, only
+  once the live site is confirmed to show the build (`continue-on-error`). Alerts go out
+  with `priority: 10`; OneSignal documents it only for Chrome, and it was added after a trade
+  alert reached Bryar's iPhone 12 minutes late on Nov 20, 2026 (OneSignal handed it to Apple
+  at once; it arrived together with a later test). OneSignal's `successful` count means Apple
+  accepted it, not that it showed on a phone; its `received` count stays 0 here. It compares
+  the data with `data/alerts-sent.json` (saved by the workflow) and sends: each new trade (ticker wording; one summary if more than 3 at once),
   a new Newspaper edition (label and lead headline), a new Poddy episode, and when a week
   goes final a league summary (`final`) plus each team's own result (`team=<id>`). The
   first run only records what exists. Quiet hours 10 PM–7 AM Eastern: anything new waits.

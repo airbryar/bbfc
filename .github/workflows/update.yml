@@ -77,20 +77,11 @@ jobs:
       - name: Build the site
         run: node scripts/build.mjs
 
-      # Alerts for anything new (trades, Newspaper, The Poddy, weekly results). What's been
-      # sent is kept in data/alerts-sent.json, saved below, so nothing goes out twice.
-      - name: Send alerts
-        run: node scripts/notify.mjs
-        continue-on-error: true
-        env:
-          ONESIGNAL_API_KEY: ${{ secrets.ONESIGNAL_API_KEY }}
-
       - name: Save new episodes and the weekly data copy
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/pod.json
-          if [ -f data/alerts-sent.json ]; then git add data/alerts-sent.json; fi
           if [ "${{ github.event.schedule }}" = "17 13 * * 2" ]; then git add data/espn.json; fi
           if git diff --cached --quiet; then
             echo "Nothing new to save"
@@ -131,11 +122,38 @@ jobs:
         run: node scripts/missed-deploy.mjs
 
       # Pages can also report a deploy as a success while the live site stays on an older
-      # version (Nov 8, 2026). If the live site is 5+ minutes behind, push a fresh commit.
+      # version (Nov 8, 2026). Waits up to 2 minutes for the live site to show this build;
+      # if it's 5+ minutes behind, pushes a fresh commit and starts a fresh run.
       - name: Make sure the live site changed
+        id: live
         if: steps.deploy.outcome == 'success' || steps.deploy2.outcome == 'success'
         continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: node scripts/check-live.mjs
+
+      # Alerts for anything new (trades, Newspaper, The Poddy, weekly results), sent only once
+      # the live site shows this build, so an alert never points at a page without the news
+      # (Nov 20, 2026). If the site can't be confirmed, nothing is recorded as sent and the
+      # next run sends it. What's been sent is kept in data/alerts-sent.json.
+      - name: Send alerts
+        id: notify
+        if: steps.live.outputs.current == 'true'
+        run: node scripts/notify.mjs
+        continue-on-error: true
+        env:
+          ONESIGNAL_API_KEY: ${{ secrets.ONESIGNAL_API_KEY }}
+
+      - name: Save which alerts went out
+        if: steps.live.outputs.current == 'true'
+        run: |
+          [ -f data/alerts-sent.json ] || exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/alerts-sent.json
+          if git diff --cached --quiet; then echo "No new alerts to record"; exit 0; fi
+          git commit -q -m "Update league data"
+          git push -q || (git pull -q --rebase --autostash origin main && git push -q) || echo "::warning::Couldn't save which alerts went out"
 
       # During games, start the next update right away (about once a minute).
       - name: Queue the next update during games

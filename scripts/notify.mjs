@@ -34,6 +34,10 @@ async function send({ heading, text, path, tag, value = "1", segments }) {
     contents: { en: text },
     web_url: SITE + (path || ""),
     chrome_web_icon: SITE + "icons/icon-192.png",
+    // High priority asks the push service to deliver now rather than when it suits the
+    // phone's battery. OneSignal documents it for Chrome; harmless elsewhere (Nov 20, 2026:
+    // a trade alert reached an iPhone 12 minutes late).
+    priority: 10,
   };
   if (segments) body.included_segments = segments;
   else body.filters = [{ field: "tag", key: tag, relation: "=", value: String(value) }];

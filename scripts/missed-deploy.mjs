@@ -60,7 +60,9 @@ if (process.env.MISSED_DEPLOY_DRY) {
       sh("git pull -q --rebase origin main");
       sh('git commit -q --allow-empty -m "Republish the site (automatic)"');
       sh("git push -q origin HEAD:main");
-      const r = await api("/actions/workflows/update.yml/dispatches", { method: "POST", body: JSON.stringify({ ref: "main" }) }).catch(() => null);
+      // The fresh run re-reads trades from ESPN. Otherwise it keeps the live site's copy, which
+      // this missed deploy never updated (Nov 20, 2026: a new trade dropped back off the site).
+      const r = await api("/actions/workflows/update.yml/dispatches", { method: "POST", body: JSON.stringify({ ref: "main", inputs: { trades: "true" } }) }).catch(() => null);
       console.log(r && r.ok ? "Pushed a fresh commit and started a new run" : `Pushed a fresh commit; couldn't start a new run (${r ? r.status : "no answer"})`);
     }
   } catch (err) {
