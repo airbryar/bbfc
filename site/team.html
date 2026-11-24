@@ -110,7 +110,7 @@ h2 { font-family: var(--f-display); font-weight: 800; font-size: 25px; line-heig
 .who a { text-decoration: none; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* Tiles */
-.tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 16px; }
+.tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 16px; }
 .tile { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 9px 11px 10px; min-width: 0; }
 .tile-label { font-family: var(--f-label); font-weight: 600; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .tile-value { font-family: var(--f-num); font-weight: 700; font-size: 28px; line-height: 1; margin-top: 4px; font-variant-numeric: tabular-nums; }
@@ -175,6 +175,20 @@ h2 { font-family: var(--f-display); font-weight: 800; font-size: 25px; line-heig
 .lppg { font-family: var(--f-num); font-weight: 600; font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .sub { font-family: var(--f-label); font-weight: 700; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin: 16px 0 8px; }
 
+/* Remaining schedule: how hard it is next to every other team's */
+.sos { padding: 11px 0 12px; }
+.sos + .lrow { border-top: 1px solid var(--line); }
+.sos-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.sos-label { font-family: var(--f-label); font-weight: 700; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.sos-rank { font-family: var(--f-num); font-weight: 700; font-size: 22px; line-height: 1; white-space: nowrap; }
+.sos-rank small { font-weight: 600; font-size: 14px; color: var(--muted); margin-left: 4px; }
+.sos-meter { display: grid; gap: 3px; align-items: center; margin-top: 10px; height: 14px; }
+.sos-meter i { height: 8px; border-radius: 2px; background: var(--chip); }
+.sos-meter i.on { height: 14px; border-radius: 3px; background: var(--gilt); }
+.sos-ends { display: flex; justify-content: space-between; margin-top: 4px; font-family: var(--f-label); font-weight: 600; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.sos-note { margin: 8px 0 0; font-size: 14px; line-height: 1.35; color: var(--muted); }
+.sos-note b { font-family: var(--f-num); font-weight: 700; font-size: 16px; color: var(--ink); font-variant-numeric: tabular-nums; }
+
 /* Players */
 .prow { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: baseline; padding: 9px 14px; }
 .prow + .prow { border-top: 1px solid var(--line); }
@@ -207,7 +221,7 @@ h2 { font-family: var(--f-display); font-weight: 800; font-size: 25px; line-heig
 .bnav svg { width: 25px; height: 25px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .bnav a:focus-visible, .home-link:focus-visible, .more:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
 footer { margin-top: 28px; border-top: 1px solid var(--line); padding-block: 16px 28px; font-size: 13px; color: var(--muted); }
-@media (min-width: 620px) { h2 { font-size: 30px; } .tile-value { font-size: 32px; } }
+@media (min-width: 620px) { h2 { font-size: 30px; } .tile-value { font-size: 32px; } .tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 </style>
 </head>
 <body>
@@ -243,7 +257,6 @@ footer { margin-top: 28px; border-top: 1px solid var(--line); padding-block: 16p
     <div class="card log" id="results-box"></div>
     <p class="sub" id="ahead-head">Still to play</p>
     <div class="card log" id="ahead-box"></div>
-    <p class="foot" id="ahead-foot"></p>
   </section>
 
   <section id="players" aria-labelledby="h-players">
@@ -360,6 +373,22 @@ __LOGOS__
     games.forEach(function (g) { if (g.h[0] === t.id) s.push(g.h[1]); if (g.a[0] === t.id) s.push(g.a[1]); });
     ppg[t.id] = s.length ? s.reduce(function (a, b) { return a + b; }, 0) / s.length : 0;
   });
+  // The league's scoring average, for comparing a remaining schedule against
+  var allScores = [];
+  games.forEach(function (g) { allScores.push(g.h[1], g.a[1]); });
+  var leagueAvg = allScores.length ? allScores.reduce(function (a, b) { return a + b; }, 0) / allScores.length : 0;
+  // Remaining strength of schedule: the average points a game of each team's opponents still to play
+  function gamesLeft(tid) { return (E.upcoming || []).filter(function (u) { return u[0] <= reg && u[0] > lastDone && (u[1] === tid || u[2] === tid); }); }
+  var sosList = E.teams.map(function (tt) {
+    var o = gamesLeft(tt.id).map(function (u) { return ppg[u[1] === tt.id ? u[2] : u[1]]; });
+    return { id: tt.id, n: o.length, v: o.length ? o.reduce(function (a, b) { return a + b; }, 0) / o.length : 0 };
+  }).filter(function (s) { return s.n; });
+  // Rank 1 is the easiest; past the middle it reads from the toughest end ("3rd toughest")
+  function sosWords(rank, n) {
+    if (rank === 1) return ["Easiest", "in the league"];
+    if (rank === n) return ["Toughest", "in the league"];
+    return rank <= n / 2 ? [ord(rank) + " easiest", "of " + n] : [ord(n - rank + 1) + " toughest", "of " + n];
+  }
 
 
   var bySeed = E.teams.slice().sort(function (a, b) { return (a.seed || 99) - (b.seed || 99); });
@@ -515,6 +544,8 @@ __LOGOS__
     else tile("Playoff odds", "–", "Regular season only");
     var xr = (X.teams || {})[id] || {};
     tile("Power rank", xr.rank ? "#" + xr.rank : "–", X.prWeek ? "After Week " + X.prWeek : "");
+    var ppgRank = E.teams.filter(function (x) { return ppg[x.id] > ppg[id]; }).length + 1;
+    tile("Points per game", lastDone ? ppg[id].toFixed(1) : "–", lastDone ? ord(ppgRank) + " in the league" : "No games yet");
 
     // This week
     var wbox = clear("week-box");
@@ -600,9 +631,30 @@ __LOGOS__
 
     // Still to play, with each opponent's scoring average
     var abox = clear("ahead-box");
-    var ahead = (E.upcoming || []).filter(function (u) { return u[0] <= reg && u[0] > lastDone && (u[1] === id || u[2] === id); }).sort(function (x, y) { return x[0] - y[0]; });
+    var ahead = gamesLeft(id).sort(function (x, y) { return x[0] - y[0]; });
     document.getElementById("ahead-head").hidden = !ahead.length;
     abox.hidden = !ahead.length;
+    var me = sosList.filter(function (s) { return s.id === id; })[0];
+    if (ahead.length && me && lastDone) {
+      // Schedule left: how hard the rest of the schedule is, on a meter from easiest to toughest
+      var sosRank = sosList.filter(function (s) { return s.v < me.v; }).length + 1, sosN = sosList.length;
+      var words = sosWords(sosRank, sosN), diff = me.v - leagueAvg;
+      var vsLeague = Math.abs(diff) < 0.05 ? "right at the league average" : Math.abs(diff).toFixed(1) + (diff < 0 ? " below" : " above") + " the league average";
+      var sos = el("div", "sos"), sosTop = el("div", "sos-top"), rk = el("span", "sos-rank", words[0]);
+      rk.append(el("small", null, words[1]));
+      sosTop.append(el("span", "sos-label", "Schedule left"), rk);
+      var meter = el("div", "sos-meter");
+      meter.style.gridTemplateColumns = "repeat(" + sosN + ", minmax(0, 1fr))";
+      meter.setAttribute("role", "img");
+      meter.setAttribute("aria-label", "Remaining schedule: " + words[0].toLowerCase() + " " + words[1] + ", on a scale from easiest to toughest.");
+      for (var si = 1; si <= sosN; si++) meter.append(el("i", si === sosRank ? "on" : null));
+      var ends = el("div", "sos-ends");
+      ends.append(el("span", null, "Easiest"), el("span", null, "Toughest"));
+      var note = el("p", "sos-note");
+      note.append("Opponents left average ", el("b", null, me.v.toFixed(1)), " points a game, " + vsLeague + ".");
+      sos.append(sosTop, meter, ends, note);
+      abox.append(sos);
+    }
     ahead.forEach(function (u) {
       var opp = u[1] === id ? u[2] : u[1];
       var row = el("div", "lrow");
@@ -611,18 +663,6 @@ __LOGOS__
       row.append(el("span", "lppg", ppg[opp].toFixed(1) + " ppg"));
       abox.append(row);
     });
-    var foot = document.getElementById("ahead-foot");
-    foot.textContent = "";
-    if (ahead.length) {
-      // Remaining strength of schedule, ranked across the league (1 = easiest)
-      var sos = E.teams.map(function (tt) {
-        var opps = (E.upcoming || []).filter(function (u) { return u[0] <= reg && u[0] > lastDone && (u[1] === tt.id || u[2] === tt.id); }).map(function (u) { return ppg[u[1] === tt.id ? u[2] : u[1]]; });
-        return { id: tt.id, v: opps.length ? opps.reduce(function (a, b) { return a + b; }, 0) / opps.length : 0 };
-      }).sort(function (x, y) { return x.v - y.v; });
-      var me = sos.filter(function (s) { return s.id === id; })[0];
-      var rank = sos.indexOf(me) + 1;
-      foot.textContent = "Opponents left average " + me.v.toFixed(1) + " points a game, the " + (rank === 1 ? "easiest" : rank === sos.length ? "toughest" : ord(rank) + " easiest") + " remaining schedule in the league.";
-    }
 
     // Top players
     var pbox = clear("players-box");

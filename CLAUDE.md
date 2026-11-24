@@ -486,8 +486,10 @@ the top and the main page's bottom bar (linking back to its sections). Same look
 Record Book: navy masthead with the team picture, "Managed by <first name>", place, record
 and points, and a "‹ Home" pill.
 
-- Tiles: Record (H2H and median split), Playoff odds (projected record, or Clinched /
-  Eliminated), Power rank (same formula as the main page, after the last finished week).
+- Tiles (two by two on phones, four across on wider screens): Record (H2H and median
+  split), Playoff odds (projected record, or Clinched / Eliminated), Power rank (same
+  formula as the main page, after the last finished week), Points per game (finished
+  regular-season weeks, with the league rank; added Nov 24, 2026, Bryar asked).
 - This Week: the matchup with live scores and projections, plus one line with the
   managers' all-time series from the Record Book's history. (Bryar found a series line on
   every Scoreboard card too much; on the team page he was fine with it.)
@@ -496,8 +498,13 @@ and points, and a "‹ Home" pill.
   Watch), one league-wide scale so teams compare fairly, best and worst weeks labeled, and
   tapping a week shows its score, margin and opponent. Then each finished week's opponent
   and score with W/L and median W/L chips; then
-  "Still to play" with each opponent's points per game and where the remaining schedule
-  ranks league-wide.
+  "Still to play" with each opponent's points per game. At the top of that card, a
+  "Schedule left" meter (Nov 24, 2026; Bryar picked it over a small rank pill by the
+  heading): the remaining strength of schedule (average points a game of the opponents
+  still to play) ranked across the league, worded from the nearer end ("3rd easiest of
+  12", "2nd toughest of 12", "Easiest/Toughest in the league"), one segment per team from
+  Easiest to Toughest with this team's lit in `--gilt` (neutral on purpose: green and red
+  keep their win/loss meaning), and a line comparing it with the league scoring average.
 - Top Players (points while started) come from `data/newsroom.json`, so they refresh with
   the Newspaper's data (Monday, Tuesday, Thursday, Saturday).
 - Transactions: "FAAB left: $N of $100 · Nth most", trades (got and sent, FAAB where no
