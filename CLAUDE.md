@@ -27,7 +27,9 @@ this site through conversations with Claude, so:
 - **Points check / "update the site":** update it and confirm. Don't list points or
   projections in the reply.
 - **Newspaper:** sports-page tone. No trash talk, mocking or roasting; he finds it corny.
-  Managers' first names are fine. Facts only from league data.
+  Managers' first names are fine. Facts only from league data. An occasional friendly pun
+  on a team name is welcome (Bryar, Nov 25, 2026): one or two an edition at most, never a
+  dig, and no wordplay on GAYleb williams' name. Both scheduled task prompts carry this.
 - **Teams are "they," never "it"** (Bryar, Nov 17, 2026), like a real football squad:
   "After Bowers held on, and they stay in the last playoff spot." Applies to the
   Newspaper (both scheduled task prompts carry the same rule) and any other writing
@@ -525,6 +527,9 @@ without Bryar's Mac:
   Eastern. Kept later because the recap needs last week to be final on ESPN; move it to
   4:46 AM once a Tuesday rollover shows ESPN finalizes the week before then. If you
   change one prompt, change both.
+- The BBFC Newspaper prompt also has a one-time "Thanksgiving Edition" section (Bryar
+  asked for an over-the-top Thanksgiving-pun edition on Nov 26, 2026). It only applies on
+  that date, so it's safe to delete afterward.
 
 Each run:
 
