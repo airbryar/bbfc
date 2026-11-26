@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-11-24T12:38:35.125Z",
+ "fetchedAt": "2026-11-26T09:47:13.492Z",
  "notes": [
   "Each week a team plays two games: its head-to-head matchup, plus a game against the league median (the top 6 scores of the week win it). 'record' combines both; 'h2h' and 'vsMedian' split them.",
   "The top 6 seeds make the playoffs. The regular season is 14 weeks.",
@@ -67,8 +67,8 @@
    "pa": 1185.14,
    "streak": "L3",
    "trades": 1,
-   "pickups": 16,
-   "faabSpent": 37,
+   "pickups": 18,
+   "faabSpent": 41,
    "h2h": "7-4",
    "vsMedian": "7-4",
    "topPlayers": [
@@ -105,7 +105,7 @@
    "pa": 1170.28,
    "streak": "L1",
    "trades": 6,
-   "pickups": 38,
+   "pickups": 41,
    "faabSpent": 79,
    "h2h": "7-4",
    "vsMedian": "7-4",
@@ -181,8 +181,8 @@
    "pa": 1150.12,
    "streak": "W1",
    "trades": 1,
-   "pickups": 13,
-   "faabSpent": 48,
+   "pickups": 14,
+   "faabSpent": 58,
    "h2h": "6-5",
    "vsMedian": "6-5",
    "topPlayers": [
@@ -257,8 +257,8 @@
    "pa": 1168.8,
    "streak": "W2",
    "trades": 2,
-   "pickups": 46,
-   "faabSpent": 91,
+   "pickups": 49,
+   "faabSpent": 93,
    "h2h": "4-7",
    "vsMedian": "7-4",
    "topPlayers": [
@@ -295,8 +295,8 @@
    "pa": 1150.5,
    "streak": "W3",
    "trades": 4,
-   "pickups": 88,
-   "faabSpent": 96,
+   "pickups": 91,
+   "faabSpent": 100,
    "h2h": "6-5",
    "vsMedian": "5-6",
    "topPlayers": [
@@ -333,8 +333,8 @@
    "pa": 1113.8,
    "streak": "L2",
    "trades": 0,
-   "pickups": 32,
-   "faabSpent": 57,
+   "pickups": 33,
+   "faabSpent": 68,
    "h2h": "4-7",
    "vsMedian": "3-8",
    "topPlayers": [
@@ -447,7 +447,7 @@
    "pa": 1094.38,
    "streak": "L10",
    "trades": 10,
-   "pickups": 38,
+   "pickups": 42,
    "faabSpent": 100,
    "h2h": "3-8",
    "vsMedian": "1-10",
@@ -2046,8 +2046,8 @@
    {
     "home": "Breece's Pieces",
     "away": "After Bowers",
-    "livePoints": "0-0",
-    "projected": "126.76-98.24",
+    "livePoints": "27.5-0",
+    "projected": "143.96-109.78",
     "allTimeHeadToHead": "Tyler 4-2 vs Ezra",
     "homeRecord": "12-10",
     "awayRecord": "11-11"
@@ -2056,7 +2056,7 @@
     "home": "GAYleb williams",
     "away": "The Silly Geese",
     "livePoints": "0-0",
-    "projected": "113.08-115.53",
+    "projected": "113.12-117.49",
     "allTimeHeadToHead": "Landon 2-2 vs Michael",
     "homeRecord": "14-8",
     "awayRecord": "14-8"
@@ -2065,7 +2065,7 @@
     "home": "Pteem Shteevenshun",
     "away": "The Mouse Rats",
     "livePoints": "0-0",
-    "projected": "94.3-109.31",
+    "projected": "108.34-109.62",
     "allTimeHeadToHead": "Caleb 1-3 vs Bryar",
     "homeRecord": "7-15",
     "awayRecord": "12-10"
@@ -2073,8 +2073,8 @@
    {
     "home": "Real Man of Genius",
     "away": "Lisan al Gibbs",
-    "livePoints": "0-0",
-    "projected": "96.9-127.35",
+    "livePoints": "4.4-14.5",
+    "projected": "90.37-127.81",
     "allTimeHeadToHead": "Micah 1-4 vs Josh",
     "homeRecord": "7-15",
     "awayRecord": "20-2"
@@ -2082,8 +2082,8 @@
    {
     "home": "Every Inch Matters",
     "away": "Illegal use of hands",
-    "livePoints": "0-0",
-    "projected": "83.88-95.42",
+    "livePoints": "1.9-12",
+    "projected": "97.08-115.73",
     "allTimeHeadToHead": "Garrett 2-3 vs Jeremy",
     "homeRecord": "11-11",
     "awayRecord": "14-8"
@@ -2091,15 +2091,1108 @@
    {
     "home": "I want my Nickleback",
     "away": "The House Cats",
-    "livePoints": "0-0",
-    "projected": "106.15-94.38",
+    "livePoints": "14.5-0",
+    "projected": "105.66-100.43",
     "allTimeHeadToHead": "Jared 6-2 vs Luke",
     "homeRecord": "4-18",
     "awayRecord": "6-16"
    }
   ],
-  "alreadyPlayedStandouts": [],
-  "liveStatus": null
+  "alreadyPlayedStandouts": [
+   {
+    "team": "Breece's Pieces",
+    "player": "Blake Corum",
+    "pos": "RB",
+    "pts": 27.5
+   },
+   {
+    "team": "Lisan al Gibbs",
+    "player": "Christian Watson",
+    "pos": "WR",
+    "pts": 14.5
+   },
+   {
+    "team": "I want my Nickleback",
+    "player": "Kyren Williams",
+    "pos": "RB",
+    "pts": 14.5
+   },
+   {
+    "team": "Illegal use of hands",
+    "player": "Rams D/ST",
+    "pos": "D/ST",
+    "pts": 12
+   },
+   {
+    "team": "Real Man of Genius",
+    "player": "Matthew Golden",
+    "pos": "WR",
+    "pts": 4.4
+   },
+   {
+    "team": "Every Inch Matters",
+    "player": "Tucker Kraft",
+    "pos": "TE",
+    "pts": 1.9
+   }
+  ],
+  "liveStatus": {
+   "asOf": "2026-11-26T09:47:10.938Z",
+   "currentMedian": 1,
+   "projectedMedian": 109.7,
+   "teams": [
+    {
+     "team": "Breece's Pieces",
+     "opponent": "After Bowers",
+     "pts": 27.5,
+     "proj": 144,
+     "vsCurrentMedian": 26.5,
+     "vsProjectedMedian": 34.3,
+     "startersFinished": 1,
+     "startersLeft": [
+      {
+       "player": "Joe Burrow",
+       "pos": "QB",
+       "nfl": "CIN",
+       "game": "vs NO, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 24.3
+      },
+      {
+       "player": "Breece Hall",
+       "pos": "RB",
+       "nfl": "NYJ",
+       "game": "@ MIA, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 12.2
+      },
+      {
+       "player": "Bucky Irving",
+       "pos": "RB",
+       "nfl": "TB",
+       "game": "vs CAR, Mon 8:15 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 19.5
+      },
+      {
+       "player": "Ja'Marr Chase",
+       "pos": "WR",
+       "nfl": "CIN",
+       "game": "vs NO, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 21
+      },
+      {
+       "player": "Nico Collins",
+       "pos": "WR",
+       "nfl": "HOU",
+       "game": "vs BAL, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 12.9
+      },
+      {
+       "player": "Sam LaPorta",
+       "pos": "TE",
+       "nfl": "DET",
+       "game": "vs CHI, Thu 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 8.9
+      },
+      {
+       "player": "49ers D/ST",
+       "pos": "D/ST",
+       "nfl": "SF",
+       "game": "vs SEA, Sun 4:25 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 7.5
+      },
+      {
+       "player": "Jason Sanders",
+       "pos": "K",
+       "nfl": "NYJ",
+       "game": "@ MIA, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 10.2
+      }
+     ]
+    },
+    {
+     "team": "Lisan al Gibbs",
+     "opponent": "Real Man of Genius",
+     "pts": 14.5,
+     "proj": 127.8,
+     "vsCurrentMedian": 13.5,
+     "vsProjectedMedian": 18.1,
+     "startersFinished": 1,
+     "startersLeft": [
+      {
+       "player": "C.J. Stroud",
+       "pos": "QB",
+       "nfl": "HOU",
+       "game": "vs BAL, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 21.4
+      },
+      {
+       "player": "Jahmyr Gibbs",
+       "pos": "RB",
+       "nfl": "DET",
+       "game": "vs CHI, Thu 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 23.4
+      },
+      {
+       "player": "D'Andre Swift",
+       "pos": "RB",
+       "nfl": "CHI",
+       "game": "@ DET, Thu 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 12.7
+      },
+      {
+       "player": "Zay Flowers",
+       "pos": "WR",
+       "nfl": "BAL",
+       "game": "@ HOU, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 11.6
+      },
+      {
+       "player": "Tee Higgins",
+       "pos": "WR",
+       "nfl": "CIN",
+       "game": "vs NO, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 13.2
+      },
+      {
+       "player": "Trey McBride",
+       "pos": "TE",
+       "nfl": "ARI",
+       "game": "vs WSH, Sun 4:25 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 11.2
+      },
+      {
+       "player": "Texans D/ST",
+       "pos": "D/ST",
+       "nfl": "HOU",
+       "game": "vs BAL, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 7.3
+      },
+      {
+       "player": "Cam Little",
+       "pos": "K",
+       "nfl": "JAX",
+       "game": "vs TEN, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 12.6
+      }
+     ]
+    },
+    {
+     "team": "The Silly Geese",
+     "opponent": "GAYleb williams",
+     "pts": 0,
+     "proj": 117.5,
+     "vsCurrentMedian": -1,
+     "vsProjectedMedian": 7.8,
+     "startersFinished": 0,
+     "startersLeft": [
+      {
+       "player": "Josh Allen",
+       "pos": "QB",
+       "nfl": "BUF",
+       "game": "vs KC, Thu 8:20 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 18.1
+      },
+      {
+       "player": "Jaylen Warren",
+       "pos": "RB",
+       "nfl": "PIT",
+       "game": "vs DEN, Fri 3:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 13.4
+      },
+      {
+       "player": "Cam Skattebo",
+       "pos": "RB",
+       "nfl": "NYG",
+       "game": "@ IND, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 16.1
+      },
+      {
+       "player": "CeeDee Lamb",
+       "pos": "WR",
+       "nfl": "DAL",
+       "game": "vs PHI, Thu 4:30 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 17
+      },
+      {
+       "player": "Justin Jefferson",
+       "pos": "WR",
+       "nfl": "MIN",
+       "game": "vs ATL, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 16.8
+      },
+      {
+       "player": "Chig Okonkwo",
+       "pos": "TE",
+       "nfl": "WSH",
+       "game": "@ ARI, Sun 4:25 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 7.5
+      },
+      {
+       "player": "Zach Charbonnet",
+       "pos": "RB",
+       "nfl": "SEA",
+       "game": "@ SF, Sun 4:25 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 10.7
+      },
+      {
+       "player": "Giants D/ST",
+       "pos": "D/ST",
+       "nfl": "NYG",
+       "game": "@ IND, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 7.1
+      },
+      {
+       "player": "Andre Szmyt",
+       "pos": "K",
+       "nfl": "CLE",
+       "game": "vs LV, Sun 8:20 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 10.9
+      }
+     ]
+    },
+    {
+     "team": "Illegal use of hands",
+     "opponent": "Every Inch Matters",
+     "pts": 12,
+     "proj": 115.7,
+     "vsCurrentMedian": 11,
+     "vsProjectedMedian": 6,
+     "startersFinished": 1,
+     "startersLeft": [
+      {
+       "player": "Trevor Lawrence",
+       "pos": "QB",
+       "nfl": "JAX",
+       "game": "vs TEN, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 23.3
+      },
+      {
+       "player": "Bhayshul Tuten",
+       "pos": "RB",
+       "nfl": "JAX",
+       "game": "vs TEN, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 17.5
+      },
+      {
+       "player": "Kyle Monangai",
+       "pos": "RB",
+       "nfl": "CHI",
+       "game": "@ DET, Thu 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 7.2
+      },
+      {
+       "player": "Jaxon Smith-Njigba",
+       "pos": "WR",
+       "nfl": "SEA",
+       "game": "@ SF, Sun 4:25 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 17.6
+      },
+      {
+       "player": "Jameson Williams",
+       "pos": "WR",
+       "nfl": "DET",
+       "game": "vs CHI, Thu 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 10.3
+      },
+      {
+       "player": "Isaiah Likely",
+       "pos": "TE",
+       "nfl": "NYG",
+       "game": "@ IND, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 9.9
+      },
+      {
+       "player": "Tank Dell",
+       "pos": "WR",
+       "nfl": "HOU",
+       "game": "vs BAL, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 7.6
+      },
+      {
+       "player": "Chris Boswell",
+       "pos": "K",
+       "nfl": "PIT",
+       "game": "vs DEN, Fri 3:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 10.3
+      }
+     ]
+    },
+    {
+     "team": "GAYleb williams",
+     "opponent": "The Silly Geese",
+     "pts": 0,
+     "proj": 113.1,
+     "vsCurrentMedian": -1,
+     "vsProjectedMedian": 3.4,
+     "startersFinished": 0,
+     "startersLeft": [
+      {
+       "player": "Caleb Williams",
+       "pos": "QB",
+       "nfl": "CHI",
+       "game": "@ DET, Thu 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 16
+      },
+      {
+       "player": "Javonte Williams",
+       "pos": "RB",
+       "nfl": "DAL",
+       "game": "vs PHI, Thu 4:30 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 16
+      },
+      {
+       "player": "Chuba Hubbard",
+       "pos": "RB",
+       "nfl": "CAR",
+       "game": "@ TB, Mon 8:15 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 15.6
+      },
+      {
+       "player": "Amon-Ra St. Brown",
+       "pos": "WR",
+       "nfl": "DET",
+       "game": "vs CHI, Thu 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 14.4
+      },
+      {
+       "player": "DeVonta Smith",
+       "pos": "WR",
+       "nfl": "PHI",
+       "game": "@ DAL, Thu 4:30 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 11.7
+      },
+      {
+       "player": "Harold Fannin Jr.",
+       "pos": "TE",
+       "nfl": "CLE",
+       "game": "vs LV, Sun 8:20 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 9
+      },
+      {
+       "player": "Quinshon Judkins",
+       "pos": "RB",
+       "nfl": "CLE",
+       "game": "vs LV, Sun 8:20 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 14.6
+      },
+      {
+       "player": "Steelers D/ST",
+       "pos": "D/ST",
+       "nfl": "PIT",
+       "game": "vs DEN, Fri 3:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 6.4
+      },
+      {
+       "player": "Jake Bates",
+       "pos": "K",
+       "nfl": "DET",
+       "game": "vs CHI, Thu 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 9.6
+      }
+     ]
+    },
+    {
+     "team": "After Bowers",
+     "opponent": "Breece's Pieces",
+     "pts": 0,
+     "proj": 109.8,
+     "vsCurrentMedian": -1,
+     "vsProjectedMedian": 0.1,
+     "startersFinished": 0,
+     "startersLeft": [
+      {
+       "player": "Dak Prescott",
+       "pos": "QB",
+       "nfl": "DAL",
+       "game": "vs PHI, Thu 4:30 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 19.5
+      },
+      {
+       "player": "Chase Brown",
+       "pos": "RB",
+       "nfl": "CIN",
+       "game": "vs NO, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 13.7
+      },
+      {
+       "player": "Saquon Barkley",
+       "pos": "RB",
+       "nfl": "PHI",
+       "game": "@ DAL, Thu 4:30 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 13.5
+      },
+      {
+       "player": "George Pickens",
+       "pos": "WR",
+       "nfl": "DAL",
+       "game": "vs PHI, Thu 4:30 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 12.6
+      },
+      {
+       "player": "DJ Moore",
+       "pos": "WR",
+       "nfl": "BUF",
+       "game": "vs KC, Thu 8:20 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 10.3
+      },
+      {
+       "player": "Brock Bowers",
+       "pos": "TE",
+       "nfl": "LV",
+       "game": "@ CLE, Sun 8:20 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 12.4
+      },
+      {
+       "player": "Garrett Wilson",
+       "pos": "WR",
+       "nfl": "NYJ",
+       "game": "@ MIA, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 11.5
+      },
+      {
+       "player": "Vikings D/ST",
+       "pos": "D/ST",
+       "nfl": "MIN",
+       "game": "vs ATL, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 6.5
+      },
+      {
+       "player": "Ka'imi Fairbairn",
+       "pos": "K",
+       "nfl": "HOU",
+       "game": "vs BAL, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 9.8
+      }
+     ]
+    },
+    {
+     "team": "The Mouse Rats",
+     "opponent": "Pteem Shteevenshun",
+     "pts": 0,
+     "proj": 109.6,
+     "vsCurrentMedian": -1,
+     "vsProjectedMedian": -0.1,
+     "startersFinished": 0,
+     "startersLeft": [
+      {
+       "player": "Patrick Mahomes",
+       "pos": "QB",
+       "nfl": "KC",
+       "game": "@ BUF, Thu 8:20 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 17.6
+      },
+      {
+       "player": "Derrick Henry",
+       "pos": "RB",
+       "nfl": "BAL",
+       "game": "@ HOU, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 13.3
+      },
+      {
+       "player": "Omarion Hampton",
+       "pos": "RB",
+       "nfl": "LAC",
+       "game": "vs NE, Sun 4:05 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 12.9
+      },
+      {
+       "player": "Tetairoa McMillan",
+       "pos": "WR",
+       "nfl": "CAR",
+       "game": "@ TB, Mon 8:15 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 11.1
+      },
+      {
+       "player": "Parker Washington",
+       "pos": "WR",
+       "nfl": "JAX",
+       "game": "vs TEN, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 15.5
+      },
+      {
+       "player": "Colston Loveland",
+       "pos": "TE",
+       "nfl": "CHI",
+       "game": "@ DET, Thu 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 8.3
+      },
+      {
+       "player": "Ashton Jeanty",
+       "pos": "RB",
+       "nfl": "LV",
+       "game": "@ CLE, Sun 8:20 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 13.3
+      },
+      {
+       "player": "Browns D/ST",
+       "pos": "D/ST",
+       "nfl": "CLE",
+       "game": "vs LV, Sun 8:20 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 6.7
+      },
+      {
+       "player": "Will Reichard",
+       "pos": "K",
+       "nfl": "MIN",
+       "game": "vs ATL, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 11
+      }
+     ]
+    },
+    {
+     "team": "Pteem Shteevenshun",
+     "opponent": "The Mouse Rats",
+     "pts": 0,
+     "proj": 108.3,
+     "vsCurrentMedian": -1,
+     "vsProjectedMedian": -1.4,
+     "startersFinished": 0,
+     "startersLeft": [
+      {
+       "player": "Deshaun Watson",
+       "pos": "QB",
+       "nfl": "CLE",
+       "game": "vs LV, Sun 8:20 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 19.9
+      },
+      {
+       "player": "Bijan Robinson",
+       "pos": "RB",
+       "nfl": "ATL",
+       "game": "@ MIN, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 16.1
+      },
+      {
+       "player": "Jonathan Taylor",
+       "pos": "RB",
+       "nfl": "IND",
+       "game": "vs NYG, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 13
+      },
+      {
+       "player": "Drake London",
+       "pos": "WR",
+       "nfl": "ATL",
+       "game": "@ MIN, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 11.2
+      },
+      {
+       "player": "Luther Burden III",
+       "pos": "WR",
+       "nfl": "CHI",
+       "game": "@ DET, Thu 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 10.5
+      },
+      {
+       "player": "Dalton Kincaid",
+       "pos": "TE",
+       "nfl": "BUF",
+       "game": "vs KC, Thu 8:20 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 6.5
+      },
+      {
+       "player": "Jonah Coleman",
+       "pos": "RB",
+       "nfl": "DEN",
+       "game": "@ PIT, Fri 3:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 15.1
+      },
+      {
+       "player": "Buccaneers D/ST",
+       "pos": "D/ST",
+       "nfl": "TB",
+       "game": "vs CAR, Mon 8:15 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 6.5
+      },
+      {
+       "player": "Spencer Shrader",
+       "pos": "K",
+       "nfl": "IND",
+       "game": "vs NYG, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 9.6
+      }
+     ]
+    },
+    {
+     "team": "I want my Nickleback",
+     "opponent": "The House Cats",
+     "pts": 14.5,
+     "proj": 105.7,
+     "vsCurrentMedian": 13.5,
+     "vsProjectedMedian": -4,
+     "startersFinished": 1,
+     "startersLeft": [
+      {
+       "player": "Jayden Daniels",
+       "pos": "QB",
+       "nfl": "WSH",
+       "game": "@ ARI, Sun 4:25 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 22
+      },
+      {
+       "player": "Ollie Gordon II",
+       "pos": "RB",
+       "nfl": "MIA",
+       "game": "vs NYJ, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 13
+      },
+      {
+       "player": "DK Metcalf",
+       "pos": "WR",
+       "nfl": "PIT",
+       "game": "vs DEN, Fri 3:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 8.4
+      },
+      {
+       "player": "Stefon Diggs",
+       "pos": "WR",
+       "nfl": "WSH",
+       "game": "@ ARI, Sun 4:25 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 10.6
+      },
+      {
+       "player": "George Kittle",
+       "pos": "TE",
+       "nfl": "SF",
+       "game": "vs SEA, Sun 4:25 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 10.6
+      },
+      {
+       "player": "David Montgomery",
+       "pos": "RB",
+       "nfl": "HOU",
+       "game": "vs BAL, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 10.5
+      },
+      {
+       "player": "Patriots D/ST",
+       "pos": "D/ST",
+       "nfl": "NE",
+       "game": "@ LAC, Sun 4:05 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 5.8
+      },
+      {
+       "player": "Tyler Bass",
+       "pos": "K",
+       "nfl": "BUF",
+       "game": "vs KC, Thu 8:20 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 10.3
+      }
+     ]
+    },
+    {
+     "team": "The House Cats",
+     "opponent": "I want my Nickleback",
+     "pts": 0,
+     "proj": 100.4,
+     "vsCurrentMedian": -1,
+     "vsProjectedMedian": -9.3,
+     "startersFinished": 0,
+     "startersLeft": [
+      {
+       "player": "Fernando Mendoza",
+       "pos": "QB",
+       "nfl": "LV",
+       "game": "@ CLE, Sun 8:20 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 16.1
+      },
+      {
+       "player": "Christian McCaffrey",
+       "pos": "RB",
+       "nfl": "SF",
+       "game": "vs SEA, Sun 4:25 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 16
+      },
+      {
+       "player": "Rhamondre Stevenson",
+       "pos": "RB",
+       "nfl": "NE",
+       "game": "@ LAC, Sun 4:05 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 11.5
+      },
+      {
+       "player": "Malik Nabers",
+       "pos": "WR",
+       "nfl": "NYG",
+       "game": "@ IND, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 13.5
+      },
+      {
+       "player": "Rashee Rice",
+       "pos": "WR",
+       "nfl": "KC",
+       "game": "@ BUF, Thu 8:20 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 8.7
+      },
+      {
+       "player": "T.J. Hockenson",
+       "pos": "TE",
+       "nfl": "MIN",
+       "game": "vs ATL, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 8.6
+      },
+      {
+       "player": "Emeka Egbuka",
+       "pos": "WR",
+       "nfl": "TB",
+       "game": "vs CAR, Mon 8:15 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 8.7
+      },
+      {
+       "player": "Jaguars D/ST",
+       "pos": "D/ST",
+       "nfl": "JAX",
+       "game": "vs TEN, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 6.9
+      },
+      {
+       "player": "Brandon Aubrey",
+       "pos": "K",
+       "nfl": "DAL",
+       "game": "vs PHI, Thu 4:30 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 10.4
+      }
+     ]
+    },
+    {
+     "team": "Every Inch Matters",
+     "opponent": "Illegal use of hands",
+     "pts": 1.9,
+     "proj": 97.1,
+     "vsCurrentMedian": 0.9,
+     "vsProjectedMedian": -12.6,
+     "startersFinished": 1,
+     "startersLeft": [
+      {
+       "player": "Brock Purdy",
+       "pos": "QB",
+       "nfl": "SF",
+       "game": "vs SEA, Sun 4:25 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 18.8
+      },
+      {
+       "player": "James Cook III",
+       "pos": "RB",
+       "nfl": "BUF",
+       "game": "vs KC, Thu 8:20 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 13.6
+      },
+      {
+       "player": "Emmett Johnson",
+       "pos": "RB",
+       "nfl": "KC",
+       "game": "@ BUF, Thu 8:20 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 16.2
+      },
+      {
+       "player": "Mike Evans",
+       "pos": "WR",
+       "nfl": "SF",
+       "game": "vs SEA, Sun 4:25 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 12.4
+      },
+      {
+       "player": "Jordyn Tyson",
+       "pos": "WR",
+       "nfl": "NO",
+       "game": "@ CIN, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 7.9
+      },
+      {
+       "player": "Antonio Williams",
+       "pos": "WR",
+       "nfl": "WSH",
+       "game": "@ ARI, Sun 4:25 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 9.5
+      },
+      {
+       "player": "Jets D/ST",
+       "pos": "D/ST",
+       "nfl": "NYJ",
+       "game": "@ MIA, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 6.6
+      },
+      {
+       "player": "Drew Stevens",
+       "pos": "K",
+       "nfl": "WSH",
+       "game": "@ ARI, Sun 4:25 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 10.2
+      }
+     ]
+    },
+    {
+     "team": "Real Man of Genius",
+     "opponent": "Lisan al Gibbs",
+     "pts": 4.4,
+     "proj": 90.4,
+     "vsCurrentMedian": 3.4,
+     "vsProjectedMedian": -19.3,
+     "startersFinished": 1,
+     "startersLeft": [
+      {
+       "player": "Kirk Cousins",
+       "pos": "QB",
+       "nfl": "MIN",
+       "game": "vs ATL, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 17.4
+      },
+      {
+       "player": "Travis Etienne Jr.",
+       "pos": "RB",
+       "nfl": "NO",
+       "game": "@ CIN, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 10.9
+      },
+      {
+       "player": "Aaron Jones Sr.",
+       "pos": "RB",
+       "nfl": "MIN",
+       "game": "vs ATL, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 9.4
+      },
+      {
+       "player": "Chris Olave",
+       "pos": "WR",
+       "nfl": "NO",
+       "game": "@ CIN, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 11.4
+      },
+      {
+       "player": "Travis Kelce",
+       "pos": "TE",
+       "nfl": "KC",
+       "game": "@ BUF, Thu 8:20 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 9.4
+      },
+      {
+       "player": "Carnell Tate",
+       "pos": "WR",
+       "nfl": "TEN",
+       "game": "@ JAX, Sun 1:00 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 9.3
+      },
+      {
+       "player": "Commanders D/ST",
+       "pos": "D/ST",
+       "nfl": "WSH",
+       "game": "@ ARI, Sun 4:25 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 8.9
+      },
+      {
+       "player": "Chase McLaughlin",
+       "pos": "K",
+       "nfl": "TB",
+       "game": "vs CAR, Mon 8:15 PM",
+       "status": "not started",
+       "ptsSoFar": 0,
+       "proj": 9.3
+      }
+     ]
+    }
+   ]
+  }
  },
  "nextWeek": {
   "week": 13,
@@ -2820,6 +3913,221 @@
  ],
  "recentPickups": [
   {
+   "date": "2026-11-25",
+   "week": 12,
+   "type": "waiver claim",
+   "team": "Pteem Shteevenshun",
+   "bid": 11,
+   "added": [
+    "Deshaun Watson (QB)"
+   ],
+   "dropped": [
+    "Aaron Rodgers (QB)"
+   ]
+  },
+  {
+   "date": "2026-11-25",
+   "week": 12,
+   "type": "waiver claim",
+   "team": "Breece's Pieces",
+   "bid": 10,
+   "added": [
+    "Chargers D/ST (D/ST)"
+   ],
+   "dropped": []
+  },
+  {
+   "date": "2026-11-25",
+   "week": 12,
+   "type": "waiver claim",
+   "team": "Every Inch Matters",
+   "bid": 4,
+   "added": [
+    "Austin Ekeler (RB)"
+   ],
+   "dropped": [
+    "Mark Andrews (TE)"
+   ]
+  },
+  {
+   "date": "2026-11-25",
+   "week": 12,
+   "type": "waiver claim",
+   "team": "Illegal use of hands",
+   "bid": 2,
+   "added": [
+    "Ted Hurst III (WR)"
+   ],
+   "dropped": [
+    "Marvin Harrison Jr. (WR)"
+   ]
+  },
+  {
+   "date": "2026-11-25",
+   "week": 12,
+   "type": "waiver claim",
+   "team": "Illegal use of hands",
+   "bid": 2,
+   "added": [
+    "MarShawn Lloyd (RB)"
+   ],
+   "dropped": []
+  },
+  {
+   "date": "2026-11-25",
+   "week": 12,
+   "type": "waiver claim",
+   "team": "After Bowers",
+   "bid": 1,
+   "added": [
+    "Mike Gesicki (TE)"
+   ],
+   "dropped": [
+    "Brenton Strange (TE)"
+   ]
+  },
+  {
+   "date": "2026-11-25",
+   "week": 12,
+   "type": "waiver claim",
+   "team": "After Bowers",
+   "bid": 1,
+   "added": [
+    "Anthony Richardson Sr. (QB)"
+   ],
+   "dropped": [
+    "Seth McGowan (RB)"
+   ]
+  },
+  {
+   "date": "2026-11-25",
+   "week": 12,
+   "type": "waiver claim",
+   "team": "The Silly Geese",
+   "bid": 0,
+   "added": [
+    "Andre Szmyt (K)"
+   ],
+   "dropped": [
+    "Wil Lutz (K)"
+   ]
+  },
+  {
+   "date": "2026-11-25",
+   "week": 12,
+   "type": "waiver claim",
+   "team": "I want my Nickleback",
+   "bid": 0,
+   "added": [
+    "Chimere Dike (WR)"
+   ],
+   "dropped": [
+    "Tre Tucker (WR)"
+   ]
+  },
+  {
+   "date": "2026-11-25",
+   "week": 12,
+   "type": "waiver claim",
+   "team": "The Silly Geese",
+   "bid": 0,
+   "added": [
+    "Packers D/ST (D/ST)"
+   ],
+   "dropped": [
+    "Panthers D/ST (D/ST)"
+   ]
+  },
+  {
+   "date": "2026-11-25",
+   "week": 12,
+   "type": "free agent",
+   "team": "After Bowers",
+   "bid": 0,
+   "added": [
+    "Justin Herbert (QB)"
+   ],
+   "dropped": [
+    "Pat Freiermuth (TE)"
+   ]
+  },
+  {
+   "date": "2026-11-25",
+   "week": 12,
+   "type": "free agent",
+   "team": "I want my Nickleback",
+   "bid": 0,
+   "added": [
+    "Brandon Aiyuk (WR)"
+   ],
+   "dropped": [
+    "Bills D/ST (D/ST)"
+   ]
+  },
+  {
+   "date": "2026-11-25",
+   "week": 12,
+   "type": "waiver claim",
+   "team": "I want my Nickleback",
+   "bid": 0,
+   "added": [
+    "Patriots D/ST (D/ST)"
+   ],
+   "dropped": [
+    "Pat Bryant (WR)"
+   ]
+  },
+  {
+   "date": "2026-11-25",
+   "week": 12,
+   "type": "free agent",
+   "team": "Every Inch Matters",
+   "bid": 0,
+   "added": [
+    "Bam Knight (RB)"
+   ],
+   "dropped": []
+  },
+  {
+   "date": "2026-11-25",
+   "week": 12,
+   "type": "waiver claim",
+   "team": "I want my Nickleback",
+   "bid": 0,
+   "added": [
+    "Jack Bech (WR)"
+   ],
+   "dropped": [
+    "Courtland Sutton (WR)"
+   ]
+  },
+  {
+   "date": "2026-11-25",
+   "week": 12,
+   "type": "free agent",
+   "team": "Every Inch Matters",
+   "bid": 0,
+   "added": [
+    "Drew Stevens (K)"
+   ],
+   "dropped": [
+    "Cameron Dicker (K)"
+   ]
+  },
+  {
+   "date": "2026-11-25",
+   "week": 12,
+   "type": "free agent",
+   "team": "The Silly Geese",
+   "bid": 0,
+   "added": [
+    "De'Zhaun Stribling (WR)"
+   ],
+   "dropped": [
+    "Cam Ward (QB)"
+   ]
+  },
+  {
    "date": "2026-11-22",
    "week": 11,
    "type": "free agent",
@@ -2980,211 +4288,6 @@
    ],
    "dropped": [
     "Evan McPherson (K)"
-   ]
-  },
-  {
-   "date": "2026-11-19",
-   "week": 11,
-   "type": "free agent",
-   "team": "Every Inch Matters",
-   "bid": 0,
-   "added": [
-    "Elic Ayomanor (WR)"
-   ],
-   "dropped": [
-    "Cairo Santos (K)"
-   ]
-  },
-  {
-   "date": "2026-11-19",
-   "week": 11,
-   "type": "free agent",
-   "team": "GAYleb williams",
-   "bid": 0,
-   "added": [
-    "Ja'Kobi Lane (WR)"
-   ],
-   "dropped": []
-  },
-  {
-   "date": "2026-11-19",
-   "week": 11,
-   "type": "free agent",
-   "team": "GAYleb williams",
-   "bid": 0,
-   "added": [
-    "Tre' Harris (WR)"
-   ],
-   "dropped": [
-    "Kayshon Boutte (WR)"
-   ]
-  },
-  {
-   "date": "2026-11-18",
-   "week": 11,
-   "type": "waiver claim",
-   "team": "The House Cats",
-   "bid": 17,
-   "added": [
-    "Bo Nix (QB)"
-   ],
-   "dropped": [
-    "Mike Gesicki (TE)"
-   ]
-  },
-  {
-   "date": "2026-11-18",
-   "week": 11,
-   "type": "waiver claim",
-   "team": "Every Inch Matters",
-   "bid": 10,
-   "added": [
-    "Mark Andrews (TE)"
-   ],
-   "dropped": []
-  },
-  {
-   "date": "2026-11-18",
-   "week": 11,
-   "type": "waiver claim",
-   "team": "Pteem Shteevenshun",
-   "bid": 5,
-   "added": [
-    "Xavier Hutchinson (WR)"
-   ],
-   "dropped": []
-  },
-  {
-   "date": "2026-11-18",
-   "week": 11,
-   "type": "waiver claim",
-   "team": "The Silly Geese",
-   "bid": 4,
-   "added": [
-    "Panthers D/ST (D/ST)"
-   ],
-   "dropped": [
-    "Colts D/ST (D/ST)"
-   ]
-  },
-  {
-   "date": "2026-11-18",
-   "week": 11,
-   "type": "waiver claim",
-   "team": "Pteem Shteevenshun",
-   "bid": 2,
-   "added": [
-    "Emari Demercado (RB)"
-   ],
-   "dropped": []
-  },
-  {
-   "date": "2026-11-18",
-   "week": 11,
-   "type": "waiver claim",
-   "team": "Every Inch Matters",
-   "bid": 0,
-   "added": [
-    "Eagles D/ST (D/ST)"
-   ],
-   "dropped": []
-  },
-  {
-   "date": "2026-11-18",
-   "week": 11,
-   "type": "free agent",
-   "team": "The Silly Geese",
-   "bid": 0,
-   "added": [
-    "Cam Ward (QB)"
-   ],
-   "dropped": []
-  },
-  {
-   "date": "2026-11-18",
-   "week": 11,
-   "type": "free agent",
-   "team": "Pteem Shteevenshun",
-   "bid": 0,
-   "added": [
-    "Aaron Rodgers (QB)"
-   ],
-   "dropped": [
-    "Emari Demercado (RB)"
-   ]
-  },
-  {
-   "date": "2026-11-18",
-   "week": 11,
-   "type": "free agent",
-   "team": "After Bowers",
-   "bid": 0,
-   "added": [
-    "Pat Freiermuth (TE)"
-   ],
-   "dropped": [
-    "Kenyon Sadiq (TE)"
-   ]
-  },
-  {
-   "date": "2026-11-18",
-   "week": 11,
-   "type": "free agent",
-   "team": "Pteem Shteevenshun",
-   "bid": 0,
-   "added": [
-    "Chargers D/ST (D/ST)"
-   ],
-   "dropped": []
-  },
-  {
-   "date": "2026-11-18",
-   "week": 11,
-   "type": "free agent",
-   "team": "Pteem Shteevenshun",
-   "bid": 0,
-   "added": [
-    "J.K. Dobbins (RB)"
-   ],
-   "dropped": [
-    "Austin Ekeler (RB)"
-   ]
-  },
-  {
-   "date": "2026-11-18",
-   "week": 11,
-   "type": "free agent",
-   "team": "The Mouse Rats",
-   "bid": 0,
-   "added": [
-    "Dalton Schultz (TE)"
-   ],
-   "dropped": []
-  },
-  {
-   "date": "2026-11-18",
-   "week": 11,
-   "type": "waiver claim",
-   "team": "Every Inch Matters",
-   "bid": 0,
-   "added": [
-    "Cairo Santos (K)"
-   ],
-   "dropped": [
-    "Charlie Smyth (K)"
-   ]
-  },
-  {
-   "date": "2026-11-18",
-   "week": 11,
-   "type": "waiver claim",
-   "team": "I want my Nickleback",
-   "bid": 0,
-   "added": [
-    "Courtland Sutton (WR)"
-   ],
-   "dropped": [
-    "Bam Knight (RB)"
    ]
   }
  ],
