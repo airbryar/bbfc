@@ -1,6 +1,54 @@
 {
   "editions": [
     {
+      "id": "2026-11-26",
+      "date": "2026-11-26",
+      "label": "Thanksgiving Edition",
+      "week": 12,
+      "publishedAt": "2026-11-26T09:50:10.638Z",
+      "stories": [
+        {
+          "kicker": "Carving Board",
+          "headline": "Six Days Left to Carve Up a Deal Before the Trade Deadline Clears the Table",
+          "dek": "Sixteen trades have been served so far, and Jared's I want my Nickleback have pulled up a chair for ten of them.",
+          "body": [
+            "Loosen the belt and pull up a chair: the BBFC trade deadline arrives Wednesday, Dec. 2, which leaves six days to get one more deal out of the oven. Sixteen trades have been carved up so far this season, and the freshest helpings are still warm, with Saquon Barkley set for his first start for his new team this afternoon.",
+            "Jared's I want my Nickleback have run the busiest kitchen in the league, taking part in 10 of the 16 trades. Michael's The Silly Geese are next with six, and Garrett's Every Inch Matters have made four. Two teams have kept their recipe cards to themselves all fall: GAYleb williams and Pteem Shteevenshun have yet to make a trade.",
+            "The newest deals are still coming off the platter. On Nov. 18, I want my Nickleback sent Josh Jacobs to Illegal use of hands for Kyren Williams and George Kittle. Kittle scored 16.9 points in his first start, and Kyren Williams already has 14.5 on the board this week. Jacobs, who scored 38.3 for Jared's team before the deal, has not started yet for Jeremy's side. Two days later, Ezra's After Bowers landed Barkley for Stefon Diggs and Jordan Mason. Diggs has 6.5 in one start, and Barkley, who put up 55.2 before the trade, is in the lineup for today's 4:30 p.m. game in Dallas.",
+            "Some of the earlier deals have turned into full holiday spreads with plenty for both sides. The Sept. 29 swap between Every Inch Matters and I want my Nickleback has been a two-plate feast: Kenneth Walker III has 109.7 points in five starts for Garrett's team, and Jayden Daniels has 120.6 in six starts for Jared's. Josh's Lisan al Gibbs have been the gravy boat of the trade market, with Tee Higgins scoring 70.6 in four starts since Oct. 29 and C.J. Stroud adding 40.9 in two starts since Nov. 10.",
+            "The waiver wire served up its own side dishes on Wednesday. Caleb's Pteem Shteevenshun made the biggest bid, $11 for Deshaun Watson, and dropped Aaron Rodgers. Watson is in their lineup for Sunday night, projected for 19.9 points. Tyler's Breece's Pieces spent $10 on the Chargers D/ST, Every Inch Matters paid $4 for Austin Ekeler, and Jared's team made four moves in a single day, adding Chimere Dike, Brandon Aiyuk, Jack Bech and the Patriots D/ST.",
+            "A few plates are already scraped clean. Every Inch Matters and I want my Nickleback have spent their full $100 budgets, and After Bowers have $7 left. Every Inch Matters have also made 91 pickups, the most in the league, so they have clearly never met a second helping they didn't like. Anyone still hungry for a trade has until Wednesday to fill a plate."
+          ]
+        },
+        {
+          "kicker": "Turkey Day Kickoffs",
+          "headline": "Twenty-Six BBFC Starters Get First Dibs on the Thanksgiving Day Spread",
+          "dek": "Three games, 26 starters and a head start for GAYleb williams, who send five players to the table before most of the league sits down.",
+          "body": [
+            "Before the turkey is even carved, 26 BBFC starters will be hard at work. Three Thanksgiving Day games kick off today: Chicago at Detroit at 1 p.m., Philadelphia at Dallas at 4:30 p.m. and Kansas City at Buffalo at 8:20 p.m. Every one of the league's 12 teams has at least one starter on the menu, so nobody is stuck at the kids' table.",
+            "The early game is the most crowded plate, with 10 BBFC starters. Detroit's side has Jahmyr Gibbs for Lisan al Gibbs, Amon-Ra St. Brown and kicker Jake Bates for GAYleb williams, Jameson Williams for Illegal use of hands and Sam LaPorta for Breece's Pieces. Chicago brings Caleb Williams for GAYleb williams, D'Andre Swift for Lisan al Gibbs, Kyle Monangai for Illegal use of hands, Colston Loveland for The Mouse Rats and Luther Burden III for Pteem Shteevenshun. Josh, Jeremy and Landon each have starters on both sides, so they are guaranteed a drumstick either way. Gibbs, projected for 23.4 points, is the biggest serving of giblets on the board.",
+            "The 4:30 p.m. game in Dallas is After Bowers' feast. Ezra has Dak Prescott, George Pickens and Saquon Barkley in that one, projected for a combined 45.6 points. Also at the table: CeeDee Lamb for The Silly Geese, Javonte Williams and DeVonta Smith for GAYleb williams and kicker Brandon Aubrey for The House Cats.",
+            "The nightcap in Buffalo is the pie course, with nine starters. The Bills side has Josh Allen for The Silly Geese, DJ Moore for After Bowers, James Cook III for Every Inch Matters, Dalton Kincaid for Pteem Shteevenshun and kicker Tyler Bass for I want my Nickleback. The Chiefs side has Patrick Mahomes for The Mouse Rats, Emmett Johnson for Every Inch Matters, Rashee Rice for The House Cats and Travis Kelce for Real Man of Genius.",
+            "The biggest head start belongs to Landon's GAYleb williams. Their five Thursday starters are projected for 67.7 of their 113.1 points, while Michael's The Silly Geese have Lamb and Allen, projected for 35.1. The Silly Geese are projected to win 117.5 to 113.1, so today's games will go a long way toward deciding that one before the rest of the feast. After Bowers have four Thursday starters projected for 55.9 points against Breece's Pieces, who already lead 27.5 to 0 thanks to Blake Corum and add LaPorta today. Breece's Pieces are projected to win 144.0 to 109.8.",
+            "Elsewhere, The Mouse Rats and Pteem Shteevenshun each have two starters today in a matchup projected at 109.6 to 108.3. Illegal use of hands lead Every Inch Matters 12.0 to 1.9, and Garrett will have Cook and Johnson on opposite sides in Buffalo. I want my Nickleback lead The House Cats 14.5 to 0 and add Bass tonight, while Real Man of Genius trail Lisan al Gibbs 14.5 to 4.4 with Kelce still to come. Save room: Friday, Sunday and Monday games are still on the menu."
+          ]
+        },
+        {
+          "kicker": "Giving Thanks",
+          "headline": "Twelve Teams, Twelve Reasons to Give Thanks Around the BBFC Table",
+          "dek": "From a running back worth his weight in giblets to a Week 11 upset, every team in the league has something on their plate worth celebrating.",
+          "body": [
+            "It's Thanksgiving, so before anyone reaches for seconds, the Newspaper is going around the table. Every team in the BBFC has something to be thankful for this season, from the top seed to the 12th, and here they are in standings order, one helping each, with extra gravy for nobody and plenty of stuffing for all.",
+            "Josh's Lisan al Gibbs (20-2) are thankful for Jahmyr Gibbs, who has scored 258.7 points in 10 starts, the most of any player in the league while in a starting lineup. That is a lot of giblets. Jeremy's Illegal use of hands (14-8) give thanks for Jaxon Smith-Njigba, who has served up 223.7 points in 10 starts. And not every bird at the table is a turkey: Michael's The Silly Geese (14-8) can be grateful for Josh Allen, with 234.7 points in 10 starts, and CeeDee Lamb, with 208.2 in 11.",
+            "Landon's GAYleb williams (14-8) are thankful for momentum. They have won five straight, are 8-3 against the median and climbed from third to second in the power rankings this week. Tyler's Breece's Pieces (12-10) already have a generous piece of the pie in Week 12: Blake Corum has scored 27.5 points, the best start of anyone this week so far. Bryar's The Mouse Rats (12-10) give thanks for Derrick Henry, who has 169.9 points and has been in the starting lineup all 11 weeks.",
+            "Ezra's After Bowers (11-11) are thankful for Dak Prescott, who has scored 237.8 points in 11 starts, including 35.9 in Week 11, the best game by any player that week. Garrett's Every Inch Matters (11-11) are enjoying a late harvest: three straight wins and 116.1 points a game over the last three weeks, second only to Lisan al Gibbs. Caleb's Pteem Shteevenshun (7-15) can give thanks for Spencer Shrader, picked up for no FAAB on Sept. 23, who has scored 92.0 points in nine starts at kicker.",
+            "Micah's Real Man of Genius (7-15) are thankful for Chris Olave, who has scored 132.6 points in 10 starts and has been a steady dish all season. Luke's The House Cats (6-16) give thanks for Christian McCaffrey, who has delivered 206.2 points in 10 starts. Jared's I want my Nickleback (4-18) can be thankful for Week 11, when they beat Illegal use of hands 89.8 to 70.5 for their first head-to-head win since Week 5.",
+            "That is a full table, 12 teams and 12 reasons. Pass the cranberry sauce, mind the food coma, and save a spot on the couch: with three regular-season weeks left, there is still plenty of football to be thankful for."
+          ]
+        }
+      ]
+    },
+    {
       "id": "2026-11-24",
       "date": "2026-11-24",
       "label": "Tuesday Edition",
