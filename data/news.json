@@ -1,6 +1,54 @@
 {
   "editions": [
     {
+      "id": "2026-11-28",
+      "date": "2026-11-28",
+      "label": "Saturday Edition",
+      "week": 12,
+      "publishedAt": "2026-11-28T09:48:36.985Z",
+      "stories": [
+        {
+          "kicker": "Matchup of the Week",
+          "headline": "GAYleb williams Post 148.7 Before Sunday in a Battle of 14-8 Teams",
+          "dek": "Landon's lineup has three starters left and a projection of 188.8, while The Silly Geese sit at 25.5 with six still to play.",
+          "body": [
+            "The biggest game of Week 12 is already leaning hard one way. GAYleb williams have 148.7 points on the board against The Silly Geese, who have 25.5, and the weekend has barely started. Both teams came in at 14-8 as the third and fourth seeds, so the result will reshape the top of the standings.",
+            "Three starters did most of the work for Landon's team in the games already played. DeVonta Smith scored 37.5, Javonte Williams added 31.8 and the Steelers D/ST put up 26. That 148.7 is already higher than every weekly high score this season except two: The Mouse Rats' 149.1 in Week 1 and Lisan al Gibbs' 162.6 in Week 5.",
+            "There is more to come. Harold Fannin Jr. and Quinshon Judkins play Sunday night against Las Vegas, and Chuba Hubbard, the team's top scorer this season with 169.1 points while started, closes the week Monday night at Tampa Bay. GAYleb williams are projected to finish at 188.8, which would be the highest score of the season.",
+            "Michael's team needs 123.2 more points just to draw level. The Silly Geese still have Cam Skattebo, Justin Jefferson, Chig Okonkwo, KC Concepcion, the Giants D/ST and kicker Andre Szmyt to play, and they are projected to finish at 94.5. They sit 3.6 points below the projected median, so the median game remains open for them.",
+            "The two managers are 2-2 against each other all time, and The Silly Geese took this season's first meeting 104.4 to 97.7 in Week 3. GAYleb williams have won five straight and moved up to second in the power rankings. A sweep this week would put them at 16-8, while The Silly Geese would drop to 14-10 if they lost both games.",
+            "Elsewhere at the top, Lisan al Gibbs lead Real Man of Genius 85.9 to 13.5. Jahmyr Gibbs has 45.7 points and D'Andre Swift 25.7, and the 20-2 leaders still have six starters to play, led by C.J. Stroud and Trey McBride."
+          ]
+        },
+        {
+          "kicker": "Playoff Race",
+          "headline": "Breece's Pieces and After Bowers Meet With a Playoff Spot on the Line",
+          "dek": "The fifth and seventh seeds are separated by one game, and Breece's Pieces have seven starters left to After Bowers' five.",
+          "body": [
+            "Three weeks remain in the regular season, and the race for the last playoff spots runs straight through Week 12. Breece's Pieces, the fifth seed at 12-10, lead After Bowers, the seventh seed at 11-11, by 39.9 to 37.9. With one game between them in the standings, a sweep either way would change the picture going into the final two weeks.",
+            "Blake Corum gave Tyler's team their head start with 27.5 points. Breece's Pieces still have most of their lineup to come: Joe Burrow and Ja'Marr Chase against New Orleans, Breece Hall at Miami, Nico Collins against Baltimore, the 49ers D/ST and kicker Jason Sanders on Sunday, and Bucky Irving on Monday night. They are projected to finish at 147.5.",
+            "After Bowers are projected for 95.5. Ezra still has Chase Brown, Chris Rodriguez Jr., the Vikings D/ST and Ka'imi Fairbairn on Sunday afternoon, and Brock Bowers plays Sunday night at Cleveland. After Bowers have climbed to third in the power rankings and have the third-easiest schedule left by opponents' scoring.",
+            "Tyler leads the all-time series 4-2. This season's first meeting, in Week 1, was the closest game of that week: Breece's Pieces won 86.8 to 84.0.",
+            "The sixth seed is in a game of their own. The Mouse Rats, also 12-10, trail Pteem Shteevenshun 17.2 to 6.2, and Pteem Shteevenshun are projected to win 103.8 to 79.8, though The Mouse Rats have seven starters left, including Derrick Henry and Ashton Jeanty. Bryar leads Caleb 3-1 all time.",
+            "Every Inch Matters, the eighth seed at 11-11, trail Illegal use of hands 48.4 to 38.5 and are projected to lose 114.0 to 99.2. Garrett's team has won three straight, but they also face the toughest remaining schedule in the league, with opponents averaging 117.7 points a game. Jeremy leads that series 3-2."
+          ]
+        },
+        {
+          "kicker": "Median Watch",
+          "headline": "Six Teams Sit Within 6 Points of the Projected Median",
+          "dek": "The projected median is 98.1, and the teams from fifth to tenth on the projection board are separated by fewer than 10 points.",
+          "body": [
+            "The median game could come down to a handful of points this week. The projected median sits at 98.1, and six teams are projected to land within 5.7 points of it on either side. Two of them are on course for a median win and four are on course to miss, with plenty of Sunday games left to sort it out.",
+            "The top four look safe. GAYleb williams are 90.7 points above the projected median, Lisan al Gibbs 64.7 above and Breece's Pieces 49.4 above. Illegal use of hands are next at 15.9 above, with Trevor Lawrence, Jaxon Smith-Njigba, Kimani Vidal, Isaiah Likely and Tank Dell still to play.",
+            "Then the line gets crowded. Pteem Shteevenshun are projected 5.7 points above it, with seven starters left, including Bijan Robinson, Jonathan Taylor and George Kittle. Every Inch Matters are projected just 1.1 points above, a spot where every inch matters. Geno Smith, Mike Evans and Jordyn Tyson are among their six starters still to play.",
+            "Just below the line, I want my Nickleback are projected 1.1 points short, with Jayden Daniels, Stefon Diggs and Jacory Croskey-Merritt playing Sunday afternoon at Arizona. After Bowers are 2.6 short, The Silly Geese 3.6 short and The House Cats 4.0 short. Christian McCaffrey, Malik Nabers and J.J. McCarthy lead The House Cats' seven starters still to play.",
+            "Two of those bubble teams are playing each other. I want my Nickleback lead The House Cats 27.3 to 11.9, and the projection has it at 97.0 to 94.1. Jared leads Luke 6-2 all time, but Jared's team is 1-10 against the median this season, and a median win this week would be their second.",
+            "Real Man of Genius are projected 8.8 points short and The Mouse Rats 18.3 short, though both have seven starters left. In Week 11, the median fell at 94.8."
+          ]
+        }
+      ]
+    },
+    {
       "id": "2026-11-26",
       "date": "2026-11-26",
       "label": "Thanksgiving Edition",
